@@ -30,19 +30,19 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
     try {
       setIsLoading(true);
 
+      //! sepete ekleme kısmında bir hata var
+      //! ayrıca type da eklenecek. productData.stock
+
       const productData = await ProductManager.getProduct(product.id);
+
       const productInCartForm = new FormData();
       productInCartForm.append("id", id);
       productInCartForm.append("pid", product.id);
-
       const cartProductData = await CartManager.getProductInCart(productInCartForm);
 
-      if (productData !== null && productData.stock < 1) {
+      if (productData !== null && productData.stock === 0) {
         toast.error("Ürün stokta bulunmuyor.");
-      } else if (
-        cartProductData !== null &&
-        cartProductData.amount >= productData.stock
-      ) {
+      } else if (cartProductData !== null && productData !== null && cartProductData.amount >= productData.stock) {
         toast.error("Stoktaki tutardan fazlası sepete eklenemez.");
       } else {
         const formData = new FormData();
@@ -56,6 +56,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           success: "Ürün sepete eklendi!",
           error: "Ürün sepete eklenemedi.",
         });
+        setAmount(1);
       }
     } catch (error) {
       toast.error("Bilinmeyen hata. Kod: AC-HAC");

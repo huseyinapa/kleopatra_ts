@@ -163,7 +163,7 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
 
             if (productData !== null && productData.stock < 1) {
                 return toast.error("Ürün stokta bulunmuyor.");
-            } else if (cartProductData !== null && cartProductData.amount >= productData.stock) {
+            } else if (cartProductData !== null && productData !== null && cartProductData.amount >= productData.stock) {
                 return toast.error(`Stoktaki tutardan fazlası sepete eklenemez.`);
             }
 

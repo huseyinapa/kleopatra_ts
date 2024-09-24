@@ -58,7 +58,7 @@ export default function Nav() {
         {isLoggedIn ? (
           <div className="flex space-x-4">
             <Link
-              href={"/order"}
+              href={"/orders"}
               className="btn btn-ghost w-auto px-4 btn-square shadow-md"
               onClick={() => {
                 trackGAEvent("Test Kategorisi", "Siparişlerim", "Butona Tıklama");

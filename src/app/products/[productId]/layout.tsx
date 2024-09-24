@@ -1,20 +1,11 @@
 // layout.tsx
 
-import { Toaster } from "react-hot-toast";
-
 interface ProductLayoutProps {
     children: React.ReactNode;
 }
 
 const ProductLayout = ({ children }: ProductLayoutProps): JSX.Element => {
-    return <html lang="en">
-        <body
-            data-theme="valentine"
-        >
-            <Toaster position="bottom-right" reverseOrder={false} />
-            {children}
-        </body>
-    </html>
+    return <div>{children}</div>;
 };
 
 export default ProductLayout;

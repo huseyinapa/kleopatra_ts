@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
@@ -9,6 +8,7 @@ import Footer from "@/app/_components/footer";
 
 import AddToCartButton from "./_components/addToCartButton";
 import ProductList from "./_components/productList";
+import api_url from "@/utils/api";
 
 export interface Product {
   id: string;
@@ -24,17 +24,13 @@ export interface Product {
 
 async function getProductData(productId: string): Promise<Product | null> {
   try {
-    const { data: product } = await axios.get(
-      "https://www.gonenkleopatra.com/api_gulgonen/product/get.php" +
-      "?id=" +
-      productId
-    );
+    const { data: product } = await axios.get(`${api_url}/api_kleopatra/product/get.php?id=${productId}`);
 
     if (!product) {
+
       return null;
     }
-
-    return product;
+    return product.data;
   } catch (error) {
     console.log("HATA:" + error);
     return null;
@@ -47,6 +43,7 @@ function extractIdFromUrl(url: string): string {
   // ID'nin son iki kısmını birleştir
   const splitSegment = lastSegment.split('-');
   const id = splitSegment.slice(-2).join('-');
+  console.log(id);
 
   return id;
 }
@@ -72,10 +69,8 @@ export default async function ProductPage({ params: { productId } }: ProductPage
     <div className="min-w-fit">
       <Nav />
 
-      <Head>
-        <title>Ürün Detayı - Gülgönen Koop.</title>
-        <meta name="description" content={`Gülgönen Koop. üzerinden ${product.name} ürününü inceleyin.`} />
-      </Head>
+      <title>Ürün Detayı - Gülgönen Koop.</title>
+      <meta name="description" content={`Gülgönen Koop. üzerinden ${product.name} ürününü inceleyin.`} />
 
       <div className="container flex flex-row items-center justify-between p-6 mx-auto">
         <Link

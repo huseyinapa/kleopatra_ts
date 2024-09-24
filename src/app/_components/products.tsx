@@ -5,6 +5,9 @@ import toast from "react-hot-toast";
 
 import CartManager from "@/services/cart";
 import ProductManager from "@/services/product";
+import Link from "next/link";
+import Image from "next/image";
+import Functions from "@/utils/functions";
 
 const Products: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -158,11 +161,15 @@ const ProductCard = ({ isAdmin, product, removeProduct, handleAddCart }: Product
     className="relative card card-compact bg-[#cc3b6477] text-neutral-content w-60 lg:w-72 h-[450px] max-h-[500px] shadow-[#c2154677] shadow-2xl"
   >
     <figure className="relative pt-4">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-52 lg:w-60 h-64 object-cover rounded-lg"
-      />
+      <Link href={`/products/${Functions.slugify(product.name)}-${product.id.toLowerCase()}`}>
+        <Image
+          src={product.image}
+          alt={product.name}
+          className="w-52 lg:w-60 h-64 object-cover rounded-lg"
+          width={20}
+          height={20}
+        />
+      </Link>
       {isAdmin && (
         <button
           className="absolute top-5 right-5 btn btn-sm lg:btn-md btn-circle shadow-sm"
