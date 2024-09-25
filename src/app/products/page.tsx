@@ -11,16 +11,7 @@ import CartManager from "@/services/cart";
 import ProductManager from "@/services/product";
 import Image from "next/image";
 import Functions from "@/utils/functions";
-
-// Product interface
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  image: string;
-}
+import { Product } from "@/interfaces/product.interfaces";
 
 const AllProduct = () => {
   const [products, setProducts] = useState<Product[]>([]); // Product type is defined
@@ -42,7 +33,7 @@ const AllProduct = () => {
   const fetchAllProduct = async () => {
     try {
       const response = await ProductManager.fetchAllProducts();
-      setProducts(response && Array.isArray(response) ? response : []);
+      setProducts(response ?? []);
     } catch (error) {
       console.error("Product fetch error:", error);
       alert("Bilinmeyen bir hata oluştu.");
@@ -95,10 +86,12 @@ const AllProduct = () => {
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
             <div className="flex-1 w-0 p-4">
               <div className="flex items-start">
-                <img
+                <Image
                   className="h-10 w-10 rounded-full"
                   src="/images/icons/warning.png"
                   alt="warning"
+                  width={20}
+                  height={20}
                 />
                 <div className="ml-3">
                   <p className="text-sm font-medium text-gray-900">
@@ -130,7 +123,11 @@ const AllProduct = () => {
   const ProductCard = ({ product }: { product: Product }) => (
     <div className="card card-compact bg-[#cc3b6477] text-neutral-content w-40 md:w-72 h-80 lg:h-auto shadow-[#c2154677] shadow-2xl">
       <figure className="relative pt-4">
-        <Link href={`/products/${Functions.slugify(product.name)}-${product.id.toLowerCase()}`}>
+        <Link
+          href={`/products/${Functions.slugify(
+            product.name
+          )}-${product.id.toLowerCase()}`}
+        >
           <Image
             src={product.image}
             alt={product.name}

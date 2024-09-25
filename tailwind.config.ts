@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -33,13 +34,6 @@ const config: Config = {
           "0%, 100%": { transform: "rotate(-3deg)" },
           "50%": { transform: "rotate(3deg)" },
         },
-      },
-    },
-
-    colors: {
-      button: {
-        rose: "#c21546",
-        countinue: "#c9aac4",
       },
     },
   },

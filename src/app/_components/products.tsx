@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import CartManager from "@/services/cart";
-import ProductManager from "@/services/product";
+import ProductManager, { Product } from "@/services/product";
 import Link from "next/link";
 import Image from "next/image";
 import Functions from "@/utils/functions";
 
 const Products: React.FC = () => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Products: React.FC = () => {
     }
   };
 
-  const handleAddCart = async (data: any) => {
+  const handleAddCart = async (data: Product) => {
     const id = localStorage.getItem("id") ?? null;
     if (id === null) {
       toast.error("Sepete ürün eklemek için kayıt olmanız gerekir.");
@@ -61,19 +61,20 @@ const Products: React.FC = () => {
     }
 
     try {
-      const idForm = new FormData();
-      idForm.append("id", data.id);
-
-      const product = await ProductManager.getProduct(idForm);
+      const product = await ProductManager.getProduct(data.id);
       const form = new FormData();
       form.append("id", id);
       form.append("pid", data.id);
 
       const cartProduct = await CartManager.getProductInCart(form);
-      if (product.stock < 1) {
+      if (product !== null && product.stock < 1) {
         toast.error("Stok tükenmiştir.");
         return;
-      } else if (cartProduct !== null && cartProduct.amount >= product.stock) {
+      } else if (
+        cartProduct !== null &&
+        product !== null &&
+        cartProduct.amount >= product.stock
+      ) {
         toast.error(
           `Stoktaki miktardan fazlası sepete eklenemez. Ürün stoğu: ${product.stock}`
         );
@@ -98,28 +99,29 @@ const Products: React.FC = () => {
       }
     } catch (error) {
       toast.error(`Bir sorun oluştu! Hata kodu: HAC-114`);
+      console.log(error);
     }
   };
 
-  const toggleText = (text: string, size: number = 40) => {
-    const isShortened = text.length > size;
-    const shortenedText = isShortened ? `${text.substring(0, size)}..` : text;
+  // const toggleText = (text: string, size: number = 40) => {
+  //   const isShortened = text.length > size;
+  //   const shortenedText = isShortened ? `${text.substring(0, size)}..` : text;
 
-    const handleClick = () => {
-      if (isShortened) {
-        alert(text);
-      }
-    };
+  //   const handleClick = () => {
+  //     if (isShortened) {
+  //       alert(text);
+  //     }
+  //   };
 
-    return (
-      <span
-        onClick={handleClick}
-        className={`cursor-${isShortened ? "pointer" : "auto"}`}
-      >
-        {shortenedText}
-      </span>
-    );
-  };
+  //   return (
+  //     <span
+  //       onClick={handleClick}
+  //       className={`cursor-${isShortened ? "pointer" : "auto"}`}
+  //     >
+  //       {shortenedText}
+  //     </span>
+  //   );
+  // };
 
   return products.length === 0 ? (
     <div></div>
@@ -130,38 +132,52 @@ const Products: React.FC = () => {
     >
       <div className="flex flex-wrap space-y-4 justify-center sm:items-end sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6 xl:gap-10 xl:space-y-5">
         {products.map((product) => (
-          <ProductCard key={product.id} isAdmin={isAdmin} product={product} removeProduct={removeProduct} handleAddCart={handleAddCart} />
+          <ProductCard
+            key={product.id}
+            isAdmin={isAdmin}
+            product={product}
+            removeProduct={removeProduct}
+            handleAddCart={handleAddCart}
+          />
         ))}
       </div>
     </section>
   );
-
 };
 
 export default Products;
 
 type ProductCardProps = {
-  isAdmin: boolean,
+  isAdmin: boolean;
   product: {
-    id: string,
-    name: string,
-    description: string,
-    price: any,
-    stock: any,
-    image: string,
-    index: number,
-  },
-  removeProduct: (id: string, path: string) => void,
-  handleAddCart: (product: any) => void
-}
+    id: string;
+    name: string;
+    description: string;
+    price: string;
+    stock: number;
+    image: string;
+    index?: number;
+  };
+  removeProduct: (id: string, path: string) => void;
+  handleAddCart: (product: Product) => void;
+};
 
-const ProductCard = ({ isAdmin, product, removeProduct, handleAddCart }: ProductCardProps) => (
+const ProductCard = ({
+  isAdmin,
+  product,
+  removeProduct,
+  handleAddCart,
+}: ProductCardProps) => (
   <div
     key={product.id}
     className="relative card card-compact bg-[#cc3b6477] text-neutral-content w-60 lg:w-72 h-[450px] max-h-[500px] shadow-[#c2154677] shadow-2xl"
   >
     <figure className="relative pt-4">
-      <Link href={`/products/${Functions.slugify(product.name)}-${product.id.toLowerCase()}`}>
+      <Link
+        href={`/products/${Functions.slugify(
+          product.name
+        )}-${product.id.toLowerCase()}`}
+      >
         <Image
           src={product.image}
           alt={product.name}

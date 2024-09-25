@@ -9,10 +9,8 @@ export default function Home(): JSX.Element {
   return (
     <main>
       <Nav />
-
       <Store />
       <div className="divider mx-10"></div>
-
       <Products />
       <Footer />
     </main>

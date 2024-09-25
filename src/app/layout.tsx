@@ -23,14 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr"
-      className={inter.className}
-    >
+    <html lang="tr" className={inter.className}>
       <GoogleAnalytics />
 
       <body
         data-theme="valentine"
-        className={`debug-screens`}
+        className={`${
+          process.env.NODE_ENV === "development" ? "debug-screens" : undefined
+        }`}
       >
         <Toaster position="bottom-right" reverseOrder={false} />
         {children}

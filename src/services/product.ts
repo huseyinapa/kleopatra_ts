@@ -1,16 +1,7 @@
+import { Product } from "@/interfaces/product.interfaces";
 import api_url from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
-
-//? Tanımlar tek bir dosyaya taşınabilir.
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  image: string;
-  index?: number;
-}
+import toast from "react-hot-toast";
 
 interface ApiResponse<T> {
   success: boolean;
@@ -21,8 +12,8 @@ interface ApiResponse<T> {
 const ProductManager = {
   addProduct: async (productData: FormData): Promise<boolean> => {
     try {
-      const response: AxiosResponse<ApiResponse<any>> = await axios.post(
-        `${api_url}/add.php`,
+      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
+        `${api_url}/api_kleopatra/product/add.php`,
         productData,
         {
           headers: {
@@ -37,10 +28,10 @@ const ProductManager = {
     }
   },
 
-  removeProduct: async (productData: any): Promise<boolean> => {
+  removeProduct: async (productData: FormData): Promise<boolean> => {
     try {
-      const response: AxiosResponse<ApiResponse<any>> = await axios.post(
-        `${api_url}/remove.php`,
+      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
+        `${api_url}/api_kleopatra/product/remove.php`,
         productData
       );
       return response.data.success ? true : false;
@@ -50,10 +41,10 @@ const ProductManager = {
     }
   },
 
-  fallingOutofStock: async (body: any): Promise<boolean> => {
+  fallingOutofStock: async (body: FormData): Promise<boolean> => {
     try {
-      const response: AxiosResponse<ApiResponse<any>> = await axios.post(
-        `${api_url}/out_of_stock.php`,
+      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
+        `${api_url}/api_kleopatra/product/out_of_stock.php`,
         body
       );
       return response.data.success ? true : false;
@@ -63,8 +54,8 @@ const ProductManager = {
     }
   },
 
-  getProduct: async (data: any): Promise<Product | null> => {
-    const url = `${api_url}/api_kleopatra/product/get.php`;
+  getProduct: async (data: string): Promise<Product | null> => {
+    const url = `${api_url}/api_kleopatra/product/api_kleopatra/product/get.php`;
     try {
       const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
         url,
@@ -87,7 +78,7 @@ const ProductManager = {
   fetchFeaturedProducts: async (): Promise<Product[] | null> => {
     try {
       const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/featured_get.php`
+        `${api_url}/api_kleopatra/product/featured_get.php`
       );
       if (response.data.success && response.data.data) {
         const updatedProducts: Product[] = response.data.data.map(
@@ -113,7 +104,7 @@ const ProductManager = {
   fetchAllProduct: async (): Promise<Product[] | null> => {
     try {
       const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/all_get.php`
+        `${api_url}/api_kleopatra/product/api_kleopatra/product/all_get.php`
       );
       console.log(response.data.success);
       if (response.data.success && response.data.data) {
@@ -140,9 +131,11 @@ const ProductManager = {
 
   fetchAllProducts: async (): Promise<Product[] | null> => {
     try {
+      toast(api_url);
       const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/all_gets.php`
+        `${api_url}/api_kleopatra/product/api_kleopatra/product/all_gets.php`
       );
+
       if (response.data.success && response.data.data) {
         const updatedProducts: Product[] = response.data.data.map(
           (element, index) => ({
@@ -160,7 +153,7 @@ const ProductManager = {
         return null;
       }
     } catch (error) {
-      console.error("Ürün getirme hatası:", error);
+      console.log("Ürün getirme hatası:", error);
       return null;
     }
   },
