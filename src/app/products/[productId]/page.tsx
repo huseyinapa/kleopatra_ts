@@ -61,26 +61,27 @@ export default async function ProductPage({
     <div className="min-w-fit">
       <Nav />
 
-      <title>Ürün Detayı - Gönen Kleopatra.</title>
+      <title>Ürün Detayı - Gönen Kleopatra</title>
       <meta
         name="description"
-        content={`Gülgönen Koop. üzerinden ${product.name} ürününü inceleyin.`}
+        content={`Gönen Kleopatra üzerinden ${product.name} ürününü inceleyin.`}
       />
 
       <div className="container flex flex-row items-center justify-between p-6 mx-auto">
         <Link
           href="/products"
-          className="flex items-center gap-4 duration-200 text-secondary hover:text-[#cc5c8b]"
+          className="flex items-center gap-4 duration-200 hover:text-[#cc5c8b]"
         >
           <ArrowLeft className="w-6 h-6" />
-          <h1 className="font-bold text-2xl text-pretty">
-            {product.name} - {product.size} {product.type}
-          </h1>
+          <h1 className="font-bold text-2xl text-pretty">{product.name}</h1>
         </Link>
       </div>
 
-      <div className="container flex flex-col lg:flex-row items-start p-6 mx-auto">
-        <div key={product.id} className="flex flex-row space-x-4 w-[65%]">
+      <div className="container flex flex-col lg:flex-row items-center lg:items-start p-4 mx-auto gap-4">
+        <div
+          key={product.id}
+          className="flex flex-col md:flex-row space-x-4 md:w-[85%] lg:w-[65%]"
+        >
           <figure className="relative">
             <Image
               src={product.image}
@@ -96,14 +97,12 @@ export default async function ProductPage({
           </figure>
           <div className="container flex flex-col gap-2 justify-between">
             <div className="flex flex-row items-center">
-              <h1 className="font-bold text-2xl text-secondary text-pretty mr-auto">
+              <h1 className="font-bold text-2xl text-pretty mr-auto">
                 {product.name}
               </h1>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="font-medium text-md text-secondary">
-                {product.description}
-              </p>
+              <p className="font-medium text-md">{product.description}</p>
               <p
                 className={
                   product.stock > 0 ? "text-green-800" : "text-red-500"
@@ -111,16 +110,16 @@ export default async function ProductPage({
               >
                 {product.stock > 0 ? "Stokta var" : "Stokta yok"}
               </p>
-              <p>
+              {/* <p>
                 {product.size} {product.type}
-              </p>
+              </p> */}
             </div>
             <div>
               <AddToCartButton product={product} />
             </div>
           </div>
         </div>
-        <div className="flex flex-col space-x-4 w-[35%]">
+        <div className="flex flex-col space-x-4 md:w-[85%] lg:w-[35%]">
           <ProductList excludingProductId={product.id} />
         </div>
       </div>

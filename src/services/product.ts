@@ -1,7 +1,6 @@
 import { Product } from "@/interfaces/product.interfaces";
 import api_url from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
-import toast from "react-hot-toast";
 
 interface ApiResponse<T> {
   success: boolean;
@@ -55,10 +54,9 @@ const ProductManager = {
   },
 
   getProduct: async (data: string): Promise<Product | null> => {
-    const url = `${api_url}/api_kleopatra/product/api_kleopatra/product/get.php`;
     try {
       const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
-        url,
+        `${api_url}/api_kleopatra/product/get.php`,
         data
       );
 
@@ -104,7 +102,7 @@ const ProductManager = {
   fetchAllProduct: async (): Promise<Product[] | null> => {
     try {
       const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/api_kleopatra/product/api_kleopatra/product/all_get.php`
+        `${api_url}/api_kleopatra/product/all_get.php`
       );
       console.log(response.data.success);
       if (response.data.success && response.data.data) {
@@ -131,9 +129,8 @@ const ProductManager = {
 
   fetchAllProducts: async (): Promise<Product[] | null> => {
     try {
-      toast(api_url);
       const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/api_kleopatra/product/api_kleopatra/product/all_gets.php`
+        `${api_url}/api_kleopatra/product/all_gets.php`
       );
 
       if (response.data.success && response.data.data) {

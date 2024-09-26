@@ -121,7 +121,7 @@ const AllProduct = () => {
 
   // Individual product card component
   const ProductCard = ({ product }: { product: Product }) => (
-    <div className="card card-compact bg-[#cc3b6477] text-neutral-content w-40 md:w-72 h-80 lg:h-auto shadow-[#c2154677] shadow-2xl">
+    <div className="card card-compact bg-[#cc3b6477] text-neutral-content w-[170px] md:w-[300px] h-[350px] md:h-[400px] lg:h-[450px] shadow-[#c2154677] shadow-2xl">
       <figure className="relative pt-4">
         <Link
           href={`/products/${Functions.slugify(
@@ -131,7 +131,7 @@ const AllProduct = () => {
           <Image
             src={product.image}
             alt={product.name}
-            className="w-36 h-48 md:w-56 md:h-52 lg:w-60 lg:h-64 object-cover rounded-lg"
+            className="w-32 h-40 md:w-56 md:h-52 lg:w-60 lg:h-64 object-cover rounded-lg"
             width={20}
             height={20}
           />
@@ -153,10 +153,10 @@ const AllProduct = () => {
         )}
       </figure>
       <div className="card-body">
-        <h1 className="card-title">{product.name}</h1>
-        <p>{product.description}</p>
+        <h1 className="card-title text-lg md:text-xl">{product.name}</h1>
+        <p className="text-xs md:text-base">{product.description}</p>
         <div className="card-actions justify-between items-center">
-          <div className="font-semibold text-sm lg:text-lg">
+          <div className="font-semibold text-sm md:text-md lg:text-lg">
             {product.price}₺
           </div>
           <button
@@ -183,7 +183,7 @@ const AllProduct = () => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-wrap space-y-4 mx-auto justify-center items-end mt-2 grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4 xl:space-y-4">
+          <div className="flex flex-wrap space-y-4 mx-auto justify-center items-end mt-2 grid-cols-2 gap-4 md:gap-8 md:grid-cols-3 lg:grid-cols-4 lg:space-y-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
