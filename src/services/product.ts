@@ -1,5 +1,6 @@
-import { Product } from "@/interfaces/product.interfaces";
+import { Product } from "@/types/product";
 import api_url from "@/utils/api";
+import axiosInstance from "@/utils/axiosConfig";
 import axios, { AxiosResponse } from "axios";
 
 interface ApiResponse<T> {
@@ -53,18 +54,20 @@ const ProductManager = {
     }
   },
 
-  getProduct: async (data: string): Promise<Product | null> => {
+  getProduct: async (id: string): Promise<Product | null> => {
     try {
-      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
-        `${api_url}/api_kleopatra/product/get.php`,
-        data
-      );
+      const response: AxiosResponse<ApiResponse<Product>> =
+        await axiosInstance.get(
+          `${api_url}/api_kleopatra/product/get_dev.php?id=${id}` //! Burada api_kleopatra/product/get.php endpoint'i kullanılacaktır.
+        );
 
-      console.log(response);
+      console.log(response.data.data);
 
-      if (response.data.success && Array.isArray(response.data.data)) {
+      if (response.data.success && response.data.data) {
+        console.log(response.data.data);
         return response.data.data;
       } else {
+        console.log("test");
         return null;
       }
     } catch (error) {

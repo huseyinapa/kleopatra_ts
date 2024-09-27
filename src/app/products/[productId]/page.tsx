@@ -9,7 +9,7 @@ import Footer from "@/app/_components/footer";
 import AddToCartButton from "./_components/addToCartButton";
 import ProductList from "./_components/productList";
 import api_url from "@/utils/api";
-import { Product } from "@/interfaces/product.interfaces";
+import { Product } from "@/types/product";
 
 async function getProductData(productId: string): Promise<Product | null> {
   try {
@@ -80,7 +80,7 @@ export default async function ProductPage({
       <div className="container flex flex-col lg:flex-row items-center lg:items-start p-4 mx-auto gap-4">
         <div
           key={product.id}
-          className="flex flex-col md:flex-row space-x-4 md:w-[85%] lg:w-[65%]"
+          className="flex flex-col md:flex-row bg-slate-300 space-x-4 w-[85%] lg:w-[65%]"
         >
           <figure className="relative">
             <Image
@@ -119,7 +119,7 @@ export default async function ProductPage({
             </div>
           </div>
         </div>
-        <div className="flex flex-col space-x-4 md:w-[85%] lg:w-[35%]">
+        <div className="flex flex-col space-x-4 md:w-[85%] lg:w-[35%] ">
           <ProductList excludingProductId={product.id} />
         </div>
       </div>

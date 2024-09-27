@@ -8,7 +8,7 @@ import ProductManager from "@/services/product";
 import Link from "next/link";
 import Image from "next/image";
 import Functions from "@/utils/functions";
-import { Product } from "@/interfaces/product.interfaces";
+import { Product } from "@/types/product";
 
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

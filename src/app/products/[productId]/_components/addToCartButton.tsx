@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import CartManager from "@/services/cart";
 import ProductManager from "@/services/product";
 
-import { Product } from "@/interfaces/product.interfaces";
+import { Product } from "@/types/product";
 
 interface AddToCartButtonProps {
   product: Product;

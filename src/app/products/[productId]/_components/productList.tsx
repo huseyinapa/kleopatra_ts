@@ -9,7 +9,7 @@ import CartManager from "@/services/cart";
 import ProductManager from "@/services/product";
 import Functions from "@/utils/functions";
 import Image from "next/image";
-import { Product } from "@/interfaces/product.interfaces";
+import { Product } from "@/types/product";
 
 interface ProductListProps {
   excludingProductId: string;

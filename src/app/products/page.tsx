@@ -11,7 +11,7 @@ import CartManager from "@/services/cart";
 import ProductManager from "@/services/product";
 import Image from "next/image";
 import Functions from "@/utils/functions";
-import { Product } from "@/interfaces/product.interfaces";
+import { Product } from "@/types/product";
 
 const AllProduct = () => {
   const [products, setProducts] = useState<Product[]>([]); // Product type is defined

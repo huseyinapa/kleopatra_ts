@@ -7,7 +7,6 @@ import { trackGAEvent } from "@/utils/google-analytics";
 
 // Props için TypeScript tipi tanımlıyoruz
 
-
 export default function Nav() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -61,11 +60,20 @@ export default function Nav() {
               href={"/orders"}
               className="btn btn-ghost w-auto px-4 btn-square shadow-md"
               onClick={() => {
-                trackGAEvent("Test Kategorisi", "Siparişlerim", "Butona Tıklama");
+                trackGAEvent(
+                  "Test Kategorisi",
+                  "Siparişlerim",
+                  "Butona Tıklama"
+                );
               }}
             >
               <div className="flex flex-row items-center space-x-2">
-                <img alt="bag" src="/images/icons/shopping-bag.svg" />
+                <Image
+                  alt="bag"
+                  src="/images/icons/shopping-bag.svg"
+                  width={20}
+                  height={20}
+                />
                 <span>Siparişlerim</span>
               </div>
             </Link>
@@ -85,11 +93,13 @@ export default function Nav() {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-
               </div>
             </Link>
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-square shadow-md">
+              <label
+                tabIndex={0}
+                className="btn btn-ghost btn-square shadow-md"
+              >
                 <div className="rounded-full">
                   <Image
                     src={"/images/user.png"}
@@ -110,7 +120,10 @@ export default function Nav() {
                 <div className="divider h-1"></div>
                 <li>
                   {isAdmin && (
-                    <Link href="/add-product" className="block px-4 py-2 hover:bg-gray-100 truncate">
+                    <Link
+                      href="/add-product"
+                      className="block px-4 py-2 hover:bg-gray-100 truncate"
+                    >
                       Ürün Ekle
                     </Link>
                   )}
@@ -130,13 +143,21 @@ export default function Nav() {
           <div className="space-x-4">
             <button
               className="btn"
-              onClick={() => (document.getElementById("register_modal") as HTMLDialogElement)?.showModal()}
+              onClick={() =>
+                (
+                  document.getElementById("register_modal") as HTMLDialogElement
+                )?.showModal()
+              }
             >
               Kayıt Ol
             </button>
             <button
               className="btn hover:bg-button-rose hover:text-white"
-              onClick={() => (document.getElementById("login_modal") as HTMLDialogElement)?.showModal()}
+              onClick={() =>
+                (
+                  document.getElementById("login_modal") as HTMLDialogElement
+                )?.showModal()
+              }
             >
               Giriş Yap
             </button>

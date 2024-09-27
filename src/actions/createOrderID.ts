@@ -1,5 +1,6 @@
 // utils/createOrderID.ts
 
+import api_url from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 const characters = "0123456789";
@@ -7,7 +8,7 @@ const characters = "0123456789";
 export const fetchOrdersId = async (): Promise<string[]> => {
   try {
     const response: AxiosResponse<any> = await axios.get(
-      "http://3.124.99.216/api_kleopatra/order/getid.php"
+      `${api_url}/api_kleopatra/order/getid.php`
     );
     return response.data.success ? response.data.orderIDS : [];
   } catch (error) {
@@ -19,7 +20,7 @@ export const fetchOrdersId = async (): Promise<string[]> => {
 export const fetchOrderItemsId = async (): Promise<string[]> => {
   try {
     const response: AxiosResponse<any> = await axios.get(
-      "http://3.124.99.216/api_kleopatra/new_order/items/getid.php"
+      `${api_url}/api_kleopatra/new_order/items/getid.php`
     );
     return response.data.success ? response.data.orderItemsId : [];
   } catch (error) {
@@ -31,7 +32,7 @@ export const fetchOrderItemsId = async (): Promise<string[]> => {
 export const fetchOrderCustomersId = async (): Promise<string[]> => {
   try {
     const response: AxiosResponse<any> = await axios.get(
-      "http://3.124.99.216/api_kleopatra/new_order/customer/getid.php"
+      `${api_url}/api_kleopatra/new_order/customer/getid.php`
     );
     return response.data.success ? response.data.orderIDS : [];
   } catch (error) {
