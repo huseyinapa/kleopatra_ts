@@ -1,13 +1,14 @@
 "use client";
 
-import { Product } from "@/types/product";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+import { CartItem } from "@/types/cart";
 
 interface BottomPayDetailsProps {
   currentStep: number;
   onStepClick: (step: number) => void;
-  products: Product[];
+  products: CartItem[];
   handleContinue: () => void;
 }
 
@@ -30,7 +31,8 @@ const BottomPayDetails: React.FC<BottomPayDetailsProps> = ({
   );
 
   const discount = 0; // total tutardan düşmesi sağlanacak.
-  const total = totalPrice;
+  const ship_fee = 100;
+  const total = totalPrice + ship_fee;
 
   const handleCheckboxChange = () => {
     if (currentStep === 2) {
@@ -60,7 +62,13 @@ const BottomPayDetails: React.FC<BottomPayDetailsProps> = ({
           )}
           <div className="flex justify-between mb-2">
             <span>Kargo:</span>
-            <span>Alıcı öder</span>
+            <span>
+              {ship_fee.toLocaleString("tr-TR", {
+                style: "currency",
+                currency: "TRY",
+                maximumFractionDigits: 0,
+              })}
+            </span>
           </div>
           <div className="divider"></div>
           <div className="form-control">
@@ -137,7 +145,12 @@ const BottomPayDetails: React.FC<BottomPayDetailsProps> = ({
           </div>
           <div className="flex justify-between mb-2 text-sm lg:text-lg space-x-1">
             <span>Kargo:</span>
-            <span className="font-bold">Alıcı öder</span>
+            <span className="font-bold">
+              {(100).toLocaleString("tr-TR", {
+                style: "currency",
+                currency: "TRY",
+              })}
+            </span>
           </div>
         </div>
         <div className="flex flex-col lg:flex-row items-end space-y-2">

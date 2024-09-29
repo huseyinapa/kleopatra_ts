@@ -17,9 +17,11 @@ const CartManager = {
             "Content-Type": "multipart/form-data;",
           },
         });
+      console.log(response.data);
+
       return response.data.success;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       return false;
     }
   },

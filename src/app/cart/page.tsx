@@ -29,6 +29,8 @@ export interface CompletedState {
 }
 
 function Cart(): JSX.Element {
+  const router = useRouter();
+
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
@@ -41,8 +43,6 @@ function Cart(): JSX.Element {
     address: false,
     payment: false,
   });
-
-  const router = useRouter();
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
@@ -111,15 +111,16 @@ function Cart(): JSX.Element {
             const product = (await ProductManager.getProduct(
               item.pid
             )) as CartItem;
-            console.log("product" + product);
+            console.log();
+
             return {
-              id: item.id,
+              id: item.pid,
+              pid: item.pid,
               name: product?.name,
               description: product?.description,
               price: product?.price,
               stock: product?.stock,
               image: product?.image,
-              pid: item.pid,
               amount: item.amount,
               stockStatus: product?.stock !== 0,
             };
@@ -191,7 +192,7 @@ function Cart(): JSX.Element {
             <div>
               {currentStep === 0 && (
                 <CartProduct
-                  cartProducts={cartItems}
+                  cartItems={cartItems}
                   setCartItems={setCartItems}
                   setCompleted={setCompleted}
                 />

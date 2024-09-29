@@ -196,18 +196,18 @@ const Address: FC<AddressProps> = ({
     });
 
     const isComplete =
-      watchedFields.name.trim() !== "" &&
-      watchedFields.surname.trim() !== "" &&
-      watchedFields.phone.trim() !== "" &&
-      watchedFields.identityNumber.trim() !== "" &&
+      (watchedFields.name?.trim() || "") !== "" &&
+      (watchedFields.surname?.trim() || "") !== "" &&
+      (watchedFields.phone?.trim() || "") !== "" &&
+      (watchedFields.identityNumber?.trim() || "") !== "" &&
       watchedFields.city !== null &&
       watchedFields.district !== null &&
-      watchedFields.address.trim() !== "" &&
-      watchedFields.zipCode.trim() !== "";
+      (watchedFields.address?.trim() || "") !== "" &&
+      (watchedFields.zipCode?.trim() || "") !== "";
 
     setCompleted((prevState) => ({
       ...prevState,
-      address: isComplete, // Sadece address alanını güncelliyoruz
+      address: isComplete,
     }));
   }, [watchedFields, userIp, addressData, setCompleted, setAddressData]);
 

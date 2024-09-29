@@ -78,38 +78,41 @@ const AllProduct = () => {
       formData.append("id", userId);
       formData.append("pid", product.id);
       formData.append("amount", "1");
-      formData.append("date", new Date().toISOString());
+      formData.append("date", Date.now().toString());
+      console.log("pid", product.id);
+      console.log("date", Date.now().toString());
 
       const response = await CartManager.addProductToCart(formData);
       if (response) {
-        toast.custom(() => (
-          <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <Image
-                  className="h-10 w-10 rounded-full"
-                  src="/images/icons/warning.png"
-                  alt="warning"
-                  width={20}
-                  height={20}
-                />
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">
-                    Sepete eklendi!
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Ürün sepete eklendi!
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex border-l border-gray-200">
-              <Link href="/cart" className="w-full p-4 text-indigo-600">
-                Sepete git
-              </Link>
-            </div>
-          </div>
-        ));
+        // toast.custom(() => (
+        //   <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
+        //     <div className="flex-1 w-0 p-4">
+        //       <div className="flex items-start">
+        //         <Image
+        //           className="h-10 w-10 rounded-full"
+        //           src="/images/icons/warning.png"
+        //           alt="warning"
+        //           width={20}
+        //           height={20}
+        //         />
+        //         <div className="ml-3">
+        //           <p className="text-sm font-medium text-gray-900">
+        //             Sepete eklendi!
+        //           </p>
+        //           <p className="mt-1 text-sm text-gray-500">
+        //             Ürün sepete eklendi!
+        //           </p>
+        //         </div>
+        //       </div>
+        //     </div>
+        //     <div className="flex border-l border-gray-200">
+        //       <Link href="/cart" className="w-full p-4 text-indigo-600">
+        //         Sepete git
+        //       </Link>
+        //     </div>
+        //   </div>
+        // ));
+        toast.success("Ürün sepete eklendi!");
       } else {
         toast.error("Ürün sepete eklenemedi.");
       }

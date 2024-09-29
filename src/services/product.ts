@@ -61,10 +61,7 @@ const ProductManager = {
           `${api_url}/api_kleopatra/product/get_dev.php?id=${id}` //! Burada api_kleopatra/product/get.php endpoint'i kullanılacaktır.
         );
 
-      console.log(response.data.data);
-
       if (response.data.success && response.data.data) {
-        console.log(response.data.data);
         return response.data.data;
       } else {
         console.log("test");
