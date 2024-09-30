@@ -167,7 +167,7 @@ const Payment: React.FC<PaymentProps> = ({
       category1: "Gül ürünü",
       category2: "Gül ürünü",
       itemType: "PHYSICAL",
-      price: (parseFloat(item.price) * item.amount).toFixed(2),
+      price: (parseFloat(item.price) * item.amount!).toFixed(2),
     }));
 
     const totalPrice = basketItems.reduce(
@@ -220,9 +220,9 @@ const Payment: React.FC<PaymentProps> = ({
     try {
       // Ürün stok kontrolü
       for (const element of cartItems) {
-        const checkProduct = await ProductManager.getProduct(element.pid);
+        const checkProduct = await ProductManager.getProduct(element.pid!);
 
-        if (checkProduct!.stock < element.amount) {
+        if (checkProduct!.stock < element.amount!) {
           toast.error(
             "Sepetinizdeki ürünlerden bir kısmı stoklarımızda kalmamış, lütfen tekrar kontrol ediniz.",
             { duration: 5000 }
@@ -299,7 +299,7 @@ const Payment: React.FC<PaymentProps> = ({
           orderItemForm.append("orderItemId", generateOrderItemID);
           orderItemForm.append("orderId", orderResult!);
           orderItemForm.append("productId", element.id);
-          orderItemForm.append("quantity", element.amount.toString());
+          orderItemForm.append("quantity", element.amount!.toString());
           orderItemForm.append("price", element.price);
 
           await NewOrderManager.addItems(orderItemForm);
@@ -324,15 +324,15 @@ const Payment: React.FC<PaymentProps> = ({
         for (const element of cartItems) {
           const cartProductForm = new FormData();
           cartProductForm.append("id", user.id);
-          cartProductForm.append("pid", element.pid);
+          cartProductForm.append("pid", element.pid!);
 
           await CartManager.removeProductFromCart(cartProductForm);
 
-          const checkProduct = await ProductManager.getProduct(element.pid);
-          const newStock = checkProduct!.stock - element.amount;
+          const checkProduct = await ProductManager.getProduct(element.pid!);
+          const newStock = checkProduct!.stock - element.amount!;
 
           const productStockForm = new FormData();
-          productStockForm.append("id", element.pid);
+          productStockForm.append("id", element.pid!);
           productStockForm.append("stock", newStock.toString());
 
           await ProductManager.fallingOutofStock(productStockForm);

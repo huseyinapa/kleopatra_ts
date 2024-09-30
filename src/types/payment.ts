@@ -45,7 +45,7 @@ export interface PayData {
     zipCode: string | number;
   };
   basketItems: {
-    id: string;
+    id?: string;
     name: string;
     category1: string;
     category2: string;
