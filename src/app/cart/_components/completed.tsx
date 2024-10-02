@@ -11,7 +11,9 @@ interface CompletedProps {
 }
 
 const Completed: React.FC<CompletedProps> = ({ address, payment }) => {
-  const [expireMonth, expireYear] = payment?.expiryDate!.split("/") || [];
+  const [expireMonth, expireYear] = payment?.expiryDate
+    ? payment.expiryDate.split("/")
+    : ["", ""]; // Eğer expiryDate yoksa boş değer atansın
 
   const censoredCardNumber = (cardNumber: string): string | null => {
     // Kredi kartı numarasının uzunluğunu kontrol et

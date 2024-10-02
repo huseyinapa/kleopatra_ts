@@ -289,8 +289,9 @@ const Payment: React.FC<PaymentProps> = ({
       orderForm.append("isDelete", "false");
 
       const orderResult = await NewOrderManager.add(orderForm);
+      console.log("result:" + orderResult);
 
-      if (!orderResult) {
+      if (orderResult !== null) {
         // OrderItems tablosu için
         for (const element of cartItems) {
           const generateOrderItemID = await orderItemsId();

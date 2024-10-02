@@ -23,7 +23,7 @@ const NewOrderManager = {
         }
       );
       console.log(response.data);
-      return response.data.orderId || null;
+      return response.data.success ? response.data.orderId || null : null;
     } catch (error) {
       console.error(error);
       return null;
@@ -59,6 +59,8 @@ const NewOrderManager = {
           },
         }
       );
+      console.log("addCustomers", response.data);
+
       return response.data.success;
     } catch (error) {
       console.error(error);
