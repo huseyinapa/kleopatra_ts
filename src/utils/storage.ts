@@ -1,5 +1,5 @@
 // LocalStorage Fonksiyonları
-export const setLocalStorage = (key: string, value: any) => {
+export const setLocalStorage = (key: string, value: never) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -17,7 +17,7 @@ export const clearLocalStorage = () => {
 };
 
 // SessionStorage Fonksiyonları
-export const setSessionStorage = (key: string, value: any) => {
+export const setSessionStorage = (key: string, value: never) => {
   sessionStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -35,7 +35,10 @@ export const clearSessionStorage = () => {
 };
 
 // Varsayılan Değerlerle Veri Alma
-export const getLocalStorageWithDefault = (key: string, defaultValue: any) => {
+export const getLocalStorageWithDefault = (
+  key: string,
+  defaultValue: never
+) => {
   const value = localStorage.getItem(key);
   return value ? JSON.parse(value) : defaultValue;
 };
@@ -43,7 +46,7 @@ export const getLocalStorageWithDefault = (key: string, defaultValue: any) => {
 // Süreli (Expiration) Depolama
 export const setLocalStorageWithExpiry = (
   key: string,
-  value: any,
+  value: never,
   ttl: number
 ) => {
   const now = new Date();
@@ -75,6 +78,7 @@ export const isStorageFull = () => {
     localStorage.removeItem("test");
     return false;
   } catch (e) {
+    console.log(e);
     return true;
   }
 };

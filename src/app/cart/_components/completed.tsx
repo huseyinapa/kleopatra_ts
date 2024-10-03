@@ -1,35 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import { FC } from "react";
 import { AddressData } from "@/types/address";
 import { PaymentData } from "@/types/payment";
+import Link from "next/link";
 
 interface CompletedProps {
   address?: AddressData | null;
   payment: PaymentData | null;
+  orderDetailUrl: string;
 }
 
-const Completed: React.FC<CompletedProps> = ({ address, payment }) => {
-  const [expireMonth, expireYear] = payment?.expiryDate
-    ? payment.expiryDate.split("/")
-    : ["", ""]; // Eğer expiryDate yoksa boş değer atansın
+const Completed: FC<CompletedProps> = ({
+  address,
+  payment,
+  orderDetailUrl,
+}) => {
+  const paymentCard = payment?.paymentCard;
 
-  const censoredCardNumber = (cardNumber: string): string | null => {
-    // Kredi kartı numarasının uzunluğunu kontrol et
-    if (cardNumber.length < 16) {
-      console.error("Geçersiz kredi kartı numarası");
-      return null;
-    }
-
-    // Kart numarasının son 4 hanesini al
-    const last4Digit = cardNumber.slice(-4);
-
-    // Sansürlenmiş kart numarasını oluştur
-    const censoredNumber = "************" + last4Digit;
-
-    return censoredNumber;
-  };
+  const censoredCardNumber = (cardNumber: string): string | null =>
+    cardNumber.replace(/\d(?=\d{4})/g, "*");
 
   return (
     <div className="mx-auto justify-center">
@@ -44,7 +35,7 @@ const Completed: React.FC<CompletedProps> = ({ address, payment }) => {
           />
         </figure>
         <div className="card-body md:flex-row space-x-0 md:space-x-4 space-y-4 md:space-y-0">
-          <div className="card bg-white shadow-[#cc3b6477] shadow-md h-[305px] ">
+          <div className="card bg-white shadow-[#cc3b6477] shadow-md h-[305px]">
             <div className="card-body flex-col space-y-1">
               <h2 className="card-title font-bold text-xl">Adres Bilgileri</h2>
               <div className="flex-row space-x-2">
@@ -74,32 +65,39 @@ const Completed: React.FC<CompletedProps> = ({ address, payment }) => {
             </div>
           </div>
           <div className="card card-normal bg-white shadow-[#cc3b6477] shadow-md h-[305px] flex-col">
-            <div className="card-body flex-col space-y-1">
+            <div className="card-body flex-col justify-around space-y-1">
               <h2 className="card-title font-bold text-xl">Ödeme Bilgileri</h2>
 
-              <div className="flex-row mt-4 space-y-1">
-                <div className="flex-row space-x-2">
-                  <span className="font-semibold">Toplam tutar:</span>
-                  <span className="">payment?.price ₺</span>
+              <div className="flex flex-col mt-4 space-y-1">
+                <div>
+                  <div className="flex-row space-x-2">
+                    <span className="font-semibold">Toplam tutar:</span>
+                    <span className="">₺{payment?.price}</span>
+                  </div>
+                  <div className="flex-row space-x-2">
+                    <span className="font-semibold">Kart üzerindeki isim:</span>
+                    <span className="">{paymentCard?.cardHolderName}</span>
+                  </div>
+                  <div className="flex-row space-x-2">
+                    <span className="font-semibold">Kart Numarası:</span>
+                    <span className="">
+                      {censoredCardNumber(paymentCard?.cardNumber || "")}
+                    </span>
+                  </div>
+                  <div className="flex-row space-x-2">
+                    <span className="font-semibold">Son Kullanım Tarihi:</span>
+                    <span className="">
+                      {paymentCard?.expireMonth} / {paymentCard?.expireYear}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex-row space-x-2">
-                  <span className="font-semibold">Kart üzerindeki isim:</span>
-                  <span className="">{payment?.cardHolderName}</span>
-                </div>
-                <div className="flex-row space-x-2">
-                  <span className="font-semibold">Kart Numarası:</span>
-                  <span className="">
-                    {censoredCardNumber(payment!.cardNumber)}
-                  </span>
-                </div>
-                <div className="flex-row space-x-2">
-                  <span className="font-semibold">Son Kullanım Tarihi:</span>
-                  <span className="">
-                    {expireMonth} / {expireYear}
-                  </span>
-                </div>
-                <span className=""></span>
               </div>
+              <span className="text-sm">
+                Uyarı: Kart bilgileri tarafımızca saklanmamaktadır!
+              </span>
+              <Link href={`/orders/`} className="btn">
+                Sipariş detaylarını görüntüle
+              </Link>
             </div>
           </div>
         </div>

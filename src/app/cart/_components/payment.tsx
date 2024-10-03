@@ -12,7 +12,7 @@ import {
 } from "@/actions/createOrderID";
 import ProductManager from "@/services/product";
 import Image from "next/image";
-import { PayData, PaymentData } from "@/types/payment";
+import { CardInfo, PaymentData } from "@/types/payment";
 import { CartItem } from "@/types/cart";
 import { AddressData } from "@/types/address";
 
@@ -45,7 +45,7 @@ const Payment: React.FC<PaymentProps> = ({
   setPaymentData,
   handleContinue,
 }) => {
-  const [paymentData, setPayment] = useState<PaymentData>({
+  const [cardInfo, setCardInfo] = useState<CardInfo>({
     cardNumber: "",
   });
 
@@ -100,8 +100,8 @@ const Payment: React.FC<PaymentProps> = ({
     const { name, value } = e.target;
 
     if (name === "cardNumber") {
-      setPayment({
-        ...paymentData,
+      setCardInfo({
+        ...cardInfo,
         [name]: value.replace(/\D/g, "").slice(0, 16),
       });
     } else if (name === "expiryDate") {
@@ -109,9 +109,16 @@ const Payment: React.FC<PaymentProps> = ({
       if (formattedValue.length > 2) {
         formattedValue = formattedValue.replace(/^(.{2})/, "$1/");
       }
-      setPayment({ ...paymentData, [name]: formattedValue });
+
+      // expiryMonth ve expiryYear'ı ayırıyoruz
+      // const [month, year] = formattedValue.split("/");
+
+      setCardInfo({
+        ...cardInfo,
+        expiryDate: formattedValue || "",
+      });
     } else {
-      setPayment({ ...paymentData, [name]: value });
+      setCardInfo({ ...cardInfo, [name]: value });
     }
   };
 
@@ -121,28 +128,19 @@ const Payment: React.FC<PaymentProps> = ({
   };
 
   const PaymentButton = async () => {
-    if (
-      !paymentData.cardHolderName ||
-      paymentData.cardHolderName.trim() === ""
-    ) {
+    if (!cardInfo.cardHolderName || cardInfo.cardHolderName.trim() === "") {
       setEffect(true);
       toast.error("Kredi kartı sahibi adı boş bırakılamaz.");
       return;
-    } else if (
-      !paymentData.cardNumber ||
-      paymentData.cardNumber.trim() === ""
-    ) {
+    } else if (!cardInfo.cardNumber || cardInfo.cardNumber.trim() === "") {
       setEffect(true);
       toast.error("Kredi kartı numarası boş bırakılamaz.");
       return;
-    } else if (
-      !paymentData.expiryDate ||
-      paymentData.expiryDate.trim() === ""
-    ) {
+    } else if (!cardInfo.expiryDate) {
       setEffect(true);
       toast.error("Son kullanma tarihi boş bırakılamaz.");
       return;
-    } else if (!paymentData.cvv || paymentData.cvv.trim() === "") {
+    } else if (!cardInfo.cvc || cardInfo.cvc.trim() === "") {
       setEffect(true);
       toast.error("Kredi kartı CVV boş bırakılamaz.");
       return;
@@ -152,7 +150,7 @@ const Payment: React.FC<PaymentProps> = ({
 
     const url = "https://api.gulgonenkoop.com/api/payment";
 
-    const [expireMonth, expireYear] = paymentData.expiryDate.split("/");
+    const [expireMonth, expireYear] = cardInfo.expiryDate.split("/");
     const user = userData as UserData;
 
     const gsmNumber = user.phone.includes("+90")
@@ -175,14 +173,14 @@ const Payment: React.FC<PaymentProps> = ({
       0
     );
 
-    const payData: PayData = {
+    const paymentData: PaymentData = {
       price: totalPrice.toFixed(2),
       paymentCard: {
-        cardHolderName: paymentData.cardHolderName,
-        cardNumber: paymentData.cardNumber,
+        cardHolderName: cardInfo.cardHolderName,
+        cardNumber: cardInfo.cardNumber,
         expireMonth: expireMonth,
         expireYear: `20${expireYear}`,
-        cvc: paymentData.cvv,
+        cvc: cardInfo.cvc,
         registerCard: "0",
       },
       buyer: {
@@ -232,7 +230,7 @@ const Payment: React.FC<PaymentProps> = ({
         }
       }
 
-      const payResponse = await axios.post(url, payData, {
+      const payResponse = await axios.post(url, paymentData, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
@@ -241,8 +239,8 @@ const Payment: React.FC<PaymentProps> = ({
       const pay = payResponse.data;
 
       if (pay.data.status === "success") {
-        setPaymentData(payData.paymentCard);
-        await fallingOutofCart(payData);
+        setPaymentData(paymentData);
+        await fallingOutofCart(paymentData);
       } else {
         toast.error(pay.data.message);
         console.log(pay.data.message);
@@ -254,7 +252,7 @@ const Payment: React.FC<PaymentProps> = ({
     setIsLoading(false);
   };
 
-  const fallingOutofCart = async (payData: PayData) => {
+  const fallingOutofCart = async (paymentData: PaymentData) => {
     const user = userData as UserData;
 
     const customer = {
@@ -284,7 +282,7 @@ const Payment: React.FC<PaymentProps> = ({
       orderForm.append("orderId", generateOrderID);
       orderForm.append("userId", id);
       orderForm.append("status", "0");
-      orderForm.append("totalPrice", payData.price);
+      orderForm.append("totalPrice", paymentData.price!);
       orderForm.append("date", Date.now().toString());
       orderForm.append("isDelete", "false");
 
@@ -372,7 +370,7 @@ const Payment: React.FC<PaymentProps> = ({
                 id="cardNumber"
                 name="cardNumber"
                 maxLength={19}
-                value={paymentData.cardNumber || ""}
+                value={cardInfo.cardNumber || ""}
                 onChange={handleChange}
               />
             </div>
@@ -408,7 +406,7 @@ const Payment: React.FC<PaymentProps> = ({
                   id="expiryDate"
                   name="expiryDate"
                   maxLength={5}
-                  value={paymentData.expiryDate || ""}
+                  value={cardInfo.expiryDate || ""}
                   onChange={handleChange}
                 />
               </div>
@@ -421,8 +419,8 @@ const Payment: React.FC<PaymentProps> = ({
                 <input
                   type="text"
                   placeholder="CVC/CVV"
-                  id="cvv"
-                  name="cvv"
+                  id="cvc"
+                  name="cvc"
                   maxLength={3}
                   className="input input-bordered text-neutral w-full max-w-xs"
                   onChange={handleChange}

@@ -1,21 +1,21 @@
-export interface PaymentData {
-  cardNumber: string;
+export type CardInfo = {
   cardHolderName?: string;
+  cardNumber?: string;
   expiryDate?: string;
-  cvv?: string;
-}
+  cvc?: string;
+};
 
-export interface PayData {
-  price: string;
+export interface PaymentData {
+  price?: string;
   paymentCard: {
-    cardHolderName: string;
-    cardNumber: string;
-    expireMonth: string;
-    expireYear: string;
-    cvc: string;
-    registerCard: "0";
+    cardHolderName?: string;
+    cardNumber?: string;
+    expireMonth?: string;
+    expireYear?: string;
+    cvc?: string;
+    registerCard?: "0";
   };
-  buyer: {
+  buyer?: {
     id: string;
     name: string;
     surname: string;
@@ -30,21 +30,21 @@ export interface PayData {
     country: "Turkey";
     zipCode: string | number;
   };
-  shippingAddress: {
+  shippingAddress?: {
     contactName: string;
     city: string;
     country: "Turkey";
     address: string;
     zipCode: string | number;
   };
-  billingAddress: {
+  billingAddress?: {
     contactName: string;
     city: string;
     country: "Turkey";
     address: string;
     zipCode: string | number;
   };
-  basketItems: {
+  basketItems?: {
     id?: string;
     name: string;
     category1: string;
@@ -53,3 +53,19 @@ export interface PayData {
     price: string;
   }[];
 }
+
+export type PaymentTable = {
+  paymentId: string;
+  orderId: string;
+  userId: string;
+  transactionId: string;
+  amount: number;
+  currency: string;
+  status: string;
+  createdAt: string;
+  method: string;
+  discount: number;
+  tax: number;
+  fee: number;
+  paymentData: PaymentData;
+};
