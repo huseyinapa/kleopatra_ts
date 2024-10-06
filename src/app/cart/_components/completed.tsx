@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Image from "next/image";
@@ -5,22 +6,21 @@ import { FC } from "react";
 import { AddressData } from "@/types/address";
 import { PaymentData } from "@/types/payment";
 import Link from "next/link";
+import { getSessionStorage } from "@/utils/storage";
 
 interface CompletedProps {
   address?: AddressData | null;
   payment: PaymentData | null;
-  orderDetailUrl: string;
 }
 
-const Completed: FC<CompletedProps> = ({
-  address,
-  payment,
-  orderDetailUrl,
-}) => {
+const Completed: FC<CompletedProps> = ({ address, payment }) => {
   const paymentCard = payment?.paymentCard;
 
   const censoredCardNumber = (cardNumber: string): string | null =>
     cardNumber.replace(/\d(?=\d{4})/g, "*");
+
+  const orderId: string = getSessionStorage("orderID");
+  console.log(orderId);
 
   return (
     <div className="mx-auto justify-center">
@@ -95,7 +95,7 @@ const Completed: FC<CompletedProps> = ({
               <span className="text-sm">
                 Uyarı: Kart bilgileri tarafımızca saklanmamaktadır!
               </span>
-              <Link href={`/orders/`} className="btn">
+              <Link href={`/orders/${orderId.toLowerCase()}`} className="btn">
                 Sipariş detaylarını görüntüle
               </Link>
             </div>

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // LocalStorage Fonksiyonları
-export const setLocalStorage = (key: string, value: never) => {
+export const setLocalStorage = (key: string, value: any) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -17,7 +18,7 @@ export const clearLocalStorage = () => {
 };
 
 // SessionStorage Fonksiyonları
-export const setSessionStorage = (key: string, value: never) => {
+export const setSessionStorage = (key: string, value: any) => {
   sessionStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -35,10 +36,7 @@ export const clearSessionStorage = () => {
 };
 
 // Varsayılan Değerlerle Veri Alma
-export const getLocalStorageWithDefault = (
-  key: string,
-  defaultValue: never
-) => {
+export const getLocalStorageWithDefault = (key: string, defaultValue: any) => {
   const value = localStorage.getItem(key);
   return value ? JSON.parse(value) : defaultValue;
 };
@@ -46,7 +44,7 @@ export const getLocalStorageWithDefault = (
 // Süreli (Expiration) Depolama
 export const setLocalStorageWithExpiry = (
   key: string,
-  value: never,
+  value: any,
   ttl: number
 ) => {
   const now = new Date();

@@ -89,7 +89,7 @@ const Products: React.FC = () => {
       formData.append("date", Date.now().toString());
 
       const result = await CartManager.addProductToCart(formData);
-      if (result === true) {
+      if (result) {
         const formData = new FormData();
         formData.append("id", id);
         // const response = await CartManager.fetchCart(formData);

@@ -213,11 +213,7 @@ function Cart(): JSX.Element {
                 />
               )}
               {currentStep === 3 && (
-                <Completed
-                  address={addressData}
-                  payment={paymentData}
-                  orderDetailUrl=""
-                /> //! Burası hatalı
+                <Completed address={addressData} payment={paymentData} />
               )}
             </div>
             {currentStep !== 3 && (

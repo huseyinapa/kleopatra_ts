@@ -21,14 +21,14 @@ const Footer: FC = () => {
           rel="noopener noreferrer"
         >
           <Image
-            alt="APA Dijital Ajans"
+            alt="APA Dijital"
             src="/images/apa.png"
             className="w-[60px] h-[60px] mr-2 rounded-md"
             width={96}
             height={96}
           />
           <h1 className="flex flex-col">
-            <span className="font-semibold">APA Dijital Ajans</span>
+            <span className="font-semibold">APA Dijital</span>
             <span>tarafından geliştirilmiştir.</span>
           </h1>
         </a>

@@ -15,6 +15,7 @@ import Image from "next/image";
 import { CardInfo, PaymentData } from "@/types/payment";
 import { CartItem } from "@/types/cart";
 import { AddressData } from "@/types/address";
+import { setSessionStorage } from "@/utils/storage";
 
 interface UserData {
   id: string;
@@ -148,7 +149,7 @@ const Payment: React.FC<PaymentProps> = ({
 
     setIsLoading(true);
 
-    const url = "https://api.gulgonenkoop.com/api/payment";
+    const url = "https://pay.huseyinapa.com/api/payment";
 
     const [expireMonth, expireYear] = cardInfo.expiryDate.split("/");
     const user = userData as UserData;
@@ -222,7 +223,7 @@ const Payment: React.FC<PaymentProps> = ({
 
         if (checkProduct!.stock < element.amount!) {
           toast.error(
-            "Sepetinizdeki ürünlerden bir kısmı stoklarımızda kalmamış, lütfen tekrar kontrol ediniz.",
+            "Sepetinizdeki ürünlerden bazıları stoklarımızda kalmamış, lütfen tekrar kontrol ediniz.",
             { duration: 5000 }
           );
           setIsLoading(false);
@@ -288,6 +289,7 @@ const Payment: React.FC<PaymentProps> = ({
 
       const orderResult = await NewOrderManager.add(orderForm);
       console.log("result:" + orderResult);
+      setSessionStorage("orderID", orderResult!);
 
       if (orderResult !== null) {
         // OrderItems tablosu için
