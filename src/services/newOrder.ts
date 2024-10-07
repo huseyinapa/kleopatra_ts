@@ -68,28 +68,29 @@ const NewOrderManager = {
     }
   },
 
-  // getOrder: async (data: FormData): Promise<any> => {
-  //   const url = `https://www.gonenkleopatra.com/api_kleopatra/new_order/get.php`;
+  getOrder: async (data: FormData): Promise<NewOrder | null> => {
+    const url = `${api_url}/api_kleopatra/new_order/get.php`;
 
-  //   try {
-  //     const response: AxiosResponse<ApiResponse<any>> = await axios.post(
-  //       url,
-  //       data
-  //     );
-  //     if (response.data.success) {
-  //       if (response.data.orders !== null) {
-  //         return response.data.orders;
-  //       } else {
-  //         throw new Error("No orders found");
-  //       }
-  //     } else {
-  //       throw new Error("Request failed");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error;
-  //   }
-  // },
+    try {
+      const response: AxiosResponse<ApiResponse<NewOrder>> = await axios.post(
+        url,
+        data
+      );
+
+      if (response.data.success) {
+        if (response.data.orders !== null) {
+          return response.data.orders || null;
+        } else {
+          throw new Error("No orders found");
+        }
+      } else {
+        throw new Error("Request failed");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
 
   fetchOrders: async (): Promise<NewOrder> => {
     try {
@@ -108,6 +109,20 @@ const NewOrderManager = {
     } catch (error) {
       console.error(error);
       throw error;
+    }
+  },
+
+  cancelOrder: async (data: FormData): Promise<boolean> => {
+    try {
+      const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
+        `${api_url}/api_kleopatra/new_order/cancel.php`,
+        data
+      );
+      // console.log(response.data);
+      return response.data.success;
+    } catch (error) {
+      console.error("Sipariş iptal etme hatası:", error);
+      return false;
     }
   },
 };

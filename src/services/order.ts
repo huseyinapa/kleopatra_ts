@@ -63,7 +63,10 @@ export const getOrder = async (data: OrderData): Promise<Order | null> => {
   const url = `${secureApiUrl}/get.php`;
 
   try {
-    const response: AxiosResponse<ApiResponse<Order>> = await axios.post(url, data);
+    const response: AxiosResponse<ApiResponse<Order>> = await axios.post(
+      url,
+      data
+    );
 
     if (response.data.success && response.data.orders !== null) {
       return response.data.orders;

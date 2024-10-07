@@ -25,3 +25,15 @@ export type OrderItem = {
   quantity: number;
   price: number;
 };
+
+export interface OrderCustomer {
+  customerId?: string;
+  orderId: string;
+  userId: string;
+  full_name: string;
+  address: string; // zipCode içinde
+  city: string;
+  district: string;
+  phone: string;
+  email?: string; //? eklenebilir
+}
