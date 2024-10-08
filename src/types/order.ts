@@ -10,7 +10,7 @@ export type Order = {
 
 export type NewOrder = {
   orderId: string;
-  userId: string;
+  customerId: string;
   status: number;
   totalPrice: number;
   date: string;
@@ -35,5 +35,5 @@ export interface OrderCustomer {
   city: string;
   district: string;
   phone: string;
-  email?: string; //? eklenebilir
+  email?: string; //? şuan yok. eklenebilir.
 }

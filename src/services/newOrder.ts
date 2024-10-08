@@ -92,6 +92,30 @@ const NewOrderManager = {
     }
   },
 
+  retrieveCustomerOrders: async (
+    customerId: string,
+    includeArchived: boolean = false
+  ): Promise<NewOrder[] | null> => {
+    const getOrderForm = new FormData();
+    getOrderForm.append("customerId", customerId);
+    getOrderForm.append("includeArchived", includeArchived.toString());
+
+    try {
+      const response: AxiosResponse<ApiResponse<NewOrder[]>> = await axios.post(
+        `${api_url}/api_kleopatra/new_order/get_customer_orders.php`,
+        getOrderForm
+      );
+
+      if (response.data.success && response.data.orders) {
+        return response.data.orders;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error retrieving customer orders: ", error);
+      throw error;
+    }
+  },
+
   fetchOrders: async (): Promise<NewOrder> => {
     try {
       const response: AxiosResponse<ApiResponse<NewOrder>> = await axios.get(

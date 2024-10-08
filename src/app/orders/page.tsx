@@ -8,6 +8,7 @@ import Footer from "@/app/_components/footer";
 import OrderCard from "./_components/OrderCard";
 import ModalDetails from "./_components/ModalDetails";
 import NewOrderManager from "@/services/newOrder";
+import { NewOrder } from "@/types/order";
 
 interface Order {
   orderId: string;
@@ -36,9 +37,9 @@ export default function OrderPage() {
       const id = localStorage.getItem("id");
       if (!id) return;
 
-      const getOrderForm = new FormData();
-      getOrderForm.append("customerId", id);
-      const orderData = await NewOrderManager.getOrder(getOrderForm);
+      const orderData = await NewOrderManager.retrieveCustomerOrders(id);
+      //! Burada birden fazla tablodan veri çekiliyor. Bu verileri birleştirmek gerekiyor.
+      console.log(orderData);
 
       if (orderData === null) return;
 
@@ -70,8 +71,8 @@ export default function OrderPage() {
           ...order,
           status: order["status"],
           statusText: status,
-          payment: JSON.parse(order["payment"]),
-          items: JSON.parse(order["items"]),
+          payment: JSON.parse(order["payment"]), //? payment tablosu vs.
+          items: JSON.parse(order["items"]), //? order_items tablosu vs.
         };
       });
 

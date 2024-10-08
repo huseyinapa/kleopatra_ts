@@ -54,7 +54,7 @@ export interface PaymentData {
   }[];
 }
 
-export type PaymentTable = {
+export type OrderPaymentRecord = {
   paymentId: string;
   orderId: string;
   userId: string;
