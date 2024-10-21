@@ -1,9 +1,13 @@
 // components/orders/OrderCard.tsx - Sipariş kartı bileşenini oluşturuyor
+import Image from "next/image";
 import React from "react";
+import { Detail } from "../page";
+import { NewOrder } from "@/types/order";
+import ProductManager from "@/services/product";
 
 interface OrderCardProps {
-  data: any;
-  setDetails: (details: any[]) => void;
+  data: NewOrder;
+  setDetails: (details: Detail[]) => void;
   cancelOrder: (orderId: string) => Promise<boolean>;
 }
 
@@ -26,13 +30,15 @@ const OrderCard: React.FC<OrderCardProps> = ({
   return (
     <div
       key={data.orderId}
-      className="relative mx-auto items-center lg:items-start mb-4 w-72 md:w-2/4 lg:w-5/6 flex flex-col lg:flex-row p-4 space-x-4 shadow-neutral shadow-[0_0_10px] rounded-lg"
+      className="relative mx-auto items-center lg:items-start mb-4 min-w-72 w-[80%] flex flex-col lg:flex-row p-4 space-x-4 shadow-neutral shadow-[0_0_10px] rounded-lg"
     >
       <figure className="relative">
-        <img
+        <Image
           src="/images/icons/shopping-bag.svg"
           alt="Ürün görseli"
-          className="md:w-40 h-36 object-cover"
+          className="w-40 h-auto md:w-40 md:h-36 object-cover"
+          width={20}
+          height={20}
         />
       </figure>
       <div className="flex flex-col">
@@ -49,8 +55,24 @@ const OrderCard: React.FC<OrderCardProps> = ({
               <h2 className="font-bold text-md">Sipariş Detayları</h2>
               <a
                 className="btn-link font-normal cursor-pointer"
-                onClick={() => {
-                  setDetails(data.items);
+                onClick={async () => {
+                  const details = await Promise.all(
+                    data.items.map(async (item) => {
+                      const product = await ProductManager.getProduct(
+                        item.productId
+                      );
+                      return {
+                        id: item.productId,
+                        name: product!.name || "Ürün",
+                        description: product!.description || "Ürün açıklaması",
+                        price: item.price,
+                        amount: item.quantity,
+                        image:
+                          product!.image || "/images/icons/shopping-bag.svg",
+                      };
+                    })
+                  );
+                  setDetails(details);
                   (
                     document.getElementById("my_modal_5") as HTMLDialogElement
                   )?.showModal();
@@ -75,7 +97,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
             </div>
           </div>
         </div>
-        <div className="divider w-40 md:w-auto h-0 md:h-14 md:divider-vertical"></div>
+        <div className="divider w-40 md:w-auto h-0 md:divider-vertical"></div>
         <div className="mb-3 md:mb-0">
           <h2 className="font-bold text-md">Teslimat Adresi</h2>
           <a className="font-normal">{data.customer.address}</a>
@@ -86,7 +108,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
           className={`btn ${
             data.status === "0" ? "" : "hidden"
           } rounded-md md:rounded-t-md md:rounded-b-none btn-error`}
-          onClick={() => cancelOrder(data.orderId)}
+          onClick={() => cancelOrder(data.orderId!)}
         >
           İptal Et
         </div>

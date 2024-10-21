@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -6,120 +8,161 @@ import toast, { Toaster } from "react-hot-toast";
 import Nav from "@/app/_components/nav";
 import Footer from "@/app/_components/footer";
 import OrderCard from "./_components/OrderCard";
-import ModalDetails from "./_components/ModalDetails";
+import ModalDetails from "./modal/ModalDetails";
 import NewOrderManager from "@/services/newOrder";
-import { NewOrder } from "@/types/order";
+import { NewOrder, OrderCustomer, OrderItem } from "@/types/order";
 
-interface Order {
-  orderId: string;
-  status: string;
-  statusText: string;
-  payment: any;
-  items: any[];
-  date: string;
-  customer: {
-    address: string;
-  };
-  totalPrice: string;
+export interface Detail {
+  image: string;
+  name: string;
+  description: string;
+  price: number;
+  amount: number;
 }
 
 export default function OrderPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [details, setDetails] = useState<any[]>([]);
+  const [orders, setOrders] = useState<NewOrder[]>([]);
+  const [details, setDetails] = useState<Detail[]>([]);
 
   useEffect(() => {
-    getOrders();
+    fetchOrders();
   }, []);
 
-  async function getOrders() {
-    //! İşlevlerine göre isimler değiştirilecek.
+  const fetchOrders = async () => {
     try {
       const id = localStorage.getItem("id");
       if (!id) return;
 
+      // Müşterinin siparişlerini al
       const orderData = await NewOrderManager.retrieveCustomerOrders(id);
-      //! Burada birden fazla tablodan veri çekiliyor. Bu verileri birleştirmek gerekiyor.
-      console.log(orderData);
+      if (!orderData || orderData.length === 0) return;
 
-      if (orderData === null) return;
+      // Her sipariş için sipariş ürünlerini al
+      const orderItems = await Promise.all(
+        orderData.map(async (order: NewOrder) => {
+          return await NewOrderManager.retrieveOrderItems(order.orderId!);
+        })
+      );
 
-      const orderArray: Order[] = orderData.map((order: any) => {
-        let status = "";
+      const orderCustomer = await Promise.all(
+        orderData.map(async (customer: NewOrder) => {
+          return await NewOrderManager.retrieveOrderCustomer(customer.orderId!);
+        })
+      );
 
-        switch (order["status"]) {
-          case "0":
-            status = "Onay bekliyor";
-            break;
-          case "1":
-            status = "Onaylandı";
-            break;
-          case "2":
-            status = "Kargoda";
-            break;
-          case "3":
-            status = "Teslim edildi";
-            break;
-          case "4":
-            status = "İptal Edildi!";
-            break;
-          default:
-            status = "Onay bekleniyor..";
-            break;
+      // Siparişleri ve ürünleri birleştir
+      const orderArray: NewOrder[] = orderData.map(
+        (order: NewOrder, index: number) => {
+          // console.log("orderCustomer: ", orderCustomer[index]);
+          //
+          const items = (orderItems[index] || []).map((item: OrderItem) => {
+            return {
+              orderItemId: item.orderItemId,
+              orderId: item.orderId,
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price,
+            };
+          });
+
+          if (orderCustomer[index] === null) {
+            console.log("order: ", orderData[index]);
+          }
+
+          let customer: OrderCustomer;
+          if (orderCustomer[index] === null)
+            customer = {
+              customerId: "",
+              orderId: "",
+              userId: "",
+              full_name: "",
+              address: "",
+              city: "",
+              district: "",
+              phone: "",
+              email: "",
+            };
+          else
+            customer = {
+              ...orderCustomer[index],
+            };
+
+          console.log("customer: ", customer);
+
+          return {
+            orderId: order.orderId!,
+            status: order.status.toString(),
+            statusText: getOrderStatus(order.status.toString()),
+            payment: { method: "", amount: "", status: "" }, // Gerekli verilerle doldur
+            items: items,
+            customer: customer, // Müşteri adresini ekle
+            totalPrice: order.totalPrice.toString(),
+            date: order.date,
+          };
         }
+      );
 
-        return {
-          ...order,
-          status: order["status"],
-          statusText: status,
-          payment: JSON.parse(order["payment"]), //? payment tablosu vs.
-          items: JSON.parse(order["items"]), //? order_items tablosu vs.
-        };
-      });
-
+      // Siparişleri tarih sırasına göre sırala
       orderArray.sort((a, b) => parseInt(b.date) - parseInt(a.date));
 
+      // Durum güncellemesi
       setOrders(orderArray);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: O-25");
     }
-  }
+  };
 
-  async function cancelOrder(orderId: string) {
+  const getOrderStatus = (statusCode: string) => {
+    switch (statusCode) {
+      case "0":
+        return "Onay bekliyor";
+      case "1":
+        return "Onaylandı";
+      case "2":
+        return "Kargoda";
+      case "3":
+        return "Teslim edildi";
+      case "4":
+        return "İptal Edildi!";
+      default:
+        return "Onay bekleniyor..";
+    }
+  };
+
+  const cancelOrder = async (orderId: string) => {
     try {
       const cancelOrderForm = new FormData();
       cancelOrderForm.append("orderId", orderId);
       cancelOrderForm.append("status", "4");
-      const cancelledOrder = await NewOrderManager.cancelOrder(cancelOrderForm);
 
+      const cancelledOrder = await NewOrderManager.cancelOrder(cancelOrderForm);
       if (cancelledOrder) {
         toast.success(`${orderId} siparişiniz iptal edilmiştir!`);
-        getOrders();
+        fetchOrders();
         return true;
       } else {
         toast.error("İptal işlemi gerçekleştirilemedi.");
         return false;
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
       return false;
     }
-  }
+  };
 
   return (
     <main data-theme="valentine" className="min-w-fit">
       <title>Kleopatra - Siparişlerim</title>
-
       <Toaster position="bottom-right" reverseOrder={false} />
-
       <Nav />
       <div className="min-h-96">
         <h1 className="ml-10 mb-4 text-start font-bold text-2xl">
           Siparişlerim
         </h1>
-        <div className="">
-          {orders && orders.length !== 0 ? (
+        <div className="mx-auto">
+          {orders.length > 0 ? (
             orders.map((order) => (
               <OrderCard
                 key={order.orderId}
@@ -136,7 +179,6 @@ export default function OrderPage() {
         </div>
       </div>
       <Footer />
-
       <ModalDetails details={details} />
     </main>
   );

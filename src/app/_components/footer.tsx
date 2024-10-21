@@ -49,10 +49,10 @@ const Footer: FC = () => {
       </nav>
       <nav>
         <header className="footer-title">YASAL</header>
-        <a className="link link-hover" href="/privacy-policy">
+        <a className="link link-hover" href="/gizlilik-politikasi">
           Gizlilik Politikası
         </a>
-        <a className="link link-hover" href="/terms-of-use">
+        <a className="link link-hover" href="/kullanim-kosullari">
           Kullanım Koşulları
         </a>
       </nav>

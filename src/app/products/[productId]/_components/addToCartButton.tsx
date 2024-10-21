@@ -74,7 +74,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
 
   return (
     <div className="flex flex-row items-center justify-between">
-      <p className="font-semibold text-xl text-[#007646]">
+      <p className="font-semibold text-lg md:text-xl text-[#007646]">
         {product.price
           ? parseInt(product.price.toString()).toLocaleString("tr-TR", {
               style: "currency",
@@ -98,7 +98,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
         </button>
       </div>
       <button
-        className="btn md:btn-sm lg:btn-md w-32 h-8"
+        className="btn btn-xs md:btn-sm lg:btn-md w-32 h-8 mr-4 md:mr-0"
         onClick={handleAddToCart}
         disabled={isLoading}
       >

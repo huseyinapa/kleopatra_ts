@@ -1,12 +1,13 @@
 import Image from "next/image";
 import React from "react";
+import { Detail } from "../page";
 
 interface ModalDetailsProps {
-  details: any[];
+  details: Detail[];
 }
 
 const ModalDetails: React.FC<ModalDetailsProps> = ({ details }) => {
-  function multiplication(detail: any) {
+  function multiplication(detail: Detail) {
     const total = detail.price * detail.amount;
     return total;
   }
@@ -17,7 +18,10 @@ const ModalDetails: React.FC<ModalDetailsProps> = ({ details }) => {
         <h3 className="font-bold text-lg">Ürünler</h3>
         <div className="py-4 h-auto space-y-4">
           {details.map((detail, index) => (
-            <div key={index} className="flex flex-row space-x-4">
+            <div
+              key={index}
+              className="flex flex-row space-x-4 border border-rose-300 rounded-md"
+            >
               <figure>
                 <Image
                   src={detail.image}

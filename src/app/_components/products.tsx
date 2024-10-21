@@ -26,7 +26,7 @@ const Products: React.FC = () => {
 
   const fetchAllProducts = async () => {
     try {
-      const response = await ProductManager.fetchAllProduct();
+      const response = await ProductManager.fetchFeaturedProducts();
       if (response !== null) {
         setProducts(response);
       }

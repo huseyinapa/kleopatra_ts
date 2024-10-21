@@ -9,25 +9,35 @@ export type Order = {
 };
 
 export type NewOrder = {
-  orderId: string;
-  customerId: string;
-  status: number;
-  totalPrice: number;
+  orderId?: string;
+  customerId?: string;
+  userId?: string;
+  status: string;
+  statusText: string;
+  totalPrice: string;
+  payment: OrderPayment;
+  items: OrderItem[];
+  customer: OrderCustomer;
+  isDelete?: boolean;
   date: string;
-  isDelete: boolean;
-  orders?: OrderItem[];
 };
 
 export type OrderItem = {
-  id: string;
+  orderItemId: string;
   orderId: string;
   productId: string;
   quantity: number;
   price: number;
 };
 
+export type OrderPayment = {
+  method: string;
+  amount: string;
+  status: string;
+};
+
 export interface OrderCustomer {
-  customerId?: string;
+  customerId: string;
   orderId: string;
   userId: string;
   full_name: string;
@@ -35,5 +45,5 @@ export interface OrderCustomer {
   city: string;
   district: string;
   phone: string;
-  email?: string; //? şuan yok. eklenebilir.
+  email: string; //? şuan yok. eklenebilir.
 }

@@ -10,11 +10,12 @@ import AddToCartButton from "./_components/addToCartButton";
 import ProductList from "./_components/productList";
 import api_url from "@/utils/api";
 import { Product } from "@/types/product";
+import ProductNotFound from "./not-found";
 
 async function getProductData(productId: string): Promise<Product | null> {
   try {
     const { data: product } = await axios.get(
-      `${api_url}/api_kleopatra/product/get.php?id=${productId}`
+      `${api_url}/api_kleopatra/product/get_dev.php?id=${productId}`
     );
 
     if (!product) {
@@ -33,7 +34,7 @@ function extractIdFromUrl(url: string): string {
   // ID'nin son iki kısmını birleştir
   const splitSegment = lastSegment.split("-");
   const id = splitSegment.slice(-2).join("-");
-  console.log(id);
+  console.info("productId: " + id);
 
   return id;
 }
@@ -47,18 +48,19 @@ interface ProductPageProps {
 export default async function ProductPage({
   params: { productId },
 }: ProductPageProps) {
-  console.log(productId);
+  console.info("productUrl: " + productId);
 
   const id = extractIdFromUrl(productId);
 
   const product = await getProductData(id);
+  // console.log(product);
 
   if (!product) {
-    return <div>Ürün bulunamadı.</div>;
+    return <ProductNotFound />;
   }
 
   return (
-    <div className="min-w-fit">
+    <div className="min-w-full">
       <Nav />
 
       <title>Ürün Detayı - Gönen Kleopatra</title>
@@ -77,10 +79,10 @@ export default async function ProductPage({
         </Link>
       </div>
 
-      <div className="container flex flex-col lg:flex-row items-center lg:items-start p-4 mx-auto gap-4">
+      <div className="container flex flex-col lg:flex-row items-center lg:items-start p-4 mx-auto gap-4 duration-500">
         <div
           key={product.id}
-          className="flex flex-col md:flex-row bg-slate-300 space-x-4 w-[85%] lg:w-[65%]"
+          className="flex flex-col md:flex-row border-[#e497b1] border-2 p-3 md:p-4 rounded-lg space-x-4 w-[90%] md:w-[85%] lg:w-[65%]"
         >
           <figure className="relative">
             <Image

@@ -1,4 +1,4 @@
-import { NewOrder } from "@/types/order";
+import { NewOrder, OrderCustomer, OrderItem } from "@/types/order";
 import api_url from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
@@ -6,6 +6,8 @@ import axios, { AxiosResponse } from "axios";
 interface ApiResponse<T> {
   success: boolean;
   orders?: T | null;
+  items?: T | null;
+  data?: T | null;
   orderId?: string;
   message?: string;
 }
@@ -108,6 +110,41 @@ const NewOrderManager = {
 
       if (response.data.success && response.data.orders) {
         return response.data.orders;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error retrieving customer orders: ", error);
+      throw error;
+    }
+  },
+
+  retrieveOrderItems: async (orderId: string): Promise<OrderItem[] | null> => {
+    try {
+      const response: AxiosResponse<ApiResponse<OrderItem[]>> = await axios.get(
+        `${api_url}/api_kleopatra/new_order/items/get.php?orderId=${orderId}`
+      );
+
+      if (response.data.success && response.data.items) {
+        return response.data.items;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error retrieving customer orders: ", error);
+      throw error;
+    }
+  },
+
+  retrieveOrderCustomer: async (
+    orderId: string
+  ): Promise<OrderCustomer | null> => {
+    try {
+      const response: AxiosResponse<ApiResponse<OrderCustomer>> =
+        await axios.get(
+          `${api_url}/api_kleopatra/new_order/customer/get.php?orderId=${orderId}`
+        );
+
+      if (response.data.success && response.data.data) {
+        return response.data.data;
       }
       return null;
     } catch (error) {

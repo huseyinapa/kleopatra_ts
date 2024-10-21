@@ -76,35 +76,9 @@ const ProductManager = {
   fetchFeaturedProducts: async (): Promise<Product[] | null> => {
     try {
       const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/api_kleopatra/product/featured_get.php`
-      );
-      if (response.data.success && response.data.data) {
-        const updatedProducts: Product[] = response.data.data.map(
-          (element) => ({
-            id: element.id,
-            name: element.name,
-            description: element.description,
-            price: element.price,
-            stock: element.stock,
-            image: element.image,
-          })
-        );
-        return updatedProducts;
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error("Featured hatası:", error);
-      return null;
-    }
-  },
-
-  fetchAllProduct: async (): Promise<Product[] | null> => {
-    try {
-      const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
         `${api_url}/api_kleopatra/product/all_get.php`
       );
-      console.log(response.data.success);
+
       if (response.data.success && response.data.data) {
         const updatedProducts: Product[] = response.data.data
           .slice(0, 4)
