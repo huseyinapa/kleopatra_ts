@@ -8,6 +8,7 @@ import User from "@/services/user";
 import { trackGAEvent } from "@/utils/google-analytics";
 
 import { userIdentifier } from "@/actions/idCreator";
+import { logoutUser } from "@/services/auth";
 
 const Registration: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -31,7 +32,7 @@ const Registration: React.FC = () => {
         const id = await userIdentifier();
         const date = Functions.DateTime();
 
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append("id", id);
         formData.append("email", email);
         formData.append("password", password);
@@ -44,14 +45,15 @@ const Registration: React.FC = () => {
         if (response !== null) {
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
-          localStorage.setItem("password", password);
           localStorage.setItem("permission", "0");
           localStorage.setItem("last_login", date);
           localStorage.setItem("date", date);
 
           trackGAEvent("Kullanıcı girişi", "Kayıt Butonu", "Kayıt yapıldı");
 
-          window.location.reload();
+          await logoutUser();
+
+          window.location.href = "/";
           toast.success(`${email} başarıyla kayıt olundu ve giriş yapıldı!`);
         } else {
           toast.error("Kayıtlı hesap bulunamadı!");
@@ -102,8 +104,12 @@ const Registration: React.FC = () => {
             <button
               className="btn-link"
               onClick={() => {
-                (document.getElementById("register_modal") as HTMLDialogElement)?.close();
-                (document.getElementById("login_modal") as HTMLDialogElement)?.showModal();
+                (
+                  document.getElementById("register_modal") as HTMLDialogElement
+                )?.close();
+                (
+                  document.getElementById("login_modal") as HTMLDialogElement
+                )?.showModal();
               }}
             >
               Giriş Yap
@@ -112,7 +118,11 @@ const Registration: React.FC = () => {
           <div className="btn-group-horizontal flex justify-end space-x-2">
             <button
               className="btn"
-              onClick={() => (document.getElementById("register_modal") as HTMLDialogElement)?.close()}
+              onClick={() =>
+                (
+                  document.getElementById("register_modal") as HTMLDialogElement
+                )?.close()
+              }
             >
               İptal
             </button>

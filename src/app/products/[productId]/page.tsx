@@ -10,7 +10,7 @@ import AddToCartButton from "./_components/addToCartButton";
 import ProductList from "./_components/productList";
 import api_url from "@/utils/api";
 import { Product } from "@/types/product";
-import ProductNotFound from "./not-found";
+import NotFound from "./not-found";
 
 async function getProductData(productId: string): Promise<Product | null> {
   try {
@@ -56,7 +56,7 @@ export default async function ProductPage({
   // console.log(product);
 
   if (!product) {
-    return <ProductNotFound />;
+    return <NotFound />;
   }
 
   return (

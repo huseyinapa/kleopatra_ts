@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { trackGAEvent } from "@/utils/google-analytics";
+import { logoutUser } from "@/services/auth";
 
 // Props için TypeScript tipi tanımlıyoruz
 
@@ -12,12 +13,16 @@ export default function Nav() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
 
-  const deleteLStorage = () => {
+  const logOut = async () => {
     localStorage.removeItem("id");
+    localStorage.removeItem("token");
     localStorage.removeItem("email");
-    localStorage.removeItem("password");
     localStorage.removeItem("permission");
-    window.location.reload();
+    localStorage.removeItem("last_login");
+    localStorage.removeItem("date");
+
+    await logoutUser();
+    window.location.href = "/";
   };
 
   useEffect(() => {
@@ -131,7 +136,7 @@ export default function Nav() {
                 <li>
                   <button
                     className="block px-4 py-2 text-red-500 hover:bg-gray-100 truncate"
-                    onClick={deleteLStorage}
+                    onClick={logOut}
                   >
                     Çıkış
                   </button>

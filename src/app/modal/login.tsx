@@ -7,11 +7,11 @@ import { trackGAEvent } from "@/utils/google-analytics";
 
 import Functions from "@/utils/functions";
 import User from "@/services/user";
+import { loginUser } from "@/services/auth";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,23 +32,28 @@ const Login: React.FC = () => {
       console.log(response?.data.id);
 
       if (response !== null) {
+        const token = await loginUser({ id: response?.data.id, email });
+
+        localStorage.setItem("token", token);
         localStorage.setItem("id", response?.data.id);
         localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
         localStorage.setItem("permission", response?.data.permission);
         localStorage.setItem("last_login", date);
         localStorage.setItem("date", date);
 
+        console.log("Token:", token);
+
         trackGAEvent("Kullanıcı girişi", "Giriş Butonu", "Giriş yapıldı");
 
-        window.location.reload();
+        window.location.href = "/";
+
         toast.success(`${email} başarıyla giriş yapıldı!`);
       } else {
         toast.error("Kayıtlı hesap bulunamadı!");
       }
     } catch (error) {
       console.log(error);
-      toast.error("Beklenmedik bir sorun oluştu.");
+      toast.error("Beklenmedik bir sorun oluştu. Hata:LN-50");
     }
   };
 
@@ -93,8 +98,12 @@ const Login: React.FC = () => {
             <button
               className="btn-link"
               onClick={() => {
-                (document.getElementById("login_modal") as HTMLDialogElement)?.close();
-                (document.getElementById("register_modal") as HTMLDialogElement)?.showModal();
+                (
+                  document.getElementById("login_modal") as HTMLDialogElement
+                )?.close();
+                (
+                  document.getElementById("register_modal") as HTMLDialogElement
+                )?.showModal();
               }}
             >
               Kayıt Ol
@@ -103,7 +112,11 @@ const Login: React.FC = () => {
           <div className="btn-group-horizontal flex justify-end space-x-2">
             <button
               className="btn"
-              onClick={() => (document.getElementById("login_modal") as HTMLDialogElement)?.close()}
+              onClick={() =>
+                (
+                  document.getElementById("login_modal") as HTMLDialogElement
+                )?.close()
+              }
             >
               İptal
             </button>

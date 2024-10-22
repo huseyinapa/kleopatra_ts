@@ -10,7 +10,7 @@ interface Product {
   index?: number;
 }
 
-const ProductNotFound: React.FC = async () => {
+const NotFound: React.FC = async () => {
   const products: Product[] =
     (await ProductManager.fetchFeaturedProducts()) || [];
 
@@ -83,4 +83,4 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   );
 };
 
-export default ProductNotFound;
+export default NotFound;
