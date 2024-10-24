@@ -6,7 +6,7 @@
     "predev": "rd /s /q .next || next dev",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3201",
     "lint": "next lint"
   },
   "dependencies": {
