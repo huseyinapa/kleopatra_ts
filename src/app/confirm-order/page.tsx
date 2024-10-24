@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 "use client";
 
@@ -10,12 +11,14 @@ import Footer from "../_components/footer";
 import { OrderItem, NewOrder, OrderCustomer } from "@/types/order";
 import NewOrderManager from "@/services/newOrder";
 import Image from "next/image";
+import { Detail } from "@/types/detail";
+import ProductManager from "@/services/product";
 
 interface ConfirmOrderProps {}
 
 export default function ConfirmOrder({}: ConfirmOrderProps) {
   const [orders, setOrders] = useState<NewOrder[]>([]);
-  const [details, setDetails] = useState<OrderItem[]>([]);
+  const [details, setDetails] = useState<Detail[]>([]);
 
   useEffect(() => {
     getOrders();
@@ -123,53 +126,22 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
     }
   };
 
-  // const confirmOrder = async (orderId: string): Promise<boolean> => {
-  //   try {
-  //     const confirmedOrder = await OrderManager.updateOrderStatus(orderId, "1");
-
-  //     if (confirmedOrder) getOrders();
-  //     confirmedOrder
-  //       ? toast.success(`${orderId} sipariş onaylanmıştır!`)
-  //       : toast.error("Sipariş onaylama gerçekleştirilemedi.");
-  //     return confirmedOrder;
-  //   } catch (error) {
-  //     toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-87");
-  //     return false;
-  //   }
-  // };
-
-  // const shipIt = async (orderId: string): Promise<boolean> => {
-  //   try {
-  //     const shippedOrder = await OrderManager.updateOrderStatus(orderId, "2");
-
-  //     if (shippedOrder) getOrders();
-  //     shippedOrder
-  //       ? toast.success(`${orderId} sipariş kargoya verilmiştir!`)
-  //       : toast.error("Sipariş kargolama gerçekleştirilemedi.");
-  //     return shippedOrder;
-  //   } catch (error) {
-  //     toast.error("Beklenmedik bir sorun oluştu. Hata kodu: SO-105");
-  //     return false;
-  //   }
-  // };
-
-  // const cancelOrder = async (orderId: string): Promise<boolean> => {
-  //   try {
-  //     const cancelledOrder = await OrderManager.updateOrderStatus(orderId, "4");
-
-  //     if (cancelledOrder) getOrders();
-  //     cancelledOrder
-  //       ? toast.success(`${orderId} siparişiniz iptal edilmiştir!`)
-  //       : toast.error("İptal işlemi gerçekleştirilemedi.");
-  //     return cancelledOrder;
-  //   } catch (error) {
-  //     toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
-  //     return false;
-  //   }
-  // };
+  const updateOrderStatus = async (orderId: string, status: string) => {
+    try {
+      const updatedStatus = await NewOrderManager.updateOrderStatus(
+        orderId,
+        status
+      );
+      getOrders();
+      toast(`${orderId} ${updatedStatus}`);
+    } catch (error) {
+      toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
+      console.log(error);
+    }
+  };
 
   return (
-    <main data-theme="valentine">
+    <div>
       <title>Kleopatra - Sipariş Onay</title>
 
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -184,10 +156,10 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
           {orders && orders.length !== 0 ? (
             orders.map((order) => (
               <OrderCard
-                key={"order.orderId"}
+                key={order.orderId}
                 data={order}
                 setDetails={setDetails}
-                // cancelOrder={cancelOrder}
+                updateOrderStatus={updateOrderStatus}
               />
             ))
           ) : (
@@ -200,10 +172,16 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
       <Footer />
 
       <ModalDetails details={details} />
-    </main>
+    </div>
   );
 
-  function OrderCard({ data, setDetails, cancelOrder }: any) {
+  interface OrderCardProps {
+    data: NewOrder;
+    setDetails: (details: Detail[]) => void;
+    updateOrderStatus: (orderId: string, status: string) => void;
+  }
+
+  function OrderCard({ data, setDetails, updateOrderStatus }: OrderCardProps) {
     const date = new Date(parseInt(data.date));
 
     const day = padZero(date.getDate());
@@ -236,7 +214,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
           {/* Sipariş Bilgileri */}
           <h2 className="card-title">{`Sipariş #${data.orderId} Onay Bekliyor`}</h2>
           <a className="my-2 space-y-1">
-            <p>{`Müşteri: ${data.customer.contactName}`}</p>
+            <p>{`Müşteri: ${data.customer.full_name}`}</p>
             <p>{`Ürün Sayısı: ${data.items.length}`}</p>
             <p>{`Toplam Tutar: ${data.totalPrice}₺`}</p>
             <p>{`Sipariş Tarihi: ${formattedDate}`}</p>
@@ -245,8 +223,23 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
           <div className="card-actions justify-between">
             <button
               className="btn btn-secondary"
-              onClick={() => {
-                setDetails(data.items);
+              onClick={async () => {
+                const details = await Promise.all(
+                  data.items.map(async (item) => {
+                    const product = await ProductManager.getProduct(
+                      item.productId
+                    );
+                    return {
+                      id: item.productId,
+                      name: product!.name || "Ürün",
+                      description: product!.description || "Ürün açıklaması",
+                      price: item.price,
+                      amount: item.quantity,
+                      image: product!.image || "/images/icons/shopping-bag.svg",
+                    };
+                  })
+                );
+                setDetails(details);
 
                 (
                   document.getElementById("my_modal_5") as HTMLDialogElement
@@ -258,7 +251,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
             {data.status === "1" ? (
               <button
                 className="btn btn-outline"
-                // onClick={() => shipIt(data.orderId)}
+                onClick={() => updateOrderStatus(data.orderId!, "2")}
               >
                 Kargoya Ver
               </button>
@@ -277,7 +270,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
             ) : (
               <button
                 className="btn btn-neutral"
-                // onClick={() => confirmOrder(data.orderId)}
+                onClick={() => updateOrderStatus(data.orderId!, "1")}
               >
                 Siparişi Onayla
               </button>
@@ -289,8 +282,8 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
   }
 }
 
-function ModalDetails({ details }: any) {
-  function multiplication(detail: any) {
+function ModalDetails({ details }: { details: Detail[] }) {
+  function multiplication(detail: Detail) {
     const total = detail.price * detail.amount;
     return total;
   }
@@ -301,7 +294,7 @@ function ModalDetails({ details }: any) {
         <h3 className="font-bold text-lg">Ürünler</h3>
 
         <div className="py-4 h-auto space-y-4">
-          {details.map((detail: any) => (
+          {details.map((detail: Detail) => (
             <div className="flex flex-row space-x-4" key={detail.id}>
               <figure>
                 <Image

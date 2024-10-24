@@ -1,9 +1,9 @@
 // components/orders/OrderCard.tsx - Sipariş kartı bileşenini oluşturuyor
 import Image from "next/image";
 import React from "react";
-import { Detail } from "../page";
 import { NewOrder } from "@/types/order";
 import ProductManager from "@/services/product";
+import { Detail } from "@/types/detail";
 
 interface OrderCardProps {
   data: NewOrder;

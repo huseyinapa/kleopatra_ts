@@ -62,7 +62,6 @@ const NewOrderManager = {
         }
       );
       console.log("addCustomers", response.data);
-
       return response.data.success;
     } catch (error) {
       console.error(error);
@@ -179,11 +178,37 @@ const NewOrderManager = {
         `${api_url}/api_kleopatra/new_order/cancel.php`,
         data
       );
-      // console.log(response.data);
       return response.data.success;
     } catch (error) {
       console.error("Sipariş iptal etme hatası:", error);
       return false;
+    }
+  },
+
+  updateOrderStatus: async (
+    orderId: string,
+    status: string
+  ): Promise<string | null> => {
+    try {
+      const data = new FormData();
+      data.append("orderId", orderId);
+      data.append("status", status);
+      const response: AxiosResponse<ApiResponse<string>> = await axios.post(
+        `${api_url}/api_kleopatra/new_order/update_status.php`,
+        data
+      );
+
+      console.log(response);
+
+      if (response.data.success) {
+        return response.data.message || null;
+      } else {
+        console.error("Sipariş durumu güncellenemedi.");
+        return null;
+      }
+    } catch (error) {
+      console.log("error:", error);
+      return null;
     }
   },
 };

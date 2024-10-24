@@ -11,14 +11,7 @@ import OrderCard from "./_components/OrderCard";
 import ModalDetails from "./modal/ModalDetails";
 import NewOrderManager from "@/services/newOrder";
 import { NewOrder, OrderCustomer, OrderItem } from "@/types/order";
-
-export interface Detail {
-  image: string;
-  name: string;
-  description: string;
-  price: number;
-  amount: number;
-}
+import { Detail } from "@/types/detail";
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<NewOrder[]>([]);

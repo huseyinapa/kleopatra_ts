@@ -37,7 +37,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwindcss-debug-screens")],
   daisyui: {
     themes: [
       "light",
