@@ -153,23 +153,23 @@ const NewOrderManager = {
     }
   },
 
-  fetchOrders: async (): Promise<NewOrder> => {
+  fetchOrders: async (): Promise<NewOrder[] | null> => {
     try {
-      const response: AxiosResponse<ApiResponse<NewOrder>> = await axios.get(
-        `${api_url}/api_kleopatra/new_order/get_all.php`
-      );
+      const response: AxiosResponse<ApiResponse<NewOrder[] | null>> =
+        await axios.get(`${api_url}/api_kleopatra/new_order/get_all.php`);
+
       if (response.data.success && Array.isArray(response.data.orders)) {
         if (response.data.orders !== null) {
           return response.data.orders;
         } else {
-          throw new Error("No orders found");
+          return null;
         }
       } else {
-        throw new Error("Request failed");
+        return null;
       }
     } catch (error) {
       console.error(error);
-      throw error;
+      return null;
     }
   },
 

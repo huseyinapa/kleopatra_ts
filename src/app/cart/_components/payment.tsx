@@ -281,7 +281,7 @@ const Payment: React.FC<PaymentProps> = ({
 
       const orderForm = new FormData();
       orderForm.append("orderId", generateOrderID);
-      orderForm.append("userId", id);
+      orderForm.append("customerId", id);
       orderForm.append("status", "0");
       orderForm.append("totalPrice", paymentData.price!);
       orderForm.append("date", Date.now().toString());

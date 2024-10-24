@@ -55,15 +55,9 @@ export default function OrderPage() {
         (order: NewOrder, index: number) => {
           // console.log("orderCustomer: ", orderCustomer[index]);
           //
-          const items = (orderItems[index] || []).map((item: OrderItem) => {
-            return {
-              orderItemId: item.orderItemId,
-              orderId: item.orderId,
-              productId: item.productId,
-              quantity: item.quantity,
-              price: item.price,
-            };
-          });
+          const items = (orderItems[index] || []).map(
+            (item: OrderItem) => item
+          );
 
           if (orderCustomer[index] === null) {
             console.log("order: ", orderData[index]);
@@ -91,12 +85,13 @@ export default function OrderPage() {
 
           return {
             orderId: order.orderId!,
-            status: order.status.toString(),
-            statusText: getOrderStatus(order.status.toString()),
-            payment: { method: "", amount: "", status: "" }, // Gerekli verilerle doldur
+            status: order.status,
+            statusText: getOrderStatus(order.status),
             items: items,
-            customer: customer, // Müşteri adresini ekle
-            totalPrice: order.totalPrice.toString(),
+            customer: customer,
+            payment: { method: "", amount: "", status: "" }, //! payment bilgisi eklenecek
+            totalPrice: order.totalPrice,
+            isDelete: false,
             date: order.date,
           };
         }

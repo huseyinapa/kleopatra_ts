@@ -95,7 +95,8 @@ const Completed: FC<CompletedProps> = ({ address, payment }) => {
               <span className="text-sm">
                 Uyarı: Kart bilgileri tarafımızca saklanmamaktadır!
               </span>
-              <Link href={`/orders/${orderId.toLowerCase()}`} className="btn">
+              <Link href={`/orders`} className="btn">
+                {/* /${orderId.toLowerCase()} */}
                 Sipariş detaylarını görüntüle
               </Link>
             </div>

@@ -20,6 +20,7 @@ import ProductManager from "@/services/product";
 import { CartItem } from "@/types/cart";
 import { PaymentData } from "@/types/payment";
 import { AddressData } from "@/types/address";
+import NotFound from "./not-found";
 
 const steps = ["Sepetim", "Adres", "Ödeme", "Sipariş Tamamlandı"];
 
@@ -139,9 +140,11 @@ function Cart(): JSX.Element {
   useEffect(() => {
     fetchCartItems();
   }, []);
-
+  if (cartItems.length === 0) {
+    return <NotFound />;
+  }
   return (
-    <main data-theme="valentine" className="w-[100%]">
+    <div className="w-[100%]">
       <Toaster position="bottom-right" reverseOrder={false} />
       <Header />
 
@@ -150,29 +153,6 @@ function Cart(): JSX.Element {
           <div className="flex flex-col items-center space-y-2">
             <span className="loading loading-spinner loading-lg"></span>
             <span className="text-center">Yükleniyor..</span>
-          </div>
-        </div>
-      ) : cartItems.length === 0 ? (
-        <div className="mx-auto h-72 justify-center">
-          <div className="flex flex-col items-center space-y-4">
-            {/* Boş sepet mesajı */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {/* SVG içeriği */}
-            </svg>
-            <h1 className="font-bold text-4xl">Sepetiniz şu an boş</h1>
-            <p className="pt-2 text-center">
-              Doğal ürünlerimizden dilediğinizi sepetinize ekleyebilir,
-              dilediğiniz zaman ödemenizi gerçekleştirebilirsiniz.
-            </p>
-            <a className="btn btn-primary" href="/products">
-              Hemen Göz Atın!
-            </a>
           </div>
         </div>
       ) : (
@@ -597,7 +577,7 @@ function Cart(): JSX.Element {
           </div>
         </div>
       </dialog>
-    </main>
+    </div>
   );
 }
 

@@ -4,12 +4,12 @@ import toast from "react-hot-toast";
 
 // Kontrol edilmesi gereken sayfalar
 // const adminRoute = ["/add-product"];
-const protectedRoutes = ["/cart", "/orders"];
+const protectedRoutes = ["/cart", "/orders", "/add-product", "/confirm-order"];
 
 export function middleware(req: NextRequest) {
   // Oturum verilerini kontrol et (örneğin token)
   const token = req.cookies.get("session-token");
-  // const perm = req.cookies.get("permission");
+  // const perm = req.cookies.get("permission"); //! biz yine de permission ekleyelim.
 
   // Eğer korumalı bir sayfaya erişim varsa ve oturum yoksa yönlendir
   console.log(req.nextUrl.pathname + " korunuyor.");
@@ -35,5 +35,5 @@ export function middleware(req: NextRequest) {
 
 // Middleware sadece bu yollar için çalışacak
 export const config = {
-  matcher: ["/cart", "/orders", "/add-product"],
+  matcher: ["/cart", "/orders", "/add-product", "/confirm-order"],
 };
