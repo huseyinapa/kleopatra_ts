@@ -22,7 +22,7 @@ export default function Nav() {
     localStorage.removeItem("date");
 
     await logoutUser();
-    window.location.href = "/";
+    window.location.reload();
   };
 
   const checkIsAdmin = (): void => {

@@ -14,7 +14,7 @@ export function middleware(req: NextRequest) {
   // Eğer korumalı bir sayfaya erişim varsa ve oturum yoksa yönlendir
   console.log(req.nextUrl.pathname + " korunuyor.");
 
-  if (protectedRoutes.includes(req.nextUrl.pathname) && !token) {
+  if (protectedRoutes.includes(req.nextUrl.pathname) || !token) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     toast.error("Bu sayfaya erişmek için giriş yapmalısınız!");

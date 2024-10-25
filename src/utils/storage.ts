@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // LocalStorage Fonksiyonları
 export const setLocalStorage = (key: string, value: any) => {
