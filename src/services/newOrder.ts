@@ -24,7 +24,7 @@ const NewOrderManager = {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data.success ? response.data.orderId || null : null;
     } catch (error) {
       console.error(error);
@@ -61,7 +61,7 @@ const NewOrderManager = {
           },
         }
       );
-      console.log("addCustomers", response.data);
+      // console.log("addCustomers", response.data);
       return response.data.success;
     } catch (error) {
       console.error(error);
@@ -198,7 +198,7 @@ const NewOrderManager = {
         data
       );
 
-      console.log(response);
+      // console.log(response);
 
       if (response.data.success) {
         return response.data.message || null;

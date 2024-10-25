@@ -28,20 +28,23 @@ const Login: React.FC = () => {
       formData.append("email", email);
       formData.append("password", password);
 
-      const response = await User.login(formData);
-      console.log(response?.data.id);
+      const response = (await User.login(formData)) || null;
+      // console.log(response!.data?.id);
 
-      if (response !== null) {
-        const token = await loginUser({ id: response?.data.id, email });
+      if (response?.data !== null) {
+        const token = await loginUser({ id: response!.data?.id || "", email });
 
         localStorage.setItem("token", token);
-        localStorage.setItem("id", response?.data.id);
+        localStorage.setItem("id", response!.data?.id || "");
         localStorage.setItem("email", email);
-        localStorage.setItem("permission", response?.data.permission);
+        localStorage.setItem(
+          "permission",
+          response!.data?.permission!.toString() || "0"
+        );
         localStorage.setItem("last_login", date);
         localStorage.setItem("date", date);
 
-        console.log("Token:", token);
+        // // console.log("Token:", token);
 
         trackGAEvent("Kullanıcı girişi", "Giriş Butonu", "Giriş yapıldı");
 

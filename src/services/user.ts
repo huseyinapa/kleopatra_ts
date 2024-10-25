@@ -25,9 +25,11 @@ const User = {
    * @param userData Kullanıcı bilgileri
    * @returns API yanıtı
    */
-  register: async (userData: FormData): Promise<ApiResponse<any> | null> => {
+  register: async (
+    userData: FormData
+  ): Promise<ApiResponse<UserData> | null> => {
     try {
-      const response: AxiosResponse<ApiResponse<any>> = await axios.post(
+      const response: AxiosResponse<ApiResponse<UserData>> = await axios.post(
         `${api_url}/api_kleopatra/user/register.php`,
         userData
       );
@@ -48,9 +50,9 @@ const User = {
    * @param userData Kullanıcı giriş bilgileri
    * @returns API yanıtı
    */
-  login: async (userData: FormData): Promise<ApiResponse<any> | null> => {
+  login: async (userData: FormData): Promise<ApiResponse<UserData> | null> => {
     try {
-      const response: AxiosResponse<ApiResponse<any>> = await axios.post(
+      const response: AxiosResponse<ApiResponse<UserData>> = await axios.post(
         `${api_url}/api_kleopatra/user/login.php`,
         userData
       );

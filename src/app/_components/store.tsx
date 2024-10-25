@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 
 const Store: React.FC = () => {
@@ -8,7 +10,9 @@ const Store: React.FC = () => {
 
   const changeImage = (index: number) => {
     setCurrentIndex(index);
-    const magazaFoto = document.getElementById("magazaFoto") as HTMLImageElement;
+    const magazaFoto = document.getElementById(
+      "magazaFoto"
+    ) as HTMLImageElement;
     if (magazaFoto) {
       magazaFoto.src = images[index];
     }
@@ -19,11 +23,13 @@ const Store: React.FC = () => {
       <div className="flex flex-col items-center my-8 sm:flex-row">
         <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
           <div className="w-full h-64 sm:h-96 rounded-lg overflow-hidden">
-            <img
+            <Image
               id="magazaFoto"
               src="images/magaza1.jpg"
               alt="Mağaza Fotoğrafı"
               className="object-cover w-full h-full"
+              width={500}
+              height={500}
             />
           </div>
           <div className="flex justify-center mt-4">
@@ -46,17 +52,21 @@ const Store: React.FC = () => {
                 />
               </svg>
             </button>
-            <img
+            <Image
               src="images/magaza1.jpg"
               alt="Mağaza 1"
               className="w-20 h-15 rounded-lg mx-1 cursor-pointer"
               onClick={() => changeImage(0)}
+              width={20}
+              height={20}
             />
-            <img
+            <Image
               src="images/magaza2.jpg"
               alt="Mağaza 2"
               className="w-20 h-15 rounded-lg mx-1 cursor-pointer"
               onClick={() => changeImage(1)}
+              width={20}
+              height={20}
             />
             <button
               className="w-10 h-10 mt-2 bg-gradient-to-br from-[#c21546] to-[#d96a81] text-white rounded-full opacity-50 transition-opacity duration-300 hover:opacity-100 focus:outline-none transform hover:scale-110 ml-1 flex items-center justify-center shadow-lg"

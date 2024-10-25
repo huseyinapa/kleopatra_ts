@@ -244,7 +244,7 @@ const Payment: React.FC<PaymentProps> = ({
         await fallingOutofCart(paymentData);
       } else {
         toast.error(pay.data.message);
-        console.log(pay.data.message);
+        // console.log(pay.data.message);
       }
     } catch (error) {
       toast.error("Ödeme işlemi sırasında bir hata oluştu.");
@@ -288,7 +288,7 @@ const Payment: React.FC<PaymentProps> = ({
       orderForm.append("isDelete", "false");
 
       const orderResult = await NewOrderManager.add(orderForm);
-      console.log("result:" + orderResult);
+      // console.log("result:" + orderResult);
       setSessionStorage("orderID", orderResult!);
 
       if (orderResult !== null) {

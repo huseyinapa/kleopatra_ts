@@ -79,8 +79,8 @@ const AllProduct = () => {
       formData.append("pid", product.id);
       formData.append("amount", "1");
       formData.append("date", Date.now().toString());
-      console.log("pid", product.id);
-      console.log("date", Date.now().toString());
+      // console.log("pid", product.id);
+      // console.log("date", Date.now().toString());
 
       const response = await CartManager.addProductToCart(formData);
       if (response) {

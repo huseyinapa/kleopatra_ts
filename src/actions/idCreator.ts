@@ -1,14 +1,14 @@
 // utils/createId.ts
 
+import api_url from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 export const fetchAllIds = async (): Promise<string[]> => {
   try {
-    const response: AxiosResponse<any> = await axios.get(
-      "http://3.124.99.216/api_kleopatra/user/getID.php"
-    );
+    const response: AxiosResponse<{ success: boolean; userIDS: string[] }> =
+      await axios.get(`${api_url}/api_kleopatra/user/get_id.php`);
     return response.data.success ? response.data.userIDS : [];
   } catch (error) {
     console.error("Error fetching ids:", error);

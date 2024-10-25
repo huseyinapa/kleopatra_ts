@@ -25,7 +25,7 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
   async function getProducts() {
     try {
       const products = await ProductManager.fetchAllProducts();
-      console.log(products);
+      // console.log(products);
 
       if (products !== null) {
         setProducts(

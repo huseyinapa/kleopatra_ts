@@ -101,7 +101,7 @@ function Cart(): JSX.Element {
             const product = (await ProductManager.getProduct(
               item.pid
             )) as CartItem;
-            console.log();
+            // console.log();
 
             return {
               id: item.pid,
@@ -116,7 +116,7 @@ function Cart(): JSX.Element {
             };
           })
         );
-        console.log("products" + products.length);
+        // console.log("products" + products.length);
 
         setCartItems(products);
         setCompleted((prevCompleted) => ({
@@ -130,7 +130,7 @@ function Cart(): JSX.Element {
         }));
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error("Bilinmeyen sorun oluştu! Hata kodu: C-FCI");
     } finally {
       setLoading(false);

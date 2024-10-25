@@ -35,7 +35,7 @@ const CartProduct: FC<CartProductProps> = ({
   const [cartLength, setCartLength] = useState<number>(cartItems.length);
 
   useEffect(() => {
-    // console.log("cartItems", cartItems);
+    // // console.log("cartItems", cartItems);
 
     setCartLength(cartItems.length);
   }, [cartItems]);
@@ -54,9 +54,9 @@ const CartProduct: FC<CartProductProps> = ({
   };
 
   const handleIncreaseAmount = async (itemId: string) => {
-    console.log(itemId);
+    // console.log(itemId);
     const product = await ProductManager.getProduct(itemId);
-    console.log(product);
+    // console.log(product);
 
     setCartItems((prevCartItems) =>
       prevCartItems.map((item) =>

@@ -46,14 +46,14 @@ export default function OrderPage() {
       // Siparişleri ve ürünleri birleştir
       const orderArray: NewOrder[] = orderData.map(
         (order: NewOrder, index: number) => {
-          // console.log("orderCustomer: ", orderCustomer[index]);
+          // // console.log("orderCustomer: ", orderCustomer[index]);
           //
           const items = (orderItems[index] || []).map(
             (item: OrderItem) => item
           );
 
           if (orderCustomer[index] === null) {
-            console.log("order: ", orderData[index]);
+            // console.log("order: ", orderData[index]);
           }
 
           let customer: OrderCustomer;
@@ -74,7 +74,7 @@ export default function OrderPage() {
               ...orderCustomer[index],
             };
 
-          console.log("customer: ", customer);
+          // console.log("customer: ", customer);
 
           return {
             orderId: order.orderId!,

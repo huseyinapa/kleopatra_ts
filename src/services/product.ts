@@ -64,7 +64,7 @@ const ProductManager = {
       if (response.data.success && response.data.data) {
         return response.data.data;
       } else {
-        console.log("test");
+        // console.log("test");
         return null;
       }
     } catch (error) {

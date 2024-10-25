@@ -22,7 +22,7 @@ const BottomPayDetails: React.FC<BottomPayDetailsProps> = ({
   const [effect, setEffect] = useState(false);
 
   useEffect(() => {
-    // console.log("nav bar", products);
+    // // console.log("nav bar", products);
   }, [products]);
 
   const totalPrice = products.reduce(

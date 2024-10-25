@@ -30,7 +30,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
 
       if (!orderData || orderData.length === 0) return;
 
-      console.log("orderData: ", orderData);
+      // console.log("orderData: ", orderData);
 
       const orderArray: NewOrder[] = await Promise.all(
         orderData.map(async (order: NewOrder, index: number) => {
@@ -76,7 +76,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
           const items = (orderItems[index] || []).map(
             (item: OrderItem) => item
           );
-          console.log("orderCustomer: ", customer);
+          // console.log("orderCustomer: ", customer);
 
           let statusText = "";
 

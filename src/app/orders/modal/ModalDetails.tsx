@@ -1,6 +1,6 @@
+import { Detail } from "@/types/detail";
 import Image from "next/image";
 import React from "react";
-import { Detail } from "../page";
 
 interface ModalDetailsProps {
   details: Detail[];
