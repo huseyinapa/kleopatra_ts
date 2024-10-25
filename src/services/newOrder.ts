@@ -1,5 +1,5 @@
 import { NewOrder, OrderCustomer, OrderItem } from "@/types/order";
-import api_url from "@/utils/api";
+import { api_url } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 // Define interfaces for API responses if possible

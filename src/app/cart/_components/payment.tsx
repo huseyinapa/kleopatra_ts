@@ -16,6 +16,7 @@ import { CardInfo, PaymentData } from "@/types/payment";
 import { CartItem } from "@/types/cart";
 import { AddressData } from "@/types/address";
 import { setSessionStorage } from "@/utils/storage";
+import { pay_url } from "@/utils/api";
 
 interface UserData {
   id: string;
@@ -149,7 +150,7 @@ const Payment: React.FC<PaymentProps> = ({
 
     setIsLoading(true);
 
-    const url = "https://pay.huseyinapa.com/api/payment";
+    const url = `${pay_url}/api/payment`;
 
     const [expireMonth, expireYear] = cardInfo.expiryDate.split("/");
     const user = userData as UserData;

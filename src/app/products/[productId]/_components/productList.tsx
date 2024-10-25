@@ -65,7 +65,7 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
             <Image
               src={product.image}
               alt={product.name}
-              className="w-36 h-48 md:w-56 md:h-52 lg:w-60 lg:h-64 object-cover rounded-lg"
+              className="w-36 h-48 md:w-56 md:h-52 lg:w-60 lg:h-64 object-contain rounded-lg"
               width={20}
               height={20}
             />

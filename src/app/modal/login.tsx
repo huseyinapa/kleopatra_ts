@@ -48,7 +48,7 @@ const Login: React.FC = () => {
 
         trackGAEvent("Kullanıcı girişi", "Giriş Butonu", "Giriş yapıldı");
 
-        window.location.href = "/";
+        window.location.reload();
 
         toast.success(`${email} başarıyla giriş yapıldı!`);
       } else {

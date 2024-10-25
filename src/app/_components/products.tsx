@@ -205,7 +205,9 @@ const ProductCard = ({
       <p className="text-xs md:text-base">{product.description}</p>
       <div className="card-actions justify-between items-center">
         <div className="font-semibold text-sm md:text-md lg:text-lg">
-          {product.price}₺
+          {product.stock.toString() === "0"
+            ? "Stokta yok"
+            : `₺${product.price}`}
         </div>
         <button
           className="btn btn-xs lg:btn-md text-xs lg:text-md shadow-sm"

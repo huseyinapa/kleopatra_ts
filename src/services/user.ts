@@ -1,6 +1,6 @@
 // utils/user.ts
 
-import api_url from "@/utils/api";
+import { api_url } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 // API response interface

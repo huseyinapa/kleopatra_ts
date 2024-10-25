@@ -1,5 +1,5 @@
 import { CartProduct } from "@/types/cart";
-import api_url from "@/utils/api";
+import { api_url } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 type ApiResponse<T> = {

@@ -25,23 +25,22 @@ export default function Nav() {
     window.location.href = "/";
   };
 
+  const checkIsAdmin = (): void => {
+    const getPermission = parseInt(localStorage.getItem("permission") ?? "0");
+
+    if (getPermission === 1) setIsAdmin(true);
+    else setIsAdmin(false);
+  };
+
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
+    checkIsAdmin();
 
     if (storedEmail) {
       setEmail(storedEmail);
       setIsLoggedIn(true);
     }
-    checkIsAdmin();
   }, []);
-
-  function checkIsAdmin() {
-    const getPermission = parseInt(localStorage.getItem("permission") ?? "0");
-
-    if (getPermission === 1) setIsAdmin(true);
-    else setIsAdmin(false);
-  }
-
   return (
     <header className="flex flex-row justify-center md:justify-between flex-wrap gap-6 p-4 shadow-gray-600/10 translate-y-1 transition-all duration-300 scale-95 origin-top lg:relative lg:scale-100 lg:peer-checked:translate-y-0 lg:translate-y-0 lg:flex lg:flex-row lg:items-center lg:gap-0 lg:p-8 lg:bg-transparent lg:visible lg:opacity-100 peer-checked:scale-100">
       {/* sm screen */}
@@ -53,7 +52,7 @@ export default function Nav() {
             alt="Kleopatra Logo"
             className="mr-4 cursor-pointer"
             width={250}
-            height={0}
+            height={50}
             priority
           />
         </Link>

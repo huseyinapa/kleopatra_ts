@@ -1,6 +1,6 @@
 // utils/createId.ts
 
-import api_url from "@/utils/api";
+import { api_url } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

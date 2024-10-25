@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
   // const perm = req.cookies.get("permission"); //! biz yine de permission ekleyelim.
 
   // Eğer korumalı bir sayfaya erişim varsa ve oturum yoksa yönlendir
-  // console.log(req.nextUrl.pathname + " korunuyor.");
+  console.log(req.nextUrl.pathname + " korunuyor.");
 
   if (protectedRoutes.includes(req.nextUrl.pathname) && !token) {
     const url = req.nextUrl.clone();

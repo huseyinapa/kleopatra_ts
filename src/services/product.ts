@@ -1,5 +1,5 @@
 import { Product } from "@/types/product";
-import api_url from "@/utils/api";
+import { api_url } from "@/utils/api";
 import axiosInstance from "@/utils/axiosConfig";
 import axios, { AxiosResponse } from "axios";
 

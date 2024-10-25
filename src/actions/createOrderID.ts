@@ -1,4 +1,4 @@
-import api_url from "@/utils/api";
+import { api_url } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 const characters = "0123456789";
