@@ -6,7 +6,7 @@ export type CardInfo = {
 };
 
 export interface PaymentData {
-  price?: string;
+  price?: number;
   paymentCard: {
     cardHolderName?: string;
     cardNumber?: string;
@@ -50,7 +50,7 @@ export interface PaymentData {
     category1: string;
     category2: string;
     itemType: string;
-    price: string;
+    price: number;
   }[];
 }
 
@@ -68,4 +68,18 @@ export type OrderPaymentRecord = {
   tax: number;
   fee: number;
   paymentData: PaymentData;
+};
+
+export type PayResponse = {
+  message: string;
+  success: boolean;
+  data: {
+    status: string;
+    errorMessage: string;
+    errorCode: string;
+    errorGroup: string;
+    locale: string;
+    systemTime: string;
+    conversationId: string;
+  };
 };

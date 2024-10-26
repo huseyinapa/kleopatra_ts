@@ -33,19 +33,7 @@ export interface CompletedState {
 function Cart(): JSX.Element {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "",
-      pid: "",
-      name: "",
-      description: "",
-      price: "0",
-      stock: 0,
-      image: "",
-      amount: 0,
-      stockStatus: false,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const [addressData, setAddressData] = useState<AddressData | null>(null);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
@@ -152,6 +140,7 @@ function Cart(): JSX.Element {
   useEffect(() => {
     fetchCartItems();
   }, []);
+
   if (cartItems.length === 0) {
     return <NotFound />;
   } else

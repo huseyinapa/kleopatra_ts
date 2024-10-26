@@ -12,7 +12,7 @@ import {
 } from "@/actions/createOrderID";
 import ProductManager from "@/services/product";
 import Image from "next/image";
-import { CardInfo, PaymentData } from "@/types/payment";
+import { CardInfo, PaymentData, PayResponse } from "@/types/payment";
 import { CartItem } from "@/types/cart";
 import { AddressData } from "@/types/address";
 import { setSessionStorage } from "@/utils/storage";
@@ -167,16 +167,16 @@ const Payment: React.FC<PaymentProps> = ({
       category1: "Gül ürünü",
       category2: "Gül ürünü",
       itemType: "PHYSICAL",
-      price: (parseFloat(item.price) * item.amount!).toFixed(2),
+      price: parseInt((parseFloat(item.price) * item.amount!).toFixed(2)),
     }));
 
     const totalPrice = basketItems.reduce(
-      (total, item) => total + parseFloat(item.price),
+      (total, item) => total + parseFloat(item.price.toString()), // daha sonra type hatası alırsan burayı düzelt
       0
     );
 
     const paymentData: PaymentData = {
-      price: totalPrice.toFixed(2),
+      price: parseInt(totalPrice.toFixed(2)),
       paymentCard: {
         cardHolderName: cardInfo.cardHolderName,
         cardNumber: cardInfo.cardNumber,
@@ -216,6 +216,7 @@ const Payment: React.FC<PaymentProps> = ({
       },
       basketItems: basketItems,
     };
+    console.log(url);
 
     try {
       // Ürün stok kontrolü
@@ -232,20 +233,22 @@ const Payment: React.FC<PaymentProps> = ({
         }
       }
 
-      const payResponse = await axios.post(url, paymentData, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      });
+      const { data: paymentResponse }: { data: PayResponse } = await axios.post(
+        url,
+        paymentData,
+        {
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+        }
+      );
 
-      const pay = payResponse.data;
-
-      if (pay.data.status === "success") {
+      console.log(paymentResponse);
+      if (paymentResponse.data.status === "success") {
         setPaymentData(paymentData);
         await fallingOutofCart(paymentData);
       } else {
-        toast.error(pay.data.message);
-        // console.log(pay.data.message);
+        toast.error(paymentResponse.data.errorMessage);
       }
     } catch (error) {
       toast.error("Ödeme işlemi sırasında bir hata oluştu.");
@@ -284,7 +287,7 @@ const Payment: React.FC<PaymentProps> = ({
       orderForm.append("orderId", generateOrderID);
       orderForm.append("customerId", id);
       orderForm.append("status", "0");
-      orderForm.append("totalPrice", paymentData.price!);
+      orderForm.append("totalPrice", paymentData.price!.toString());
       orderForm.append("date", Date.now().toString());
       orderForm.append("isDelete", "false");
 

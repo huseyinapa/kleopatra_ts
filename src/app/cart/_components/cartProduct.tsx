@@ -102,6 +102,8 @@ const CartProduct: FC<CartProductProps> = ({
     }
   };
 
+  console.log(cartItems);
+
   return (
     <div className="">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold m-2">
