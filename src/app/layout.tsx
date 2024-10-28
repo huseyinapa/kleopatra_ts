@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description: "Isparta Gönen doğal gül ve gül ürünleri.",
 
   openGraph: {
-    title: "gonenkleopatra.com",
+    title: "Gönen Kleopatra",
     description: "Isparta Gönen doğal gül ve gül ürünleri.",
     url: "https://www.gonenkleopatra.com",
     siteName: "gonenkleopatra.com",

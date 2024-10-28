@@ -1,7 +1,7 @@
 export const api_url =
   process.env.NEXT_PUBLIC_NODE_ENV === "development"
     ? "http://3.124.99.216"
-    : "https://www.gonenkleopatra.com";
+    : "https://api.gonenkleopatra.com";
 
 export const pay_url =
   process.env.NEXT_PUBLIC_NODE_ENV === "development"
