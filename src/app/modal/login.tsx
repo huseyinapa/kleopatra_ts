@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import toast from "react-hot-toast";
 
 import { trackGAEvent } from "@/utils/google-analytics";
@@ -29,22 +29,25 @@ const Login: React.FC = () => {
       formData.append("password", password);
 
       const response = (await User.login(formData)) || null;
-      // console.log(response!.data?.id);
+      console.log(response);
 
-      if (response?.data !== null) {
-        const token = await loginUser({ id: response!.data?.id || "", email });
+      if (response !== null) {
+        const token = await loginUser(
+          { id: response.data?.id || "", email },
+          response.data?.permission!.toString() || "0"
+        );
 
         localStorage.setItem("token", token);
-        localStorage.setItem("id", response!.data?.id || "");
+        localStorage.setItem("id", response.data?.id || "");
         localStorage.setItem("email", email);
         localStorage.setItem(
           "permission",
-          response!.data?.permission!.toString() || "0"
+          response.data?.permission!.toString() || "0"
         );
         localStorage.setItem("last_login", date);
         localStorage.setItem("date", date);
 
-        // // console.log("Token:", token);
+        // console.log("Token:", token);
 
         trackGAEvent("Kullanıcı girişi", "Giriş Butonu", "Giriş yapıldı");
 
@@ -52,7 +55,8 @@ const Login: React.FC = () => {
 
         toast.success(`${email} başarıyla giriş yapıldı!`);
       } else {
-        toast.error("Kayıtlı hesap bulunamadı!");
+        alert("Kayıtlı hesap bulunamadı!");
+        return;
       }
     } catch (error) {
       console.log(error);

@@ -13,13 +13,23 @@ import Image from "next/image";
 import Functions from "@/utils/functions";
 import { Product } from "@/types/product";
 
-const AllProduct = () => {
+async function fetchProducts() {
+  try {
+    const response = await ProductManager.fetchAllProducts();
+    return response ?? [];
+  } catch (error) {
+    console.error("Product fetch error:", error);
+    alert("Bilinmeyen bir hata oluştu.");
+  }
+}
+
+export default function AllProducts() {
   const [products, setProducts] = useState<Product[]>([]); // Product type is defined
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   // Fetch products and check if user is admin when component mounts
   useEffect(() => {
-    fetchAllProduct();
+    getProductsList();
     checkIsAdmin();
   }, []);
 
@@ -30,9 +40,9 @@ const AllProduct = () => {
   };
 
   // Fetch all products
-  const fetchAllProduct = async () => {
+  const getProductsList = async () => {
     try {
-      const response = await ProductManager.fetchAllProducts();
+      const response = await fetchProducts();
       setProducts(response ?? []);
     } catch (error) {
       console.error("Product fetch error:", error);
@@ -51,7 +61,7 @@ const AllProduct = () => {
       if (response) {
         await CartManager.removeProductFromCart(formData);
         toast.success("Ürün kaldırıldı.");
-        fetchAllProduct();
+        getProductsList();
       } else {
         toast.error("Bilinmeyen hata!");
       }
@@ -196,6 +206,4 @@ const AllProduct = () => {
       <Footer />
     </div>
   );
-};
-
-export default AllProduct;
+}

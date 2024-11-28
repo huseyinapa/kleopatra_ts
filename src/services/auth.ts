@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 // JWT secret key (Güvenli bir ortam değişkeni olarak saklayın)
-const JWT_SECRET = process.env.JWT_SECRET || "your-secure-secret";
+const JWT_SECRET = process.env.JWT_SECRET || "falan-filan";
 
 /**
  * Kullanıcıya ait bir JWT token oluşturur.
@@ -38,7 +38,10 @@ export async function createToken(user: {
  * @example await loginUser({ id: "123", email: "user@example.com" });
  * @async true
  */
-export async function loginUser(user: { id: string; email: string }) {
+export async function loginUser(
+  user: { id: string; email: string },
+  permission: string
+) {
   const token = await createToken(user);
   const cookieStore = cookies();
 
@@ -48,7 +51,17 @@ export async function loginUser(user: { id: string; email: string }) {
     httpOnly: true,
     secure: true,
     maxAge: 2592000, // 30 gün
+    sameSite: "strict",
   });
+
+  cookieStore.set("permission", permission, {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    maxAge: 2592000, // 30 gün
+    sameSite: "strict",
+  });
+
   return token;
 }
 
@@ -82,6 +95,13 @@ export async function logoutUser() {
 
   // Cookie'yi silmek için maxAge değerini sıfırla
   cookieStore.set("session-token", "", {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    maxAge: 0,
+  });
+
+  cookieStore.set("permission", "", {
     path: "/",
     httpOnly: true,
     secure: true,
