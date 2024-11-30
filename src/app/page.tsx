@@ -12,7 +12,7 @@ export default function Home(): JSX.Element {
   //bg-[#f3e1dd]
 
   useEffect(() => {
-    const cookie = getCookie("session-token");
+    const cookie = getCookie("test");
     toast.success("Welcome to our store!");
     console.log("cookie: " + cookie);
   }, []);

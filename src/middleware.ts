@@ -15,7 +15,7 @@ export function middleware(req: NextRequest) {
   if (process.env.NODE_ENV === "development")
     console.log(req.nextUrl.pathname + " korunuyor.");
 
-  console.log("Token:", token);
+  // console.log("Token:", token);
 
   if (!token) {
   } else if (protectedRoutes.includes(req.nextUrl.pathname)) {
