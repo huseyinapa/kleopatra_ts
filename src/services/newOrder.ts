@@ -13,6 +13,11 @@ interface ApiResponse<T> {
 }
 
 const NewOrderManager = {
+  /**
+   * Yeni bir sipariş ekler.
+   * @param data
+   * @returns
+   */
   add: async (data: FormData): Promise<string | null> => {
     try {
       const response: AxiosResponse<ApiResponse<string>> = await axios.post(
@@ -24,7 +29,6 @@ const NewOrderManager = {
           },
         }
       );
-      // console.log(response.data);
       return response.data.success ? response.data.orderId || null : null;
     } catch (error) {
       console.error(error);
@@ -32,6 +36,11 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Sipariş öğelerini ekler.
+   * @param data
+   * @returns
+   */
   addItems: async (data: FormData): Promise<boolean> => {
     try {
       const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
@@ -50,6 +59,11 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Siparişi oluşturan müşteriyi ekler.
+   * @param data
+   * @returns
+   */
   addCustomers: async (data: FormData): Promise<boolean> => {
     try {
       const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
@@ -61,7 +75,6 @@ const NewOrderManager = {
           },
         }
       );
-      // console.log("addCustomers", response.data);
       return response.data.success;
     } catch (error) {
       console.error(error);
@@ -69,6 +82,11 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Tüm siparişleri getirir.
+   * @param data
+   * @returns
+   */
   getOrder: async (data: FormData): Promise<NewOrder | null> => {
     const url = `${api_url}/api_kleopatra/new_order/get.php`;
 
@@ -93,6 +111,12 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Müşteri siparişlerini getirir.
+   * @param customerId
+   * @param includeArchived
+   * @returns
+   */
   retrieveCustomerOrders: async (
     customerId: string,
     includeArchived: boolean = false
@@ -117,6 +141,11 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Siparişin öğelerini getirir.
+   * @param orderId
+   * @returns
+   */
   retrieveOrderItems: async (orderId: string): Promise<OrderItem[] | null> => {
     try {
       const response: AxiosResponse<ApiResponse<OrderItem[]>> = await axios.get(
@@ -133,6 +162,11 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Siparişin müşterisini getirir.
+   * @param orderId
+   * @returns
+   */
   retrieveOrderCustomer: async (
     orderId: string
   ): Promise<OrderCustomer | null> => {
@@ -152,6 +186,10 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Tüm siparişleri getirir.
+   * @returns
+   */
   fetchOrders: async (): Promise<NewOrder[] | null> => {
     try {
       const response: AxiosResponse<ApiResponse<NewOrder[] | null>> =
@@ -172,6 +210,11 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Siparişi iptal eder.
+   * @param data
+   * @returns
+   */
   cancelOrder: async (data: FormData): Promise<boolean> => {
     try {
       const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
@@ -185,6 +228,12 @@ const NewOrderManager = {
     }
   },
 
+  /**
+   * Sipariş durumunu günceller.
+   * @param orderId
+   * @param status
+   * @returns
+   */
   updateOrderStatus: async (
     orderId: string,
     status: string
@@ -198,8 +247,6 @@ const NewOrderManager = {
         data
       );
 
-      // console.log(response);
-
       if (response.data.success) {
         return response.data.message || null;
       } else {
@@ -209,6 +256,71 @@ const NewOrderManager = {
     } catch (error) {
       console.log("error:", error);
       return null;
+    }
+  },
+
+  /**
+   * Siparişi yumuşak siler.
+   * @param orderId
+   * @returns
+   */
+  //! Soft delete yapacağız. PHP dosyasını da güncellemek gerekecek.
+  deleteOrder: async (orderId: string): Promise<boolean> => {
+    try {
+      const data = new FormData();
+      data.append("orderId", orderId);
+      const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
+        `${api_url}/api_kleopatra/new_order/delete.php`,
+        data
+      );
+
+      return response.data.success;
+    } catch (error) {
+      console.error("Sipariş silme hatası:", error);
+      return false;
+    }
+  },
+
+  /**
+   * Siparişin öğelerini siler.
+   * @param orderId
+   * @returns
+   */
+  deleteOrderItems: async (orderId: string): Promise<boolean> => {
+    try {
+      const data = new FormData();
+      data.append("orderId", orderId);
+
+      const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
+        `${api_url}/api_kleopatra/new_order/items/delete.php`,
+        data
+      );
+
+      return response.data.success;
+    } catch (error) {
+      console.error("Sipariş öğelerini silme hatası:", error);
+      return false;
+    }
+  },
+
+  /**
+   * Siparişin müşterisini siler.
+   * @param orderId
+   * @returns
+   */
+  deleteOrderCustomer: async (orderId: string): Promise<boolean> => {
+    try {
+      const data = new FormData();
+      data.append("orderId", orderId);
+      const response: AxiosResponse<ApiResponse<boolean>> = await axios.post(
+        `${api_url}/api_kleopatra/new_order/customer/delete.php`,
+        data
+      );
+
+      return response.data.success;
+    } catch (error) {
+      console.error("Sipariş müşterisini silme hatası:", error);
+      return false;
     }
   },
 };

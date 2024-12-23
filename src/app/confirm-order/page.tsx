@@ -13,6 +13,7 @@ import NewOrderManager from "@/services/newOrder";
 import Image from "next/image";
 import { Detail } from "@/types/detail";
 import ProductManager from "@/services/product";
+import NotFound from "./not-found";
 
 interface ConfirmOrderProps {}
 
@@ -28,7 +29,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
     try {
       const orderData = await NewOrderManager.fetchOrders();
 
-      if (!orderData || orderData.length === 0) return;
+      if (!orderData || orderData.length === 0) return setOrders([]);
 
       // console.log("orderData: ", orderData);
 
@@ -111,7 +112,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
             customer: customer,
             payment: { method: "", amount: "", status: "" }, //! payment bilgisi eklenecek
             totalPrice: order.totalPrice,
-            isDelete: false,
+            isDelete: order.isDelete,
             date: order.date,
           };
         })
@@ -132,48 +133,66 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
         orderId,
         status
       );
+      toast.success(`${orderId} ${updatedStatus}`);
       getOrders();
-      toast(`${orderId} ${updatedStatus}`);
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
       console.log(error);
     }
   };
 
-  return (
-    <div>
-      <title>Kleopatra - Sipariş Onay</title>
+  const deleteOrder = async (orderId: string) => {
+    try {
+      const deleted = await NewOrderManager.deleteOrder(orderId);
+      if (deleted) {
+        toast.success("Sipariş başarıyla silindi.");
+        getOrders();
+      } else {
+        toast.error("Sipariş silinemedi.");
+      }
+    } catch (error) {
+      toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-9");
+      console.log(error);
+    }
+  };
 
-      <Toaster position="bottom-right" reverseOrder={false} />
+  if (orders.length === 0) {
+    return <NotFound />;
+  } else
+    return (
+      <div>
+        <title>Kleopatra - Sipariş Onay</title>
 
-      <Header />
-      <div className="mx-auto min-h-[800px] md:min-h-[600px] lg:min-h-[400px]">
-        <div
-          className="flex-wrap space-y-4 md:space-x-4 lg:space-x-4
+        <Toaster position="bottom-right" reverseOrder={false} />
+
+        <Header />
+        <div className="mx-auto min-h-[800px] md:min-h-[600px] lg:min-h-[400px]">
+          <div
+            className="flex-wrap space-y-4 md:space-x-4 lg:space-x-4
         justify-center items-end md:items-center justify-items-center
         grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2"
-        >
-          {orders && orders.length !== 0 ? (
-            orders.map((order) => (
-              <OrderCard
-                key={order.orderId}
-                data={order}
-                setDetails={setDetails}
-                updateOrderStatus={updateOrderStatus}
-              />
-            ))
-          ) : (
-            <div className="mx-auto w-96 text-center h-32">
-              Sipariş bulunmamaktadır.
-            </div>
-          )}
+          >
+            {orders && orders.length !== 0 ? (
+              orders.map((order) => (
+                <OrderCard
+                  key={order.orderId}
+                  data={order}
+                  setDetails={setDetails}
+                  updateOrderStatus={updateOrderStatus}
+                />
+              ))
+            ) : (
+              <div className="mx-auto w-96 text-center h-32">
+                Sipariş bulunmamaktadır.
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <Footer />
+        <Footer />
 
-      <ModalDetails details={details} />
-    </div>
-  );
+        <ModalDetails details={details} />
+      </div>
+    );
 
   interface OrderCardProps {
     data: NewOrder;
@@ -199,16 +218,31 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
     return (
       <div
         key={data.orderId}
-        className="card lg:card-side bg-base-100 w-80 lg:w-[700px] h-[650px] lg:h-[260px] shadow-xl"
+        className="card lg:card-side bg-base-100 w-80 lg:w-[700px] xl:w-[90%] h-[650px] lg:h-[270px] xl:h-[290px] shadow-xl"
       >
-        <figure>
+        <figure className="relative">
           <Image
-            src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg"
+            src="https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.webp"
             alt="Album"
             className="w-auto lg:w-64 h-full"
             width={20}
             height={20}
           />
+
+          <button
+            className="absolute top-3 left-3 btn btn-sm btn-circle lg:btn-md shadow-sm bg-red-500"
+            onClick={() => deleteOrder(data.orderId!)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 48 48"
+              fill="white"
+            >
+              <path d="M24 4c-3.5 0-6.4 2.6-6.9 6H10.2l-.3-.1H6.5a1.5 1.5 0 100 3h2.1L11.2 39c.3 2.8 2.7 5 5.5 5H31c2.8 0 5.2-2.2 5.5-5l2.5-26H41.5a1.5 1.5 0 100-3h-3.3l-.5-.1h-6.8c-.5-3.4-3.4-6-6.9-6zM24 7c1.9 0 3.4 1.3 3.9 3H20.1c.5-1.7 2-3 3.9-3zm-12.4 6h24.7l-2.5 25.7c-.1 1.2-1.1 2.3-2.4 2.3H16.3c-1.2 0-2.3-1.1-2.4-2.3L11.6 13zm9 4.2a1.5 1.5 0 00-1.5 1.5v15a1.5 1.5 0 103 0v-15a1.5 1.5 0 00-1.5-1.5zm7 0a1.5 1.5 0 00-1.5 1.5v15a1.5 1.5 0 103 0v-15a1.5 1.5 0 00-1.5-1.5z" />
+            </svg>
+          </button>
         </figure>
         <div className="card-body">
           {/* Sipariş Bilgileri */}

@@ -1,7 +1,7 @@
 import { Product } from "@/types/product";
 import { api_url } from "@/utils/api";
 import axiosInstance from "@/utils/axiosConfig";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 interface ApiResponse<T> {
   success: boolean;
@@ -12,15 +12,16 @@ interface ApiResponse<T> {
 const ProductManager = {
   addProduct: async (productData: FormData): Promise<boolean> => {
     try {
-      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
-        `${api_url}/api_kleopatra/product/add.php`,
-        productData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data;",
-          },
-        }
-      );
+      const response: AxiosResponse<ApiResponse<Product>> =
+        await axiosInstance.post(
+          `${api_url}/api_kleopatra/product/add.php`,
+          productData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data;",
+            },
+          }
+        );
       return response.data.success ? true : false;
     } catch (error) {
       console.error("Ürün ekleme hatası:", error);
@@ -30,10 +31,11 @@ const ProductManager = {
 
   removeProduct: async (productData: FormData): Promise<boolean> => {
     try {
-      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
-        `${api_url}/api_kleopatra/product/remove.php`,
-        productData
-      );
+      const response: AxiosResponse<ApiResponse<Product>> =
+        await axiosInstance.post(
+          `${api_url}/api_kleopatra/product/remove.php`,
+          productData
+        );
       return response.data.success ? true : false;
     } catch (error) {
       console.error("Ürün kaldırma hatası:", error);
@@ -43,10 +45,11 @@ const ProductManager = {
 
   fallingOutofStock: async (body: FormData): Promise<boolean> => {
     try {
-      const response: AxiosResponse<ApiResponse<Product>> = await axios.post(
-        `${api_url}/api_kleopatra/product/out_of_stock.php`,
-        body
-      );
+      const response: AxiosResponse<ApiResponse<Product>> =
+        await axiosInstance.post(
+          `${api_url}/api_kleopatra/product/out_of_stock.php`,
+          body
+        );
       return response.data.success ? true : false;
     } catch (error) {
       console.error("Stok hatası:", error);
@@ -58,7 +61,7 @@ const ProductManager = {
     try {
       const response: AxiosResponse<ApiResponse<Product>> =
         await axiosInstance.get(
-          `${api_url}/api_kleopatra/product/get_dev.php?id=${id}` //! Burada api_kleopatra/product/get.php endpoint'i kullanılacaktır.
+          `${api_url}/api_kleopatra/product/get_dev.php?id=${id}` //! TODO: Burada api_kleopatra/product/get.php endpoint'i kullanılacaktır.
         );
 
       if (response.data.success && response.data.data) {
@@ -75,9 +78,10 @@ const ProductManager = {
 
   fetchFeaturedProducts: async (): Promise<Product[] | null> => {
     try {
-      const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/api_kleopatra/product/all_get.php`
-      );
+      const response: AxiosResponse<ApiResponse<Product[]>> =
+        await axiosInstance.post(
+          `${api_url}/api_kleopatra/product/all_get.php`
+        );
 
       if (response.data.success && response.data.data) {
         const updatedProducts: Product[] = response.data.data
@@ -103,9 +107,10 @@ const ProductManager = {
 
   fetchAllProducts: async (): Promise<Product[] | null> => {
     try {
-      const response: AxiosResponse<ApiResponse<Product[]>> = await axios.post(
-        `${api_url}/api_kleopatra/product/all_gets.php`
-      );
+      const response: AxiosResponse<ApiResponse<Product[]>> =
+        await axiosInstance.post(
+          `${api_url}/api_kleopatra/product/all_gets.php`
+        );
 
       if (response.data.success && response.data.data) {
         const updatedProducts: Product[] = response.data.data.map(

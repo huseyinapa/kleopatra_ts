@@ -17,6 +17,7 @@ import { CartItem } from "@/types/cart";
 import { AddressData } from "@/types/address";
 import { setSessionStorage } from "@/utils/storage";
 import { pay_url } from "@/utils/api";
+import { useUser } from "@/provider/UserContextProvider";
 
 interface UserData {
   id: string;
@@ -47,6 +48,8 @@ const Payment: React.FC<PaymentProps> = ({
   setPaymentData,
   handleContinue,
 }) => {
+  const user = useUser();
+
   const [cardInfo, setCardInfo] = useState<CardInfo>({
     cardNumber: "",
   });
@@ -60,8 +63,9 @@ const Payment: React.FC<PaymentProps> = ({
   }, []);
 
   const fetchUser = async () => {
-    const userID = localStorage.getItem("id") || "";
-    const userEmail = localStorage.getItem("email") || "";
+    const userID = (user?.sub ?? localStorage.getItem("id"))?.toString() || "";
+    const userEmail =
+      (user?.email ?? localStorage.getItem("email"))?.toString() || "";
     const userLastLogin = localStorage.getItem("last_login") || "";
     const userDate = localStorage.getItem("date") || "";
 
@@ -216,7 +220,7 @@ const Payment: React.FC<PaymentProps> = ({
       },
       basketItems: basketItems,
     };
-    console.log(url);
+    // console.log(url);
 
     try {
       // Ürün stok kontrolü
@@ -243,7 +247,7 @@ const Payment: React.FC<PaymentProps> = ({
         }
       );
 
-      console.log(paymentResponse);
+      // console.log(paymentResponse);
       if (paymentResponse.data.status === "success") {
         setPaymentData(paymentData);
         await fallingOutofCart(paymentData);

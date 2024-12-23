@@ -17,11 +17,13 @@ const JWT_SECRET = process.env.JWT_SECRET || "falan-filan";
 export async function createToken(user: {
   id: string;
   email: string;
+  permission: string;
 }): Promise<string> {
   // JWT payload (içerik)
   const payload = {
     sub: user.id,
     email: user.email,
+    permission: user.permission,
   };
 
   // Token'ı oluşturma (expiresIn: 7 gün)
@@ -38,10 +40,11 @@ export async function createToken(user: {
  * @example await loginUser({ id: "123", email: "user@example.com" });
  * @async true
  */
-export async function loginUser(
-  user: { id: string; email: string },
-  permission: string
-) {
+export async function loginUser(user: {
+  id: string;
+  email: string;
+  permission: string;
+}) {
   const token = await createToken(user);
   const cookieStore = cookies();
 
@@ -49,17 +52,8 @@ export async function loginUser(
   cookieStore.set("session-token", token, {
     path: "/",
     httpOnly: true,
-    secure: true,
+    secure: false,
     maxAge: 2592000, // 30 gün
-    sameSite: "strict",
-  });
-
-  cookieStore.set("permission", permission, {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    maxAge: 2592000, // 30 gün
-    sameSite: "strict",
   });
 
   return token;
@@ -93,18 +87,5 @@ export async function verifyToken(
 export async function logoutUser() {
   const cookieStore = cookies();
 
-  // Cookie'yi silmek için maxAge değerini sıfırla
-  cookieStore.set("session-token", "", {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    maxAge: 0,
-  });
-
-  cookieStore.set("permission", "", {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    maxAge: 0,
-  });
+  cookieStore.delete("session-token");
 }

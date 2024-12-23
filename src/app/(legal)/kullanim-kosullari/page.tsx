@@ -1,13 +1,11 @@
 "use client";
 
-import Nav from "../../_components/nav";
 import Footer from "../../_components/footer";
 
 export default function TermsOfUse() {
   return (
     <div data-theme="valentine">
       <title>Gönen Kleopatra | Kullanım Koşulları</title>
-      <Nav />
 
       <h1 className="mt-3 text-center font-semibold text-2xl">
         Kullanım Koşulları

@@ -3,7 +3,10 @@ import axios from "axios";
 import axiosRetry from "axios-retry";
 
 // Axios instance oluştur
-const axiosInstance = axios.create();
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  timeout: 10000, // İstek zaman aşımı süresi (ms)
+});
 
 // Retry ayarlarını yap
 axiosRetry(axiosInstance, {

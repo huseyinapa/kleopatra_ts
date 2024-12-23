@@ -1,11 +1,8 @@
-import Nav from "@/app/_components/nav";
-import Footer from "@/app/_components/footer";
-
 import ProductManager from "@/services/product";
-import { Product } from "@/types/product";
-import { getCookie } from "@/services/cookie";
 import ProductCard from "./_components/ProductCard";
-import { Toaster } from "react-hot-toast";
+import Footer from "@/app/_components/footer";
+import { Product } from "@/types/product";
+import { useUser } from "@/provider/UserContextProvider";
 
 async function fetchProducts() {
   try {
@@ -18,36 +15,14 @@ async function fetchProducts() {
 }
 
 export default async function AllProducts() {
-  // const [products, setProducts] = useState<Product[]>([]); // Product type is defined
-  // const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const user = useUser();
 
-  // Fetch products and check if user is admin when component mounts
-  // useEffect(() => {
-  //   getProductsList();
-  //   checkIsAdmin();
-  // }, []);
-
-  // Check if the user has admin privileges
-  // const checkIsAdmin = () => {
-  const permisson = getCookie("permission") || "0";
-  const isAdmin: boolean = parseInt(permisson) === 1 || false;
-  // };
-
-  // Fetch all products
-  // const getProductsList = async () => {
-  //   try {
+  const isAdmin: boolean = user?.permission === "1" || false;
   const products = (await fetchProducts()) || [];
-  // setProducts(products ?? []);
-  //   } catch (error) {
-  //     console.error("Product fetch error:", error);
-  //     alert("Bilinmeyen bir hata oluştu.");
-  //   }
-  // };
 
   return (
     <div data-theme="valentine">
-      <Toaster position="bottom-right" reverseOrder={false} />
-      <Nav />
+      {/* <Nav /> */}
       <div className="mx-auto justify-center mb-10">
         {products.length === 0 ? (
           <div className="mx-auto h-60 justify-center mt-7">

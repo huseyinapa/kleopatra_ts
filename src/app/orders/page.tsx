@@ -3,9 +3,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-import Nav from "@/app/_components/nav";
 import Footer from "@/app/_components/footer";
 import OrderCard from "./_components/OrderCard";
 import ModalDetails from "./modal/ModalDetails";
@@ -143,8 +142,7 @@ export default function OrderPage() {
   return (
     <main data-theme="valentine" className="min-w-fit">
       <title>Kleopatra - Siparişlerim</title>
-      <Toaster position="bottom-right" reverseOrder={false} />
-      <Nav />
+      {/* <Nav /> */}
       <div className="min-h-96">
         <h1 className="ml-10 mb-4 text-start font-bold text-2xl">
           Siparişlerim

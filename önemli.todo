@@ -1,0 +1,3 @@
+Bu projede kendimi geliştirdiğim sonradan bu şekilde yapacağım dediğim çok fazla şey var aklıma geldikçe yazacağım. Fakat şuanlık aklımda kalanlar;
+
+Örneğin giriş yaparken giriş için 2 servis eklemişim hem user.ts hem de auth.ts birisi backend birisi de cookie. Ayrı yapmam aşırı saçma olmuş. Tabi birazda cookie'yi sonradan eklediğim için fakat bunu düzelteceğim.

@@ -1,48 +1,58 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import toast from "react-hot-toast";
+import { jwtVerify } from "jose";
 
-// Kontrol edilmesi gereken sayfalar
-const adminRoute = ["/add-product"];
-const protectedRoutes = ["/cart", "/orders", "/add-product", "/confirm-order"];
+const adminRoutes = ["/add-product", "/confirm-order"];
+const protectedRoutes = ["/cart", "/orders"];
+const secret = process.env.JWT_SECRET;
 
-export function middleware(req: NextRequest) {
-  // Oturum verilerini kontrol et (örneğin token)
-  const token = req.cookies.get("session-token");
-  const perm = req.cookies.get("permission");
+if (!secret) {
+  console.error("JWT_SECRET tanımlanmadı!");
+}
 
-  // Eğer korumalı bir sayfaya erişim varsa ve oturum yoksa yönlendir
-  if (process.env.NODE_ENV === "development")
-    console.log(req.nextUrl.pathname + " korunuyor.");
+function isProtectedRoute(pathname: string) {
+  return protectedRoutes.includes(pathname);
+}
 
-  // console.log("Token:", token);
+function isAdminRoute(pathname: string) {
+  return adminRoutes.includes(pathname);
+}
 
-  if (!token) {
-  } else if (protectedRoutes.includes(req.nextUrl.pathname)) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/";
-    toast.error("Bu sayfaya erişmek için giriş yapmalısınız!");
+async function verifyToken(token: string) {
+  const { payload } = await jwtVerify(token, new TextEncoder().encode(secret));
+  return payload.permission as string | undefined;
+}
 
-    return NextResponse.redirect(url);
-  } else if (req.nextUrl.pathname === "/confirm-order" && perm?.value !== "1") {
-    const url = req.nextUrl.clone();
-    url.pathname = "/";
-    console.error("You do not have permission to access this page.");
-    return NextResponse.redirect(url);
-  } else if (adminRoute.includes(req.nextUrl.pathname) && perm?.value !== "1") {
-    const url = req.nextUrl.clone();
-    url.pathname = "/";
-    toast.error("Bu sayfaya erişmek için yönetici olmalısınız!");
+export async function middleware(req: NextRequest) {
+  const token = req.cookies.get("session-token")?.value;
+  const { pathname } = req.nextUrl;
 
-    return NextResponse.redirect(url);
+  if (process.env.NODE_ENV === "development") {
+    console.log("Kontrol edilen yol:", pathname, "token:", token);
   }
 
-  // Oturum varsa ya da korumasız sayfalarda erişim sağlanır
+  // Korunan sayfalar için oturum kontrolü
+  if (isProtectedRoute(pathname) && !token) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // Admin sayfaları için ek kontrol
+  if (isAdminRoute(pathname)) {
+    if (!token) {
+      // Token yoksa direkt engelle
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    const permission = await verifyToken(token);
+    if (permission !== "1") {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
-// Middleware sadece bu yollar için çalışacak
-
 export const config = {
-  matcher: ["/", "/cart", "/orders", "/add-product", "/confirm-order"],
+  matcher: ["/((?!api|_next|_vercel|sitemap|.*\\..*|/).*)"],
+  runtime: "nodejs",
 };

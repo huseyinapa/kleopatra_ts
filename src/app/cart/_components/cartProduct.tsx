@@ -102,7 +102,7 @@ const CartProduct: FC<CartProductProps> = ({
     }
   };
 
-  console.log(cartItems);
+  // console.log(cartItems);
 
   return (
     <div className="">

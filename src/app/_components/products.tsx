@@ -9,20 +9,16 @@ import Link from "next/link";
 import Image from "next/image";
 import Functions from "@/utils/functions";
 import { Product } from "@/types/product";
+import { useUser } from "@/provider/UserContextProvider";
 
-const Products: React.FC = () => {
+export default function Products() {
+  const user = useUser();
+
   const [products, setProducts] = useState<Product[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     fetchAllProducts();
-    checkIsAdmin();
   }, []);
-
-  const checkIsAdmin = () => {
-    const getPermission = parseInt(localStorage.getItem("permission") ?? "0");
-    setIsAdmin(getPermission === 1);
-  };
 
   const fetchAllProducts = async () => {
     try {
@@ -55,7 +51,7 @@ const Products: React.FC = () => {
   };
 
   const handleAddCart = async (data: Product) => {
-    const id = localStorage.getItem("id") ?? null;
+    const id = (user!.sub ?? localStorage.getItem("id")).toString();
     if (id === null) {
       toast.error("Sepete ürün eklemek için kayıt olmanız gerekir.");
       return;
@@ -93,7 +89,6 @@ const Products: React.FC = () => {
         const formData = new FormData();
         formData.append("id", id);
         // const response = await CartManager.fetchCart(formData);
-
         toast.success("Ürün sepete eklendi!");
       } else {
         toast.error("Ürün sepete eklenemedi.");
@@ -107,13 +102,11 @@ const Products: React.FC = () => {
   // const toggleText = (text: string, size: number = 40) => {
   //   const isShortened = text.length > size;
   //   const shortenedText = isShortened ? `${text.substring(0, size)}..` : text;
-
   //   const handleClick = () => {
   //     if (isShortened) {
   //       alert(text);
   //     }
   //   };
-
   //   return (
   //     <span
   //       onClick={handleClick}
@@ -123,7 +116,6 @@ const Products: React.FC = () => {
   //     </span>
   //   );
   // };
-
   return products.length === 0 ? (
     <div></div>
   ) : (
@@ -135,7 +127,7 @@ const Products: React.FC = () => {
         {products.map((product) => (
           <ProductCard
             key={product.id}
-            isAdmin={isAdmin}
+            isAdmin={user?.permission === "1"}
             product={product}
             removeProduct={removeProduct}
             handleAddCart={handleAddCart}
@@ -144,9 +136,7 @@ const Products: React.FC = () => {
       </div>
     </section>
   );
-};
-
-export default Products;
+}
 
 type ProductCardProps = {
   isAdmin: boolean;

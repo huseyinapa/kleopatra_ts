@@ -1,46 +1,42 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { trackGAEvent } from "@/utils/google-analytics";
 import { logoutUser } from "@/services/auth";
+import { useEffect, useState } from "react";
+import { useUser } from "@/provider/UserContextProvider";
+import toast from "react-hot-toast";
 
 // Props için TypeScript tipi tanımlıyoruz
 
-export default function Nav() {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
+// type NavProps = {
+//   isAdmin: boolean;
+//   isLoggedIn: boolean;
+//   email: string;
+// };
+
+export default function Nav(): JSX.Element {
+  const user = useUser();
 
   const logOut = async () => {
-    localStorage.removeItem("id");
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("permission");
-    localStorage.removeItem("last_login");
-    localStorage.removeItem("date");
-
     await logoutUser();
-    window.location.reload();
+    localStorage.clear();
   };
 
-  const checkIsAdmin = (): void => {
-    const getPermission = parseInt(localStorage.getItem("permission") ?? "0");
-
-    if (getPermission === 1) setIsAdmin(true);
-    else setIsAdmin(false);
-  };
-
+  console.log(user);
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    checkIsAdmin();
+    console.log(`user ${user}`);
 
-    if (storedEmail) {
-      setEmail(storedEmail);
-      setIsLoggedIn(true);
+    if (storedEmail && !user) {
+      console.log("email var");
+      toast.success("Başarıyla çıkış yapıldı.");
+      logOut();
     }
-  }, []);
+  }, [user]);
+
   return (
     <header className="flex flex-row justify-center md:justify-between flex-wrap gap-6 p-4 shadow-gray-600/10 translate-y-1 transition-all duration-300 scale-95 origin-top lg:relative lg:scale-100 lg:peer-checked:translate-y-0 lg:translate-y-0 lg:flex lg:flex-row lg:items-center lg:gap-0 lg:p-8 lg:bg-transparent lg:visible lg:opacity-100 peer-checked:scale-100">
       {/* sm screen */}
@@ -58,7 +54,7 @@ export default function Nav() {
         </Link>
       </div>
       <div className="flex items-center justify-center">
-        {isLoggedIn ? (
+        {user ? (
           <div className="flex space-x-4">
             <Link
               href={"/orders"}
@@ -119,19 +115,29 @@ export default function Nav() {
                 className="menu menu-sm dropdown-content w-52 mt-3 z-50 p-2 shadow bg-base-100 rounded-box"
               >
                 <li>
-                  <a className="justify-between">{email}</a>
+                  <a className="justify-between">{user.email}</a>
                 </li>
                 <div className="divider h-1"></div>
-                <li>
-                  {isAdmin && (
-                    <Link
-                      href="/add-product"
-                      className="block px-4 py-2 hover:bg-gray-100 truncate"
-                    >
-                      Ürün Ekle
-                    </Link>
-                  )}
-                </li>
+                {user.permission === "1" && (
+                  <>
+                    <li>
+                      <Link
+                        href="/add-product"
+                        className="block px-4 py-2 hover:bg-gray-100 truncate"
+                      >
+                        Ürün Ekle
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/confirm-order"
+                        className="block px-4 py-2 hover:bg-gray-100 truncate"
+                      >
+                        Tüm Siparişler
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li>
                   <button
                     className="block px-4 py-2 text-red-500 hover:bg-gray-100 truncate"

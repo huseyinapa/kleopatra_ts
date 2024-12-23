@@ -6,6 +6,11 @@ import { Toaster } from "react-hot-toast";
 import GoogleAnalytics from "./analytics";
 import Login from "@/app/modal/login";
 import Registration from "@/app/modal/registration";
+import Nav from "./_components/nav";
+import { CookieUser } from "@/types/cookie";
+import { getUserFromSessionToken } from "@/lib/auth";
+import { cookies } from "next/headers";
+import UserContextProvider from "@/provider/UserContextProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -61,11 +66,17 @@ export const metadata: Metadata = {
   authors: [{ name: "Merve Pektaş", url: "https://www.gonenkleopatra.com/" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const sessionToken = cookies().get("session-token")?.value;
+  const user: CookieUser | null = sessionToken
+    ? await getUserFromSessionToken(sessionToken)
+    : null;
+
+  // console.log(user);
   return (
     <html lang="tr" className={inter.className}>
       <GoogleAnalytics />
@@ -77,10 +88,13 @@ export default function RootLayout({
         }`}
       >
         <Toaster position="bottom-right" reverseOrder={false} />
-        {children}
 
-        <Registration />
-        <Login />
+        <UserContextProvider user={user}>
+          <Nav />
+          {children}
+          <Registration />
+          <Login />
+        </UserContextProvider>
       </body>
     </html>
   );

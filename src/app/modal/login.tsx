@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-
+"maymun hilal";
 import { useState, FormEvent } from "react";
 import toast from "react-hot-toast";
 
@@ -8,6 +9,7 @@ import { trackGAEvent } from "@/utils/google-analytics";
 import Functions from "@/utils/functions";
 import User from "@/services/user";
 import { loginUser } from "@/services/auth";
+import { setCookie } from "@/services/cookie";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -28,16 +30,22 @@ const Login: React.FC = () => {
       formData.append("email", email);
       formData.append("password", password);
 
+      const userData = await User.get(email);
+      if (!userData) {
+        alert("Kayıtlı hesap bulunamadı!");
+        return;
+      }
+
       const response = (await User.login(formData)) || null;
-      console.log(response);
 
       if (response !== null) {
-        const token = await loginUser(
-          { id: response.data?.id || "", email },
-          response.data?.permission!.toString() || "0"
-        );
+        const token = await loginUser({
+          id: response.data?.id || "",
+          email,
+          permission: response.data?.permission!.toString() || "0",
+        });
 
-        localStorage.setItem("token", token);
+        localStorage.setItem("session-token", token);
         localStorage.setItem("id", response.data?.id || "");
         localStorage.setItem("email", email);
         localStorage.setItem(
@@ -55,12 +63,12 @@ const Login: React.FC = () => {
 
         toast.success(`${email} başarıyla giriş yapıldı!`);
       } else {
-        alert("Kayıtlı hesap bulunamadı!");
+        alert("Hesap bilgileri yanlış!");
         return;
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Beklenmedik bir sorun oluştu. Hata:LN-50");
+      // console.error(error);
+      toast.error("Beklenmedik bir sorun oluştu. Hata: LN-50");
     }
   };
 
@@ -71,9 +79,9 @@ const Login: React.FC = () => {
     >
       <div className="modal-box">
         <h3 className="font-bold text-lg text-center">GİRİŞ YAP</h3>
-        <form method="dialog" className="modal-middle" onSubmit={handleSubmit}>
-          <div className="form-control w-full  max-w-xs mb-4">
-            <label className="label" autoCorrect="email" htmlFor="email">
+        <form className="modal-middle" onSubmit={handleSubmit}>
+          <div className="form-control w-full max-w-xs mb-4">
+            <label className="label" htmlFor="email">
               <span className="label-text">E-posta Adresi</span>
             </label>
             <input
@@ -82,11 +90,12 @@ const Login: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="input input-bordered rounded-md w-full"
+              autoComplete="off"
               required
             />
           </div>
           <div className="form-control w-full max-w-xs mb-4">
-            <label className="label" autoCorrect="password" htmlFor="password">
+            <label className="label" htmlFor="password">
               <span className="label-text">Şifre</span>
             </label>
             <input
@@ -95,47 +104,51 @@ const Login: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="input input-bordered rounded-md w-full"
+              autoComplete="off"
               required
             />
           </div>
+          <div className="modal-action justify-between">
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-sm">Hesabın yok mu?</span>
+              <button
+                type="button"
+                className="btn-link"
+                onClick={() => {
+                  (
+                    document.getElementById("login_modal") as HTMLDialogElement
+                  )?.close();
+                  (
+                    document.getElementById(
+                      "register_modal"
+                    ) as HTMLDialogElement
+                  )?.showModal();
+                }}
+              >
+                Kayıt Ol
+              </button>
+            </div>
+            <div className="btn-group-horizontal flex justify-end space-x-2">
+              <button
+                type="button"
+                className="btn"
+                onClick={() =>
+                  (
+                    document.getElementById("login_modal") as HTMLDialogElement
+                  )?.close()
+                }
+              >
+                İptal
+              </button>
+              <button
+                type="submit"
+                className="btn glass p-2 bg-[#c21546] hover:bg-[#8f0f33] text-white transition-colors duration-300 ease-in-out"
+              >
+                Giriş Yap
+              </button>
+            </div>
+          </div>
         </form>
-        <div className="modal-action justify-between">
-          <div className="flex items-center justify-center space-x-2">
-            <span className="text-sm">Hesabın yok mu?</span>
-            <button
-              className="btn-link"
-              onClick={() => {
-                (
-                  document.getElementById("login_modal") as HTMLDialogElement
-                )?.close();
-                (
-                  document.getElementById("register_modal") as HTMLDialogElement
-                )?.showModal();
-              }}
-            >
-              Kayıt Ol
-            </button>
-          </div>
-          <div className="btn-group-horizontal flex justify-end space-x-2">
-            <button
-              className="btn"
-              onClick={() =>
-                (
-                  document.getElementById("login_modal") as HTMLDialogElement
-                )?.close()
-              }
-            >
-              İptal
-            </button>
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="btn glass p-2 bg-[#c21546] hover:bg-[#8f0f33] text-white transition-colors duration-300 ease-in-out"
-            >
-              Giriş Yap
-            </button>
-          </div>
-        </div>
       </div>
     </dialog>
   );

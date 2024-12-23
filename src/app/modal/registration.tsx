@@ -8,7 +8,7 @@ import User from "@/services/user";
 import { trackGAEvent } from "@/utils/google-analytics";
 
 import { userIdentifier } from "@/actions/idCreator";
-import { logoutUser } from "@/services/auth";
+import { loginUser } from "@/services/auth";
 
 const Registration: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -43,21 +43,29 @@ const Registration: React.FC = () => {
         const response = await User.register(formData);
 
         if (response !== null) {
+          const token = await loginUser({
+            id: id,
+            email,
+            permission: response.data?.permission!.toString() || "0",
+          });
+
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
+          localStorage.setItem("session-token", token);
           localStorage.setItem("permission", "0");
           localStorage.setItem("last_login", date);
           localStorage.setItem("date", date);
 
           trackGAEvent("Kullanıcı girişi", "Kayıt Butonu", "Kayıt yapıldı");
 
-          await logoutUser();
+          // await logoutUser();
 
-          window.location.href = "/";
+          window.location.reload();
           toast.success(`${email} başarıyla kayıt olundu ve giriş yapıldı!`);
-        } else {
-          toast.error("Kayıtlı hesap bulunamadı!");
         }
+        //  else {
+        //   toast.error("Kayıtlı hesap bulunamadı!");
+        // }
       }
     } catch (error) {
       console.error(error);

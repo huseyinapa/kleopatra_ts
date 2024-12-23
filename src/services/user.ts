@@ -81,6 +81,7 @@ const User = {
       const response: AxiosResponse<ApiResponse<UserData>> = await axios.get(
         `${api_url}/api_kleopatra/user/get.php?email=${email}`
       );
+      console.log(response.data);
 
       if (response.data.success) {
         return response.data.data as UserData;

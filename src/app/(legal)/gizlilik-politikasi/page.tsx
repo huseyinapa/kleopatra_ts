@@ -1,6 +1,5 @@
 "use client";
 
-import Nav from "../../_components/nav";
 import Footer from "../../_components/footer";
 
 export default function PrivacyPolicy() {
@@ -8,7 +7,6 @@ export default function PrivacyPolicy() {
     <div data-theme="valentine">
       <title>Gönen Kleopatra | Gizlilik Politikası</title>
 
-      <Nav />
       <h1 className="mt-3 text-center font-semibold text-2xl">
         Gizlilik Politikası
       </h1>

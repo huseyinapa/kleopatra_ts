@@ -2,10 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
-
-import Nav from "@/app/_components/nav";
 import Footer from "@/app/_components/footer";
-
 import AddToCartButton from "./_components/addToCartButton";
 import ProductList from "./_components/productList";
 import { api_url } from "@/utils/api";
@@ -61,7 +58,7 @@ export default async function ProductPage({
 
   return (
     <div className="min-w-full">
-      <Nav />
+      {/* <Nav /> */}
 
       <title>Ürün Detayı - Gönen Kleopatra</title>
       <meta
