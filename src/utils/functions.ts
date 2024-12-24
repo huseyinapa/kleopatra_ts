@@ -35,9 +35,9 @@ const Functions = {
     return text
       .toLowerCase()
       .replace(/[çÇğĞıİöÖşŞüÜ]/g, (match) => turkishMap[match] || match)
-      .replace(/[^a-z0-9\-]/g, "-") // Non-alphanumeric to '-'
-      .replace(/-+/g, "-") // Replace multiple dashes
-      .replace(/^-|-$/g, ""); // Remove leading/trailing dashes
+      .replace(/[^a-z0-9\-]/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
   },
 };
 

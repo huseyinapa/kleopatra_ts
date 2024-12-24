@@ -45,15 +45,9 @@ export default function OrderPage() {
       // Siparişleri ve ürünleri birleştir
       const orderArray: NewOrder[] = orderData.map(
         (order: NewOrder, index: number) => {
-          // // console.log("orderCustomer: ", orderCustomer[index]);
-          //
           const items = (orderItems[index] || []).map(
             (item: OrderItem) => item
           );
-
-          if (orderCustomer[index] === null) {
-            // console.log("order: ", orderData[index]);
-          }
 
           let customer: OrderCustomer;
           if (orderCustomer[index] === null)
@@ -72,8 +66,6 @@ export default function OrderPage() {
             customer = {
               ...orderCustomer[index],
             };
-
-          // console.log("customer: ", customer);
 
           return {
             orderId: order.orderId!,
@@ -95,8 +87,8 @@ export default function OrderPage() {
       // Durum güncellemesi
       setOrders(orderArray);
     } catch (error) {
-      console.error(error);
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: O-25");
+      if (process.env.NODE_ENV === "development") console.error(error);
     }
   };
 
@@ -133,8 +125,8 @@ export default function OrderPage() {
         return false;
       }
     } catch (error) {
-      console.error(error);
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
+      if (process.env.NODE_ENV === "development") console.error(error);
       return false;
     }
   };

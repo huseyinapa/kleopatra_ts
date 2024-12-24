@@ -35,8 +35,6 @@ const CartProduct: FC<CartProductProps> = ({
   const [cartLength, setCartLength] = useState<number>(cartItems.length);
 
   useEffect(() => {
-    // // console.log("cartItems", cartItems);
-
     setCartLength(cartItems.length);
   }, [cartItems]);
 
@@ -54,9 +52,7 @@ const CartProduct: FC<CartProductProps> = ({
   };
 
   const handleIncreaseAmount = async (itemId: string) => {
-    // console.log(itemId);
     const product = await ProductManager.getProduct(itemId);
-    // console.log(product);
 
     setCartItems((prevCartItems) =>
       prevCartItems.map((item) =>
@@ -101,8 +97,6 @@ const CartProduct: FC<CartProductProps> = ({
       return toast.error("Ürün sepetinizden kaldırılamadı.");
     }
   };
-
-  // console.log(cartItems);
 
   return (
     <div className="">

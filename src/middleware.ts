@@ -6,7 +6,7 @@ const adminRoutes = ["/add-product", "/confirm-order"];
 const protectedRoutes = ["/cart", "/orders"];
 const secret = process.env.JWT_SECRET;
 
-if (!secret) {
+if (!secret || process.env.NODE_ENV !== "development") {
   console.error("JWT_SECRET tanımlanmadı!");
 }
 

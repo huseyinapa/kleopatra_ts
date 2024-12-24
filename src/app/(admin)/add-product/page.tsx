@@ -31,7 +31,7 @@ const ProductAdd: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
     }
   };
 

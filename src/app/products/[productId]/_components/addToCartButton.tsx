@@ -66,7 +66,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       }
     } catch (error) {
       toast.error("Bilinmeyen hata. Kod: AC-HAC");
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     } finally {
       setIsLoading(false);
     }

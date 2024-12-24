@@ -25,13 +25,10 @@ export default function Nav(): JSX.Element {
     localStorage.clear();
   };
 
-  console.log(user);
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    console.log(`user ${user}`);
 
     if (storedEmail && !user) {
-      console.log("email var");
       toast.success("Başarıyla çıkış yapıldı.");
       logOut();
     }

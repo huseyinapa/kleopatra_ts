@@ -220,7 +220,6 @@ const Payment: React.FC<PaymentProps> = ({
       },
       basketItems: basketItems,
     };
-    // console.log(url);
 
     try {
       // Ürün stok kontrolü
@@ -247,7 +246,6 @@ const Payment: React.FC<PaymentProps> = ({
         }
       );
 
-      // console.log(paymentResponse);
       if (paymentResponse.data.status === "success") {
         setPaymentData(paymentData);
         await fallingOutofCart(paymentData);
@@ -256,7 +254,7 @@ const Payment: React.FC<PaymentProps> = ({
       }
     } catch (error) {
       toast.error("Ödeme işlemi sırasında bir hata oluştu.");
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
     setIsLoading(false);
   };
@@ -296,7 +294,6 @@ const Payment: React.FC<PaymentProps> = ({
       orderForm.append("isDelete", "false");
 
       const orderResult = await NewOrderManager.add(orderForm);
-      // console.log("result:" + orderResult);
       setSessionStorage("orderID", orderResult!);
 
       if (orderResult !== null) {
@@ -358,7 +355,7 @@ const Payment: React.FC<PaymentProps> = ({
       }
     } catch (error) {
       toast.error(`Bilinmeyen hata: Hata kodu: P-323`);
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   };
 

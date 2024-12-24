@@ -31,7 +31,7 @@ const NewOrderManager = {
       );
       return response.data.success ? response.data.orderId || null : null;
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -54,7 +54,7 @@ const NewOrderManager = {
       );
       return response.data.success;
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       throw error;
     }
   },
@@ -77,7 +77,7 @@ const NewOrderManager = {
       );
       return response.data.success;
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       throw error;
     }
   },
@@ -106,7 +106,7 @@ const NewOrderManager = {
         throw new Error("Request failed");
       }
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       throw error;
     }
   },
@@ -136,7 +136,8 @@ const NewOrderManager = {
       }
       return null;
     } catch (error) {
-      console.error("Error retrieving customer orders: ", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Error retrieving customer orders: ", error);
       throw error;
     }
   },
@@ -157,7 +158,8 @@ const NewOrderManager = {
       }
       return null;
     } catch (error) {
-      console.error("Error retrieving customer orders: ", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Error retrieving customer orders: ", error);
       throw error;
     }
   },
@@ -181,7 +183,8 @@ const NewOrderManager = {
       }
       return null;
     } catch (error) {
-      console.error("Error retrieving customer orders: ", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Error retrieving customer orders: ", error);
       throw error;
     }
   },
@@ -205,7 +208,7 @@ const NewOrderManager = {
         return null;
       }
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -223,7 +226,8 @@ const NewOrderManager = {
       );
       return response.data.success;
     } catch (error) {
-      console.error("Sipariş iptal etme hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Sipariş iptal etme hatası:", error);
       return false;
     }
   },
@@ -254,7 +258,7 @@ const NewOrderManager = {
         return null;
       }
     } catch (error) {
-      console.log("error:", error);
+      if (process.env.NODE_ENV === "development") console.log("error:", error);
       return null;
     }
   },
@@ -276,7 +280,8 @@ const NewOrderManager = {
 
       return response.data.success;
     } catch (error) {
-      console.error("Sipariş silme hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Sipariş silme hatası:", error);
       return false;
     }
   },
@@ -298,7 +303,8 @@ const NewOrderManager = {
 
       return response.data.success;
     } catch (error) {
-      console.error("Sipariş öğelerini silme hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Sipariş öğelerini silme hatası:", error);
       return false;
     }
   },
@@ -319,7 +325,8 @@ const NewOrderManager = {
 
       return response.data.success;
     } catch (error) {
-      console.error("Sipariş müşterisini silme hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Sipariş müşterisini silme hatası:", error);
       return false;
     }
   },

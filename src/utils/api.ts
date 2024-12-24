@@ -1,9 +1,13 @@
-export const api_url =
-  process.env.NEXT_PUBLIC_NODE_ENV === "development"
-    ? "http://3.124.99.216"
-    : "https://api.gonenkleopatra.com";
+export const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV as
+  | "development"
+  | "production";
 
-export const pay_url =
-  process.env.NEXT_PUBLIC_NODE_ENV === "development"
-    ? "https://pay.huseyinapa.com"
-    : "https://pay.gonenkleopatra.com";
+export const api_url = {
+  development: "http://3.124.99.216",
+  production: "https://api.gonenkleopatra.com",
+}[NODE_ENV];
+
+export const pay_url = {
+  development: "https://pay.huseyinapa.com",
+  production: "https://pay.gonenkleopatra.com",
+}[NODE_ENV];

@@ -8,6 +8,7 @@ import ProductList from "./_components/productList";
 import { api_url } from "@/utils/api";
 import { Product } from "@/types/product";
 import NotFound from "./not-found";
+import Logger from "@/utils/logger";
 
 async function getProductData(productId: string): Promise<Product | null> {
   try {
@@ -20,7 +21,7 @@ async function getProductData(productId: string): Promise<Product | null> {
     }
     return product.data;
   } catch (error) {
-    console.log("HATA:" + error);
+    if (process.env.NODE_ENV === "development") console.log("HATA:" + error);
     return null;
   }
 }
@@ -31,7 +32,7 @@ function extractIdFromUrl(url: string): string {
   // ID'nin son iki kısmını birleştir
   const splitSegment = lastSegment.split("-");
   const id = splitSegment.slice(-2).join("-");
-  console.info("productId: " + id);
+  Logger.log("productId: " + id, "log");
 
   return id;
 }
@@ -45,13 +46,11 @@ interface ProductPageProps {
 export default async function ProductPage({
   params: { productId },
 }: ProductPageProps) {
-  console.info("productUrl: " + productId);
+  Logger.log("productUrl: " + productId);
 
   const id = extractIdFromUrl(productId);
 
   const product = await getProductData(id);
-  // // console.log(product);
-
   if (!product) {
     return <NotFound />;
   }

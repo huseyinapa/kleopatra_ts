@@ -11,6 +11,7 @@ import { CookieUser } from "@/types/cookie";
 import { getUserFromSessionToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 import UserContextProvider from "@/provider/UserContextProvider";
+import Logger from "@/utils/logger";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -76,7 +77,7 @@ export default async function RootLayout({
     ? await getUserFromSessionToken(sessionToken)
     : null;
 
-  // console.log(user);
+  Logger.log(user?.email, "log");
   return (
     <html lang="tr" className={inter.className}>
       <GoogleAnalytics />

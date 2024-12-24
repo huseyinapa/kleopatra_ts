@@ -1,3 +1,5 @@
+import Logger from "@/utils/logger";
+
 /**
  * Tarayıcıya cookie ekler.
  *
@@ -26,19 +28,19 @@ export function setCookie(name: string, value: string, days: number) {
  * @returns Cookie değeri veya null
  */
 export function getCookie(name: string): string | null {
-  console.log("name: " + name);
+  Logger.log("Cookie Name: " + name, "log");
 
   if (typeof document === "undefined") return null; // Sadece istemci tarafında çalıştır
 
   // Tüm cookie'leri al
   const allCookies = document.cookie;
-  console.log("All Cookies: " + allCookies);
+  Logger.log("All Cookies: " + allCookies, "log");
 
   // Cookie'yi bulmaya çalış
   const match = allCookies.match(new RegExp(`(^|; )${name}=([^;]*)`));
 
   if (match !== null) {
-    console.log("Cookie Decoded: " + decodeURIComponent(match[2]));
+    Logger.log("Cookie Decoded: " + decodeURIComponent(match[2]), "log");
     return decodeURIComponent(match[2]);
   }
 

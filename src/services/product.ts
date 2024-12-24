@@ -24,7 +24,8 @@ const ProductManager = {
         );
       return response.data.success ? true : false;
     } catch (error) {
-      console.error("Ürün ekleme hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Ürün ekleme hatası:", error);
       return false;
     }
   },
@@ -38,7 +39,8 @@ const ProductManager = {
         );
       return response.data.success ? true : false;
     } catch (error) {
-      console.error("Ürün kaldırma hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Ürün kaldırma hatası:", error);
       return false;
     }
   },
@@ -52,7 +54,8 @@ const ProductManager = {
         );
       return response.data.success ? true : false;
     } catch (error) {
-      console.error("Stok hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Stok hatası:", error);
       return false;
     }
   },
@@ -67,11 +70,10 @@ const ProductManager = {
       if (response.data.success && response.data.data) {
         return response.data.data;
       } else {
-        // console.log("test");
         return null;
       }
     } catch (error) {
-      console.log("Ürün getirme hatası:", error);
+      if (process.env.NODE_ENV === "development") console.log("Ürün:", error);
       return null;
     }
   },
@@ -100,7 +102,8 @@ const ProductManager = {
         return null;
       }
     } catch (error) {
-      console.error("Ürün getirme hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Ürün getirme hatası:", error);
       return null;
     }
   },
@@ -129,7 +132,7 @@ const ProductManager = {
         return null;
       }
     } catch (error) {
-      console.log("Ürün getirme hatası:", error);
+      if (process.env.NODE_ENV === "development") console.log("Ürün:", error);
       return null;
     }
   },

@@ -68,8 +68,8 @@ const Registration: React.FC = () => {
         // }
       }
     } catch (error) {
-      console.error(error);
       toast.error("Beklenmedik bir sorun oluştu.");
+      if (process.env.NODE_ENV === "development") console.error(error);
     }
   };
 

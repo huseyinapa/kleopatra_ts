@@ -27,7 +27,7 @@ export default function Products() {
         setProducts(response);
       }
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   };
 
@@ -45,8 +45,8 @@ export default function Products() {
         toast.error("Bilinmeyen hata! Hata kodu: AP-58");
       }
     } catch (error) {
-      console.error(error);
       toast.error("Bilinmeyen hata! Hata kodu: AP-60");
+      if (process.env.NODE_ENV === "development") console.error(error);
     }
   };
 
@@ -95,7 +95,7 @@ export default function Products() {
       }
     } catch (error) {
       toast.error(`Bir sorun oluştu! Hata kodu: HAC-114`);
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   };
 

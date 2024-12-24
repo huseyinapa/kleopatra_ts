@@ -17,11 +17,10 @@ const CartManager = {
             "Content-Type": "multipart/form-data;",
           },
         });
-      // console.log(response.data);
 
       return response.data.success;
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
       return false;
     }
   },
@@ -33,7 +32,7 @@ const CartManager = {
 
       return response.data.success ? response.data.data || null : null;
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -44,7 +43,7 @@ const CartManager = {
         await axios.post(`${api_url}/api_kleopatra/cart/all_get.php`, data);
       return response.data.success ? response.data.data || null : null;
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -55,7 +54,7 @@ const CartManager = {
         await axios.post(`${api_url}/api_kleopatra/cart/all_get.php`, formData);
       return response.data.success ? response.data.data || null : null;
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -70,7 +69,8 @@ const CartManager = {
 
       return response.data.success;
     } catch (error) {
-      console.error("Ürün kaldırma hatası:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Ürün kaldırma hatası:", error);
       return false;
     }
   },

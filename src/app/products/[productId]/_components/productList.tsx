@@ -25,7 +25,6 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
   async function getProducts() {
     try {
       const products = await ProductManager.fetchAllProducts();
-      // console.log(products);
 
       if (products !== null) {
         setProducts(
@@ -36,8 +35,8 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
         toast.error("Stoğumuzda ürün bulunmuyor.");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Ürünler getirilirken bir hata oluştu.");
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   }
 
@@ -133,7 +132,7 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
       });
     } catch (error) {
       toast.error("Bilinmeyen hata. Kod: PC-HAC");
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   }
 }

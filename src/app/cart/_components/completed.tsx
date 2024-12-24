@@ -20,7 +20,6 @@ const Completed: FC<CompletedProps> = ({ address, payment }) => {
     cardNumber.replace(/\d(?=\d{4})/g, "*");
 
   const orderId: string = getSessionStorage("orderID");
-  // console.log(orderId);
 
   return (
     <div className="mx-auto justify-center">

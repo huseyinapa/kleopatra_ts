@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 import { CartItem } from "@/types/cart";
@@ -21,9 +21,8 @@ const BottomPayDetails: React.FC<BottomPayDetailsProps> = ({
   const [isChecked, setChecked] = useState(false);
   const [effect, setEffect] = useState(false);
 
-  useEffect(() => {
-    // // console.log("nav bar", products);
-  }, [products]);
+  // useEffect(() => {
+  // }, [products]);
 
   const totalPrice = products.reduce(
     (total, item) => total + parseInt(item.price) * item.amount!,

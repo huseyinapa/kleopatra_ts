@@ -58,7 +58,7 @@ const Address: FC<AddressProps> = ({
       const res = await axios.get("https://api.ipify.org/?format=json");
       setUserIp(res.data.ip);
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === "development") console.error(error);
       toast.error("Bir hata oluştu. Sayfayı yenileyiniz!");
     }
   }, []);
@@ -88,8 +88,9 @@ const Address: FC<AddressProps> = ({
         }
       }
     } catch (error) {
-      console.error("Şehir ve ilçe verileri alınamadı:", error);
       toast.error("Adres verileri alınırken bir hata oluştu!");
+      if (process.env.NODE_ENV === "development")
+        console.error("Şehir ve ilçe verileri alınamadı:", error);
     }
   }, [setValue]);
 
@@ -148,8 +149,9 @@ const Address: FC<AddressProps> = ({
           localStorage.removeItem("district");
         }
       } catch (error) {
-        console.error("İl seçimi sırasında hata oluştu:", error);
         toast.error("İl seçimi sırasında bir hata oluştu!");
+        if (process.env.NODE_ENV === "development")
+          console.error("İl seçimi sırasında hata oluştu:", error);
       }
     },
     [cities, setValue]

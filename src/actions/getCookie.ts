@@ -25,9 +25,11 @@ export async function getCookie(): Promise<CookiePayload | null> {
     return payload;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Axios Error:", error.response?.data || error.message);
+      if (process.env.NODE_ENV === "development")
+        console.error("Axios Error:", error.response?.data || error.message);
     } else {
-      console.error("Unexpected Error:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Unexpected Error:", error);
     }
     throw error; // Hatanın üst katmana iletilmesini sağlar
   }

@@ -73,7 +73,8 @@ export async function verifyToken(
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
-    console.error("Invalid token:", error);
+    if (process.env.NODE_ENV === "development")
+      console.error("Invalid token:", error);
     return null;
   }
 }

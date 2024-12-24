@@ -55,8 +55,6 @@ const Login: React.FC = () => {
         localStorage.setItem("last_login", date);
         localStorage.setItem("date", date);
 
-        // console.log("Token:", token);
-
         trackGAEvent("Kullanıcı girişi", "Giriş Butonu", "Giriş yapıldı");
 
         window.location.reload();
@@ -67,8 +65,8 @@ const Login: React.FC = () => {
         return;
       }
     } catch (error) {
-      // console.error(error);
       toast.error("Beklenmedik bir sorun oluştu. Hata: LN-50");
+      if (process.env.NODE_ENV === "development") console.error(error);
     }
   };
 

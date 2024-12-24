@@ -11,7 +11,8 @@ export const fetchAllIds = async (): Promise<string[]> => {
       await axios.get(`${api_url}/api_kleopatra/user/get_id.php`);
     return response.data.success ? response.data.userIDS : [];
   } catch (error) {
-    console.error("Error fetching ids:", error);
+    if (process.env.NODE_ENV === "development")
+      console.error("Error fetching ids:", error);
     return [];
   }
 };

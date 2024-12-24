@@ -8,6 +8,7 @@ import ProductManager from "@/services/product";
 import CartManager from "@/services/cart";
 import { Product } from "@/types/product";
 import Functions from "@/utils/functions";
+import Logger from "@/utils/logger";
 
 interface ProductCardProps {
   product: Product;
@@ -29,8 +30,8 @@ export default function ProductCard({ product, isAdmin }: ProductCardProps) {
         toast.error("Bilinmeyen hata!");
       }
     } catch (error) {
-      console.error("Product removal error:", error);
       toast.error("Bilinmeyen hata!");
+      Logger.log("Product removal error:" + error, "error");
     }
   };
 
@@ -59,8 +60,8 @@ export default function ProductCard({ product, isAdmin }: ProductCardProps) {
         toast.error("Ürün sepete eklenemedi.");
       }
     } catch (error) {
-      console.error("Cart error:", error);
       toast.error("Beklenmeyen bir hata oluştu.");
+      Logger.log("Cart error:" + error, "error");
     }
   };
 

@@ -4,10 +4,13 @@ import Store from "@/app/_components/store";
 import Products from "@/app/_components/products";
 import Footer from "@/app/_components/footer";
 import { useEffect } from "react";
+import Logger from "@/utils/logger";
 
 export default function Home(): JSX.Element {
   //bg-[#f3e1dd]
-  useEffect(() => {}, []);
+  useEffect(() => {
+    Logger.log("Home page loaded", "load");
+  }, []);
 
   return (
     <main>

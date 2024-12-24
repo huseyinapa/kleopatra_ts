@@ -40,7 +40,8 @@ const User = {
         return null;
       }
     } catch (error) {
-      console.error("Register error:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Register error:", error);
       throw error;
     }
   },
@@ -63,7 +64,8 @@ const User = {
         return null;
       }
     } catch (error) {
-      console.error("Login error:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Login error:", error);
       throw error;
     }
   },
@@ -81,7 +83,6 @@ const User = {
       const response: AxiosResponse<ApiResponse<UserData>> = await axios.get(
         `${api_url}/api_kleopatra/user/get.php?email=${email}`
       );
-      console.log(response.data);
 
       if (response.data.success) {
         return response.data.data as UserData;
@@ -89,7 +90,8 @@ const User = {
         return null;
       }
     } catch (error) {
-      console.error("Get User error:", error);
+      if (process.env.NODE_ENV === "development")
+        console.error("Get User error:", error);
       return null;
     }
   },

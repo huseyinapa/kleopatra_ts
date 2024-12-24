@@ -31,8 +31,6 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
 
       if (!orderData || orderData.length === 0) return setOrders([]);
 
-      // console.log("orderData: ", orderData);
-
       const orderArray: NewOrder[] = await Promise.all(
         orderData.map(async (order: NewOrder, index: number) => {
           /**
@@ -77,7 +75,6 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
           const items = (orderItems[index] || []).map(
             (item: OrderItem) => item
           );
-          // console.log("orderCustomer: ", customer);
 
           let statusText = "";
 
@@ -122,8 +119,8 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
 
       setOrders(orderArray);
     } catch (error) {
-      console.log(error);
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: O-25");
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   };
 
@@ -137,7 +134,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
       getOrders();
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   };
 
@@ -152,7 +149,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
       }
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-9");
-      console.log(error);
+      if (process.env.NODE_ENV === "development") console.log(error);
     }
   };
 
