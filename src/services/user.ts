@@ -1,6 +1,6 @@
 // utils/user.ts
 
-import { api_url } from "@/utils/api";
+import { api_url, NODE_ENV } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 // API response interface
@@ -40,8 +40,7 @@ const User = {
         return null;
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
-        console.error("Register error:", error);
+      if (NODE_ENV === "development") console.error("Register error:", error);
       throw error;
     }
   },
@@ -64,8 +63,7 @@ const User = {
         return null;
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
-        console.error("Login error:", error);
+      if (NODE_ENV === "development") console.error("Login error:", error);
       throw error;
     }
   },
@@ -90,8 +88,7 @@ const User = {
         return null;
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
-        console.error("Get User error:", error);
+      if (NODE_ENV === "development") console.error("Get User error:", error);
       return null;
     }
   },

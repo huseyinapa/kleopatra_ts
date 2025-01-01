@@ -1,13 +1,23 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
+import { api_url } from "./utils/api";
+
+const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV as
+  | "development"
+  | "production";
 
 const adminRoutes = ["/add-product", "/confirm-order"];
 const protectedRoutes = ["/cart", "/orders"];
-const secret = process.env.JWT_SECRET;
+const secret = NODE_ENV ?? "falan-filan87fsd7f";
 
-if (!secret || process.env.NODE_ENV !== "development") {
+if (!secret) {
   console.error("JWT_SECRET tanımlanmadı!");
+}
+
+if (NODE_ENV === "development") {
+  console.log("Node env:", NODE_ENV);
+  console.log(api_url);
 }
 
 function isProtectedRoute(pathname: string) {
@@ -27,8 +37,8 @@ export async function middleware(req: NextRequest) {
   const token = req.cookies.get("session-token")?.value;
   const { pathname } = req.nextUrl;
 
-  if (process.env.NODE_ENV === "development") {
-    console.log("Kontrol edilen yol:", pathname, "token:", token);
+  if (NODE_ENV === "development") {
+    console.log("Kontrol edilen yol:", pathname);
   }
 
   // Korunan sayfalar için oturum kontrolü

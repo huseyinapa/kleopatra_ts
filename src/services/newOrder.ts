@@ -1,5 +1,5 @@
 import { NewOrder, OrderCustomer, OrderItem } from "@/types/order";
-import { api_url } from "@/utils/api";
+import { api_url, NODE_ENV } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 // Define interfaces for API responses if possible
@@ -31,7 +31,7 @@ const NewOrderManager = {
       );
       return response.data.success ? response.data.orderId || null : null;
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -54,7 +54,7 @@ const NewOrderManager = {
       );
       return response.data.success;
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
       throw error;
     }
   },
@@ -77,7 +77,7 @@ const NewOrderManager = {
       );
       return response.data.success;
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
       throw error;
     }
   },
@@ -103,7 +103,7 @@ const NewOrderManager = {
         throw new Error("Request failed");
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
       throw error;
     }
   },
@@ -133,7 +133,7 @@ const NewOrderManager = {
       }
       return null;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Error retrieving customer orders: ", error);
       throw error;
     }
@@ -155,7 +155,7 @@ const NewOrderManager = {
       }
       return null;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Error retrieving customer orders: ", error);
       throw error;
     }
@@ -180,7 +180,7 @@ const NewOrderManager = {
       }
       return null;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Error retrieving customer orders: ", error);
       throw error;
     }
@@ -205,7 +205,7 @@ const NewOrderManager = {
         return null;
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
       return null;
     }
   },
@@ -223,7 +223,7 @@ const NewOrderManager = {
       );
       return response.data.success;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Sipariş iptal etme hatası:", error);
       return false;
     }
@@ -255,7 +255,7 @@ const NewOrderManager = {
         return null;
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.log("error:", error);
+      if (NODE_ENV === "development") console.log("error:", error);
       return null;
     }
   },
@@ -277,7 +277,7 @@ const NewOrderManager = {
 
       return response.data.success;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Sipariş silme hatası:", error);
       return false;
     }
@@ -300,7 +300,7 @@ const NewOrderManager = {
 
       return response.data.success;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Sipariş öğelerini silme hatası:", error);
       return false;
     }
@@ -322,7 +322,7 @@ const NewOrderManager = {
 
       return response.data.success;
     } catch (error) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Sipariş müşterisini silme hatası:", error);
       return false;
     }

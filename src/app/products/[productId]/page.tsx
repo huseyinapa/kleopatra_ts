@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Footer from "@/app/_components/footer";
 import AddToCartButton from "./_components/addToCartButton";
 import ProductList from "./_components/productList";
-import { api_url } from "@/utils/api";
+import { api_url, NODE_ENV } from "@/utils/api";
 import { Product } from "@/types/product";
 import NotFound from "./not-found";
 import Logger from "@/utils/logger";
@@ -21,7 +21,7 @@ async function getProductData(productId: string): Promise<Product | null> {
     }
     return product.data;
   } catch (error) {
-    if (process.env.NODE_ENV === "development") console.log("HATA:" + error);
+    if (NODE_ENV === "development") console.log("HATA:" + error);
     return null;
   }
 }

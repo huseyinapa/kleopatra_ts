@@ -1,5 +1,7 @@
 "use client";
 
+import { NODE_ENV } from "./api";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // LocalStorage Fonksiyonları
 export const setLocalStorage = (key: string, value: any) => {
@@ -78,7 +80,7 @@ export const isStorageFull = () => {
     localStorage.removeItem("test");
     return false;
   } catch (e) {
-    if (process.env.NODE_ENV === "development") console.log(e);
+    if (NODE_ENV === "development") console.log(e);
     return true;
   }
 };

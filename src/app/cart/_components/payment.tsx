@@ -16,7 +16,7 @@ import { CardInfo, PaymentData, PayResponse } from "@/types/payment";
 import { CartItem } from "@/types/cart";
 import { AddressData } from "@/types/address";
 import { setSessionStorage } from "@/utils/storage";
-import { pay_url } from "@/utils/api";
+import { NODE_ENV, pay_url } from "@/utils/api";
 import { useUser } from "@/provider/UserContextProvider";
 
 interface UserData {
@@ -254,7 +254,7 @@ const Payment: React.FC<PaymentProps> = ({
       }
     } catch (error) {
       toast.error("Ödeme işlemi sırasında bir hata oluştu.");
-      if (process.env.NODE_ENV === "development") console.log(error);
+      if (NODE_ENV === "development") console.log(error);
     }
     setIsLoading(false);
   };
@@ -355,7 +355,7 @@ const Payment: React.FC<PaymentProps> = ({
       }
     } catch (error) {
       toast.error(`Bilinmeyen hata: Hata kodu: P-323`);
-      if (process.env.NODE_ENV === "development") console.log(error);
+      if (NODE_ENV === "development") console.log(error);
     }
   };
 

@@ -7,6 +7,7 @@ import Header from "../../_components/nav";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import ProductManager from "@/services/product";
+import { NODE_ENV } from "@/utils/api";
 
 const ProductAdd: React.FC = () => {
   const [image, setImage] = useState<string>("");
@@ -31,7 +32,7 @@ const ProductAdd: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
     }
   };
 

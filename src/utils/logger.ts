@@ -1,7 +1,9 @@
 import chalk from "chalk";
 
 const { bgBlue, black, green } = chalk;
-const NODE_ENV = process.env.NODE_ENV as "development" | "production";
+const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV as
+  | "development"
+  | "production";
 
 function dateTimePad(value: number | string, digits: number): string {
   let number = value.toString();

@@ -9,6 +9,7 @@ import { trackGAEvent } from "@/utils/google-analytics";
 
 import { userIdentifier } from "@/actions/idCreator";
 import { loginUser } from "@/services/auth";
+import { NODE_ENV } from "@/utils/api";
 
 const Registration: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -69,7 +70,7 @@ const Registration: React.FC = () => {
       }
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu.");
-      if (process.env.NODE_ENV === "development") console.error(error);
+      if (NODE_ENV === "development") console.error(error);
     }
   };
 

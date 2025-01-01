@@ -1,4 +1,4 @@
-import { api_url } from "@/utils/api";
+import { api_url, NODE_ENV } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 const characters = "0123456789";
@@ -16,8 +16,7 @@ export const fetchOrdersId = async (): Promise<string[]> => {
     );
     return response.data.success ? response.data.orderIDS : [];
   } catch (error) {
-    if (process.env.NODE_ENV === "development")
-      console.error("Error fetching ids:", error);
+    if (NODE_ENV === "development") console.error("Error fetching ids:", error);
     return [];
   }
 };
@@ -29,8 +28,7 @@ export const fetchOrderItemsId = async (): Promise<string[]> => {
     );
     return response.data.success ? response.data.orderItemsId : [];
   } catch (error) {
-    if (process.env.NODE_ENV === "development")
-      console.error("Error fetching ids:", error);
+    if (NODE_ENV === "development") console.error("Error fetching ids:", error);
     return [];
   }
 };
@@ -42,8 +40,7 @@ export const fetchOrderCustomersId = async (): Promise<string[]> => {
     );
     return response.data.success ? response.data.orderIDS : [];
   } catch (error) {
-    if (process.env.NODE_ENV === "development")
-      console.error("Error fetching ids:", error);
+    if (NODE_ENV === "development") console.error("Error fetching ids:", error);
     return [];
   }
 };

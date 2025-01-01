@@ -10,6 +10,7 @@ import ProductManager from "@/services/product";
 import Functions from "@/utils/functions";
 import Image from "next/image";
 import { Product } from "@/types/product";
+import { NODE_ENV } from "@/utils/api";
 
 interface ProductListProps {
   excludingProductId: string;
@@ -36,7 +37,7 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
       }
     } catch (error) {
       toast.error("Ürünler getirilirken bir hata oluştu.");
-      if (process.env.NODE_ENV === "development") console.log(error);
+      if (NODE_ENV === "development") console.log(error);
     }
   }
 
@@ -132,7 +133,7 @@ export default function ProductList({ excludingProductId }: ProductListProps) {
       });
     } catch (error) {
       toast.error("Bilinmeyen hata. Kod: PC-HAC");
-      if (process.env.NODE_ENV === "development") console.log(error);
+      if (NODE_ENV === "development") console.log(error);
     }
   }
 }

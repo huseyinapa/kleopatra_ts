@@ -1,4 +1,5 @@
 import { CookieUser } from "@/types/cookie";
+import { NODE_ENV } from "@/utils/api";
 import axios from "axios";
 import { jwtVerify } from "jose";
 
@@ -20,11 +21,10 @@ export async function getUserFromSessionToken(token: string) {
     return payload;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Axios Error:", error.response?.data || error.message);
     } else {
-      if (process.env.NODE_ENV === "development")
-        console.error("Unexpected Error:", error);
+      if (NODE_ENV === "development") console.error("Unexpected Error:", error);
     }
     return null;
   }

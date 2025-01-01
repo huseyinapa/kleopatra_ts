@@ -1,6 +1,7 @@
 "use server";
 
 import { CookiePayload } from "@/types/cookie";
+import { NODE_ENV } from "@/utils/api";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axiosInstance from "@/utils/axiosConfig";
 import axios from "axios";
@@ -25,11 +26,10 @@ export async function getCookie(): Promise<CookiePayload | null> {
     return payload;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (process.env.NODE_ENV === "development")
+      if (NODE_ENV === "development")
         console.error("Axios Error:", error.response?.data || error.message);
     } else {
-      if (process.env.NODE_ENV === "development")
-        console.error("Unexpected Error:", error);
+      if (NODE_ENV === "development") console.error("Unexpected Error:", error);
     }
     throw error; // Hatanın üst katmana iletilmesini sağlar
   }
