@@ -77,7 +77,7 @@ export default async function RootLayout({
     ? await getUserFromSessionToken(sessionToken)
     : null;
 
-  Logger.log(user?.email, "log");
+  Logger.log(user?.email ?? "No email", "log");
   return (
     <html lang="tr" className={inter.className}>
       <GoogleAnalytics />

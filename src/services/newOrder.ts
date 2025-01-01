@@ -84,16 +84,13 @@ const NewOrderManager = {
 
   /**
    * Tüm siparişleri getirir.
-   * @param data
+   * @param orderId
    * @returns
    */
-  getOrder: async (data: FormData): Promise<NewOrder | null> => {
-    const url = `${api_url}/api_kleopatra/new_order/get.php`;
-
+  getOrder: async (orderId: string): Promise<NewOrder | null> => {
     try {
       const response: AxiosResponse<ApiResponse<NewOrder>> = await axios.post(
-        url,
-        data
+        `${api_url}/api_kleopatra/new_order/get.php?orderId=${orderId}`
       );
 
       if (response.data.success) {
