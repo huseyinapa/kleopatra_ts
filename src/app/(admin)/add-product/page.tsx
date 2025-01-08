@@ -3,7 +3,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { productIdentifier } from "../../../actions/idCreator";
 import Footer from "../../_components/footer";
-import Header from "../../_components/nav";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import ProductManager from "@/services/product";
