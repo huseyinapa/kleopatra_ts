@@ -144,7 +144,6 @@ function Cart(): JSX.Element {
     return (
       <div className="w-[100%]">
         <Toaster position="bottom-right" reverseOrder={false} />
-        <Header />
 
         {loading ? (
           <div className="mx-auto h-60 justify-center">

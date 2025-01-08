@@ -104,7 +104,6 @@ const ProductAdd: React.FC = () => {
     <div data-theme="valentine">
       <Toaster position="bottom-right" reverseOrder={false} />
 
-      <Header />
       <div className="flex flex-row mx-auto">
         <div className="mx-auto">
           <div className="w-96 h-96 mx-auto rounded-lg overflow-hidden">

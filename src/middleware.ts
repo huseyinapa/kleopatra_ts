@@ -9,7 +9,7 @@ const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV as
 
 const adminRoutes = ["/add-product", "/confirm-order"];
 const protectedRoutes = ["/cart", "/orders"];
-const secret = NODE_ENV ?? "falan-filan87fsd7f";
+const secret = process.env.JWT_SECRET ?? "falan-filan87fsd7f";
 
 if (!secret) {
   console.error("JWT_SECRET tanımlanmadı!");
@@ -29,8 +29,24 @@ function isAdminRoute(pathname: string) {
 }
 
 async function verifyToken(token: string) {
-  const { payload } = await jwtVerify(token, new TextEncoder().encode(secret));
-  return payload.permission as string | undefined;
+  try {
+    const { payload } = await jwtVerify(
+      token,
+      new TextEncoder().encode(secret)
+    );
+    return payload.permission as string | undefined;
+  } catch (error) {
+    if (NODE_ENV === "development") {
+      console.log(secret);
+
+      if ((error as Error & { code?: string }).code === "ERR_JWT_EXPIRED") {
+        console.error("Token süresi dolmuş");
+      } else {
+        console.error("Beklenmeyen hata:", error);
+      }
+    }
+    return undefined;
+  }
 }
 
 export async function middleware(req: NextRequest) {
@@ -54,6 +70,8 @@ export async function middleware(req: NextRequest) {
     }
 
     const permission = await verifyToken(token);
+    console.log("Permission:", permission);
+
     if (permission !== "1") {
       return NextResponse.redirect(new URL("/", req.url));
     }
@@ -64,5 +82,4 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: ["/((?!api|_next|_vercel|sitemap|.*\\..*|/).*)"],
-  runtime: "nodejs",
 };

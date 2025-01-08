@@ -5,7 +5,6 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-import Header from "../_components/nav";
 import Footer from "../_components/footer";
 
 import { OrderItem, NewOrder, OrderCustomer } from "@/types/order";
@@ -163,7 +162,6 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
 
         <Toaster position="bottom-right" reverseOrder={false} />
 
-        <Header />
         <div className="mx-auto min-h-[800px] md:min-h-[600px] lg:min-h-[400px]">
           <div
             className="flex-wrap space-y-4 md:space-x-4 lg:space-x-4
