@@ -9,7 +9,7 @@ import Logger from "@/utils/logger";
 export default function Home(): JSX.Element {
   //bg-[#f3e1dd]
   useEffect(() => {
-    Logger.log("Home page loaded", "load");
+    Logger.log(process.env.NEXT_PUBLIC_NODE_ENV, "load");
   }, []);
 
   return (
