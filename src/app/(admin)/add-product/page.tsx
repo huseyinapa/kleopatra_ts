@@ -6,7 +6,7 @@ import Footer from "../../_components/footer";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import ProductManager from "@/services/product";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 const ProductAdd: React.FC = () => {
   const [image, setImage] = useState<string>("");
@@ -31,7 +31,7 @@ const ProductAdd: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
     }
   };
 

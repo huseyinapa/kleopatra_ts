@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { CookiePayload } from "@/types/cookie";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 export async function GET(): Promise<NextResponse<CookiePayload>> {
   const cookieStore = cookies();
@@ -36,7 +36,7 @@ export async function GET(): Promise<NextResponse<CookiePayload>> {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Bilinmeyen bir hata oluştu.";
-    if (NODE_ENV === "development")
+    if (NodeEnv === "development")
       console.error("GET /api/cookie - Token doğrulama hatası:", errorMessage);
 
     return NextResponse.json(

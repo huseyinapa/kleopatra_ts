@@ -7,7 +7,7 @@ import CartManager from "@/services/cart";
 import ProductManager from "@/services/product";
 
 import { Product } from "@/types/product";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 interface AddToCartButtonProps {
   product: Product;
@@ -67,7 +67,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       }
     } catch (error) {
       toast.error("Bilinmeyen hata. Kod: AC-HAC");
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
     } finally {
       setIsLoading(false);
     }

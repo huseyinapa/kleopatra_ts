@@ -11,7 +11,7 @@ import ModalDetails from "./modal/ModalDetails";
 import NewOrderManager from "@/services/newOrder";
 import { NewOrder, OrderCustomer, OrderItem } from "@/types/order";
 import { Detail } from "@/types/detail";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<NewOrder[]>([]);
@@ -89,7 +89,7 @@ export default function OrderPage() {
       setOrders(orderArray);
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: O-25");
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
     }
   };
 
@@ -127,7 +127,7 @@ export default function OrderPage() {
       }
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
       return false;
     }
   };

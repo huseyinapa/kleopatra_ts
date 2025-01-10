@@ -1,6 +1,6 @@
 // utils/createId.ts
 
-import { api_url, NODE_ENV } from "@/utils/api";
+import { api_url, NodeEnv } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -11,7 +11,7 @@ export const fetchAllIds = async (): Promise<string[]> => {
       await axios.get(`${api_url}/api_kleopatra/user/get_id.php`);
     return response.data.success ? response.data.userIDS : [];
   } catch (error) {
-    if (NODE_ENV === "development") console.error("Error fetching ids:", error);
+    if (NodeEnv === "development") console.error("Error fetching ids:", error);
     return [];
   }
 };

@@ -12,7 +12,7 @@ import { getUserFromSessionToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 import UserContextProvider from "@/provider/UserContextProvider";
 import Logger from "@/utils/logger";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -85,9 +85,7 @@ export default async function RootLayout({
 
       <body
         data-theme="valentine"
-        className={`${
-          NODE_ENV === "development" ? "debug-screens" : undefined
-        }`}
+        className={`${NodeEnv === "development" ? "debug-screens" : undefined}`}
       >
         <Toaster position="bottom-right" reverseOrder={false} />
 

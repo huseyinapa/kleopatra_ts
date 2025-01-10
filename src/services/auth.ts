@@ -1,6 +1,6 @@
 "use server";
 
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
@@ -74,7 +74,7 @@ export async function verifyToken(
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
-    if (NODE_ENV === "development") console.error("Invalid token:", error);
+    if (NodeEnv === "development") console.error("Invalid token:", error);
     return null;
   }
 }

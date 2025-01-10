@@ -20,7 +20,7 @@ import axios from "axios";
 import { handleFormErrors } from "@/utils/handlers/errorHandler"; // Hata işleyici fonksiyon
 import { AddressData } from "@/types/address";
 import { CompletedState } from "../page";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 interface AddressProps {
   addressData?: AddressData | null; // Opsiyonel hale getiriyoruz
@@ -59,7 +59,7 @@ const Address: FC<AddressProps> = ({
       const res = await axios.get("https://api.ipify.org/?format=json");
       setUserIp(res.data.ip);
     } catch (error) {
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
       toast.error("Bir hata oluştu. Sayfayı yenileyiniz!");
     }
   }, []);
@@ -90,7 +90,7 @@ const Address: FC<AddressProps> = ({
       }
     } catch (error) {
       toast.error("Adres verileri alınırken bir hata oluştu!");
-      if (NODE_ENV === "development")
+      if (NodeEnv === "development")
         console.error("Şehir ve ilçe verileri alınamadı:", error);
     }
   }, [setValue]);
@@ -151,7 +151,7 @@ const Address: FC<AddressProps> = ({
         }
       } catch (error) {
         toast.error("İl seçimi sırasında bir hata oluştu!");
-        if (NODE_ENV === "development")
+        if (NodeEnv === "development")
           console.error("İl seçimi sırasında hata oluştu:", error);
       }
     },

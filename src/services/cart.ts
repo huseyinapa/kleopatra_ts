@@ -1,5 +1,5 @@
 import { CartProduct } from "@/types/cart";
-import { api_url, NODE_ENV } from "@/utils/api";
+import { api_url, NodeEnv } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 
 type ApiResponse<T> = {
@@ -20,7 +20,7 @@ const CartManager = {
 
       return response.data.success;
     } catch (error) {
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
       return false;
     }
   },
@@ -32,7 +32,7 @@ const CartManager = {
 
       return response.data.success ? response.data.data || null : null;
     } catch (error) {
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
       return null;
     }
   },
@@ -43,7 +43,7 @@ const CartManager = {
         await axios.post(`${api_url}/api_kleopatra/cart/all_get.php`, data);
       return response.data.success ? response.data.data || null : null;
     } catch (error) {
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
       return null;
     }
   },
@@ -54,7 +54,7 @@ const CartManager = {
         await axios.post(`${api_url}/api_kleopatra/cart/all_get.php`, formData);
       return response.data.success ? response.data.data || null : null;
     } catch (error) {
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
       return null;
     }
   },
@@ -69,7 +69,7 @@ const CartManager = {
 
       return response.data.success;
     } catch (error) {
-      if (NODE_ENV === "development")
+      if (NodeEnv === "development")
         console.error("Ürün kaldırma hatası:", error);
       return false;
     }

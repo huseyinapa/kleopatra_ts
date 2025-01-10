@@ -1,6 +1,6 @@
 // utils/address.api.ts
 
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 import axios, { AxiosResponse } from "axios";
 import axiosRetry from "axios-retry";
 
@@ -50,7 +50,7 @@ const AddressAPI = async (): Promise<City[]> => {
       );
     }
   } catch (error) {
-    if (NODE_ENV === "development")
+    if (NodeEnv === "development")
       console.error("Şehir ve ilçe verileri alınırken bir hata oluştu:", error);
     alert("Şehir ve ilçe verileri alınırken bir sorun oluştu.");
     throw new Error("Şehir ve ilçe verileri alınamadı.");

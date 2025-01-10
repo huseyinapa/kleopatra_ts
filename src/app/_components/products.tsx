@@ -10,7 +10,7 @@ import Image from "next/image";
 import Functions from "@/utils/functions";
 import { Product } from "@/types/product";
 import { useUser } from "@/provider/UserContextProvider";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 export default function Products() {
   const user = useUser();
@@ -28,7 +28,7 @@ export default function Products() {
         setProducts(response);
       }
     } catch (error) {
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
     }
   };
 
@@ -47,7 +47,7 @@ export default function Products() {
       }
     } catch (error) {
       toast.error("Bilinmeyen hata! Hata kodu: AP-60");
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
     }
   };
 
@@ -96,7 +96,7 @@ export default function Products() {
       }
     } catch (error) {
       toast.error(`Bir sorun oluştu! Hata kodu: HAC-114`);
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
     }
   };
 

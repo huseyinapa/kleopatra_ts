@@ -10,7 +10,7 @@ import Functions from "@/utils/functions";
 import User from "@/services/user";
 import { loginUser } from "@/services/auth";
 import { setCookie } from "@/services/cookie";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
       }
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata: LN-50");
-      if (NODE_ENV === "development") console.error(error);
+      if (NodeEnv === "development") console.error(error);
     }
   };
 

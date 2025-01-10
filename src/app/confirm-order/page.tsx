@@ -13,7 +13,7 @@ import Image from "next/image";
 import { Detail } from "@/types/detail";
 import ProductManager from "@/services/product";
 import NotFound from "./not-found";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 interface ConfirmOrderProps {}
 
@@ -120,7 +120,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
       setOrders(orderArray);
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: O-25");
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
     }
   };
 
@@ -134,7 +134,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
       getOrders();
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-8");
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
     }
   };
 
@@ -149,7 +149,7 @@ export default function ConfirmOrder({}: ConfirmOrderProps) {
       }
     } catch (error) {
       toast.error("Beklenmedik bir sorun oluştu. Hata kodu: CO-9");
-      if (NODE_ENV === "development") console.log(error);
+      if (NodeEnv === "development") console.log(error);
     }
   };
 

@@ -1,5 +1,5 @@
 import { Product } from "@/types/product";
-import { api_url, NODE_ENV } from "@/utils/api";
+import { api_url, NodeEnv } from "@/utils/api";
 import axiosInstance from "@/utils/axiosConfig";
 import { AxiosResponse } from "axios";
 
@@ -24,7 +24,7 @@ const ProductManager = {
         );
       return response.data.success ? true : false;
     } catch (error) {
-      if (NODE_ENV === "development")
+      if (NodeEnv === "development")
         console.error("Ürün ekleme hatası:", error);
       return false;
     }
@@ -39,7 +39,7 @@ const ProductManager = {
         );
       return response.data.success ? true : false;
     } catch (error) {
-      if (NODE_ENV === "development")
+      if (NodeEnv === "development")
         console.error("Ürün kaldırma hatası:", error);
       return false;
     }
@@ -54,7 +54,7 @@ const ProductManager = {
         );
       return response.data.success ? true : false;
     } catch (error) {
-      if (NODE_ENV === "development") console.error("Stok hatası:", error);
+      if (NodeEnv === "development") console.error("Stok hatası:", error);
       return false;
     }
   },
@@ -72,7 +72,7 @@ const ProductManager = {
         return null;
       }
     } catch (error) {
-      if (NODE_ENV === "development") console.log("Ürün:", error);
+      if (NodeEnv === "development") console.log("Ürün:", error);
       return null;
     }
   },
@@ -101,7 +101,7 @@ const ProductManager = {
         return null;
       }
     } catch (error) {
-      if (NODE_ENV === "development")
+      if (NodeEnv === "development")
         console.error("Ürün getirme hatası:", error);
       return null;
     }
@@ -131,7 +131,7 @@ const ProductManager = {
         return null;
       }
     } catch (error) {
-      if (NODE_ENV === "development") console.log("Ürün:", error);
+      if (NodeEnv === "development") console.log("Ürün:", error);
       return null;
     }
   },

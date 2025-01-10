@@ -6,15 +6,14 @@ import Footer from "@/app/_components/footer";
 import { Product } from "@/types/product";
 import { useUser } from "@/provider/UserContextProvider";
 import { useEffect, useState } from "react";
-import { NODE_ENV } from "@/utils/api";
+import { NodeEnv } from "@/utils/api";
 
 async function fetchProducts() {
   try {
     const response: Product[] = (await ProductManager.fetchAllProducts()) || [];
     return response;
   } catch (error) {
-    if (NODE_ENV === "development")
-      console.error("Product fetch error:", error);
+    if (NodeEnv === "development") console.error("Product fetch error:", error);
     return [];
   }
 }
