@@ -3,7 +3,7 @@ export const NodeEnv = process.env.NEXT_PUBLIC_NODE_ENV as
   | "production";
 
 export const api_url = {
-  development: "http://3.124.99.216",
+  development: "http://99.79.171.222",
   production: "https://api.gonenkleopatra.com",
 }[NodeEnv];
 
