@@ -2,8 +2,6 @@
 
 import { CookiePayload } from "@/types/cookie";
 import { NodeEnv } from "@/utils/api";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import axiosInstance from "@/utils/axiosConfig";
 import axios from "axios";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";

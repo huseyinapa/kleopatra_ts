@@ -52,7 +52,7 @@ export default function Products() {
   };
 
   const handleAddCart = async (data: Product) => {
-    const id = (user!.sub ?? localStorage.getItem("id")).toString();
+    const id = localStorage.getItem("id");
     if (id === null) {
       toast.error("Sepete ürün eklemek için kayıt olmanız gerekir.");
       return;

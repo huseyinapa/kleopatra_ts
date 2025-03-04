@@ -1,11 +1,17 @@
 // utils/axiosConfig.ts
 import axios from "axios";
 import axiosRetry from "axios-retry";
+import { NodeEnv } from "./api";
+
+const baseURL = {
+  development: "http://99.79.171.222",
+  production: "https://api.gonenkleopatra.com",
+}[NodeEnv];
 
 // Axios instance oluştur
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
-  timeout: 10000, // İstek zaman aşımı süresi (ms)
+  baseURL,
+  timeout: 10000,
 });
 
 // Retry ayarlarını yap
